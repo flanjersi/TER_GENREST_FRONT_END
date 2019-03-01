@@ -8,6 +8,7 @@ module.exports = function (config) {
     plugins: [
       require('karma-jasmine'),
       // require('karma-chrome-launcher'),
+      require('karma-phantomjs-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
@@ -15,20 +16,6 @@ module.exports = function (config) {
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-    // UPDATE
-    files: [
-      { pattern: './src/test.ts', watched: false }
-    ],
-    preprocessors: {
-      './src/test.ts': ['@angular/cli']
-    },
-    mime: {
-      'text/x-typescript': ['ts', 'tsx']
-    },
-    angularCli: {
-      environment: 'dev'
-    },
-    // END UPDATE
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, '../coverage/genrest-front-end'),
       reports: ['html', 'lcovonly', 'text-summary'],
