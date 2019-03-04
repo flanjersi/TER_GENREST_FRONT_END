@@ -11,6 +11,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {AuthComponent} from './auth/auth.component';
 import {HomeComponent} from './home/home.component';
+import { CreateUserDialogComponent } from './auth/create-user-dialog/create-user-dialog.component';
 
 import {A11yModule} from '@angular/cdk/a11y';
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -57,12 +58,14 @@ import {
   MatTreeModule,
 } from '@angular/material';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
     AuthComponent,
-    HomeComponent
+    HomeComponent,
+    CreateUserDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -115,6 +118,7 @@ import {
     MatTreeModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [CreateUserDialogComponent,]
 })
 export class AppModule { }
