@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ErrorStateMatcher, MatDialogRef} from "@angular/material";
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
+import {UserService} from "../../core/_services/user.service";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -16,7 +17,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-create-user-dialog',
   templateUrl: './create-user-dialog.component.html',
-  styleUrls: ['./create-user-dialog.component.scss']
+  styleUrls: ['./create-user-dialog.component.scss'],
+  providers: [UserService]
 })
 export class CreateUserDialogComponent implements OnInit {
 
@@ -34,10 +36,13 @@ export class CreateUserDialogComponent implements OnInit {
     Validators.maxLength(50),
   ]);
 
-  public emailFormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
+  public emailFormControl = new FormControl('',
+    [
+        Validators.required,
+        Validators.email,
+      ],
+      this.confirmEmailNotAlreadyUse.bind(this)
+    );
 
   public passwordFormControl = new FormControl('', [
     Validators.required,
@@ -51,20 +56,22 @@ export class CreateUserDialogComponent implements OnInit {
 
   public matcher = new MyErrorStateMatcher();
 
-  public firstName: string;
-  public lastName: string;
-  public email: string;
-  public password: string;
-  public confirmedPassword: string;
-
-  constructor(private dialogRef: MatDialogRef<CreateUserDialogComponent>, private formBuilder: FormBuilder) {
+  constructor(private dialogRef: MatDialogRef<CreateUserDialogComponent>,
+              private formBuilder: FormBuilder,
+              private userService: UserService) {
     this.form = this.formBuilder.group({
       firstName: this.firstNameFormControl,
       lastName: this.lastNameFormControl,
       email: this.emailFormControl,
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl,
-    }, {validator: this.confirmedPasswordValidator});
+    }, {
+      validators: [
+        this.confirmedPasswordValidator
+      ]
+    });
+
+
   }
 
   ngOnInit() {}
@@ -93,6 +100,21 @@ export class CreateUserDialogComponent implements OnInit {
     let confirmPass = control.get('confirmPassword').value;
 
     return pass === confirmPass ? null : { notSame: true }
+  }
+
+  confirmEmailNotAlreadyUse(control: FormControl){
+    let email = control.get('email').value;
+
+    console.log("test");
+
+    this.userService.getByEmail(email)
+      .then( user => {
+          return {emailAlreadyUse: true};
+        },
+        err => {
+          return null;
+        }
+      )
   }
 
 }

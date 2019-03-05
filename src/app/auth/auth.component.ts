@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {ErrorStateMatcher, MatDialog, MatDialogConfig} from "@angular/material";
 import {CreateUserDialogComponent} from "./create-user-dialog/create-user-dialog.component";
+import {UserService} from "../core/_services/user.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -30,7 +31,7 @@ export class AuthComponent implements OnInit {
   public email: string;
   public password: string;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private userService: UserService) { }
 
   ngOnInit() {}
 
@@ -38,15 +39,16 @@ export class AuthComponent implements OnInit {
     this.emailFormControl.markAsTouched();
     this.passwordFormControl.markAsTouched();
 
+    this.userService.getAll().then( res => {
+      console.log(res)
+    });
+
     if(this.emailFormControl.hasError('email') || this.emailFormControl.hasError('required')){
       return;
     }
     if(this.passwordFormControl.hasError('required')){
       return;
     }
-
-    console.log(this.email);
-    console.log(this.password);
 
     // TODO ADD WEB SERVICE
   }

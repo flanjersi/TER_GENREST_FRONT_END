@@ -1,6 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { HomeComponent } from './home.component';
+import {HomeComponent} from './home.component';
+import {CommonModule} from "@angular/common";
+import {MDBBootstrapModule} from "angular-bootstrap-md";
+import {MaterialModule} from "../features/material.module";
+import {CoreModule} from "../core/core.module";
+import {SharedModule} from "../shared/shared.module";
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -8,7 +13,18 @@ describe('HomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomeComponent ]
+      declarations: [
+        HomeComponent
+      ],
+      imports: [
+        CommonModule,
+
+        MDBBootstrapModule.forRoot(),
+        MaterialModule,
+
+        CoreModule,
+        SharedModule,
+      ]
     })
     .compileComponents();
   }));
