@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {UserService} from "./_services/user.service";
+import {UserService} from "../shared/_services/user.service";
 import {MenuComponent} from "./menu/menu.component";
 import {MaterialModule} from "../features/material.module";
 import {MDBBootstrapModule} from "angular-bootstrap-md";

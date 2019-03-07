@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {ErrorStateMatcher, MatDialog, MatDialogConfig} from "@angular/material";
 import {CreateUserDialogComponent} from "./create-user-dialog/create-user-dialog.component";
-import {UserService} from "../core/_services/user.service";
+import {UserService} from "../shared/_services/user.service";
 import {AuthService} from "./services/auth.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Router} from "@angular/router";

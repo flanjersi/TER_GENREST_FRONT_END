@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ErrorStateMatcher, MatDialogRef} from "@angular/material";
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
-import {UserService} from "../../core/_services/user.service";
-import {User} from "../../core/_models/User";
+import {UserService} from "../../shared/_services/user.service";
+import {User} from "../../shared/_models/User";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Router} from "@angular/router";
 
