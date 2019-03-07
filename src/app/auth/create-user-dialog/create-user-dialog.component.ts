@@ -3,15 +3,14 @@ import {ErrorStateMatcher, MatDialogRef} from "@angular/material";
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {UserService} from "../../core/_services/user.service";
 import {User} from "../../core/_models/User";
+import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const invalidCtrl = !!(control && control.invalid && control.parent.dirty);
-    const invalidParent = !!(control && control.parent && control.parent.invalid && control.parent.dirty);
-
-    return (invalidCtrl || invalidParent);
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
 }
 
@@ -42,7 +41,6 @@ export class CreateUserDialogComponent implements OnInit {
         Validators.required,
         Validators.email,
       ],
-      //this.confirmEmailNotAlreadyUse.bind(this)
     );
 
   public passwordFormControl = new FormControl('', [
@@ -59,7 +57,8 @@ export class CreateUserDialogComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<CreateUserDialogComponent>,
               private formBuilder: FormBuilder,
-              private userService: UserService) {
+              private userService: UserService,
+              private spinnerService: Ng4LoadingSpinnerService) {
     this.form = this.formBuilder.group({
       firstName: this.firstNameFormControl,
       lastName: this.lastNameFormControl,
@@ -71,8 +70,6 @@ export class CreateUserDialogComponent implements OnInit {
         this.confirmedPasswordValidator
       ]
     });
-
-
   }
 
   ngOnInit() {}
@@ -89,25 +86,36 @@ export class CreateUserDialogComponent implements OnInit {
       return;
     }
 
-    let user = new User();
+    this.spinnerService.show();
 
-    user.firstName = this.firstNameFormControl.value;
-    user.lastName  = this.lastNameFormControl.value;
-    user.email     = this.emailFormControl.value;
-    user.password  = this.passwordFormControl.value;
-
-    console.log(user);
-
-    this.userService.create(user)
-      .then(
-        resp => {
-          console.log(resp);
-        this.dialogRef.close('close');
+    this.userService.getByEmail(this.emailFormControl.value)
+      .then( user => {
+          this.emailFormControl.setErrors({'alreadyUse': true});
+          this.spinnerService.hide();
         },
         err => {
-          console.log(err);
+          let user = new User();
+
+          user.firstName = this.firstNameFormControl.value;
+          user.lastName  = this.lastNameFormControl.value;
+          user.email     = this.emailFormControl.value;
+          user.password  = this.passwordFormControl.value;
+
+          console.log(user);
+
+          this.userService.create(user)
+            .then(
+              resp => {
+                this.spinnerService.hide();
+                this.dialogRef.close('close');
+              },
+              err => {
+                this.spinnerService.hide();
+                console.log(err);
+              }
+            );
         }
-      );
+      )
   }
 
   close() {
@@ -119,21 +127,6 @@ export class CreateUserDialogComponent implements OnInit {
     let confirmPass = control.get('confirmPassword').value;
 
     return pass === confirmPass ? null : { notSame: true }
-  }
-
-  confirmEmailNotAlreadyUse(control: FormControl){
-    let email = control.get('email').value;
-
-    console.log("test");
-
-    this.userService.getByEmail(email)
-      .then( user => {
-          return {emailAlreadyUse: true};
-        },
-        err => {
-          return null;
-        }
-      )
   }
 
 }

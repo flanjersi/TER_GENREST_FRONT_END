@@ -47,8 +47,8 @@
             <mat-error *ngIf="emailFormControl.hasError('required')">
               Email is <strong>required</strong>
             </mat-error>
-            <mat-error *ngIf="emailFormControl.hasError('emailAlreadyUse')">
-              Email is already used;
+            <mat-error *ngIf="emailFormControl.hasError('alreadyUse')">
+              Email is already used
             </mat-error>
           </mat-form-field>
         </td>

@@ -1,3 +1,5 @@
+<ng4-loading-spinner> </ng4-loading-spinner>
+
 <header>
   <app-menu></app-menu>
 </header>
@@ -21,6 +23,9 @@
                 <mat-error *ngIf="emailFormControl.hasError('required')">
                   Email is <strong>required</strong>
                 </mat-error>
+                <mat-error *ngIf="emailFormControl.hasError('notGood')">
+                  Email can be wrong.
+                </mat-error>
               </mat-form-field>
             </td>
           </tr>
@@ -30,6 +35,9 @@
                      [errorStateMatcher]="matcher" [(ngModel)]="password" type="password" name="password" required>
               <mat-error *ngIf="passwordFormControl.hasError('required')">
                 Password is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="passwordFormControl.hasError('notGood')">
+                Password can be wrong.
               </mat-error>
             </mat-form-field></td>
           </tr></table>

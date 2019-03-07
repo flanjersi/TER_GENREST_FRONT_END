@@ -9,6 +9,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {MaterialModule} from "../features/material.module";
+import {Ng4LoadingSpinnerModule} from "ng4-loading-spinner";
 
 const routes: Routes = [
   { path: '', component: AuthComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     CoreModule,
     SharedModule.forRoot(),
+    Ng4LoadingSpinnerModule.forRoot(),
 
     ReactiveFormsModule,
     HttpClientModule,
