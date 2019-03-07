@@ -3,6 +3,7 @@ import {FormControl, FormGroupDirective, NgForm, Validators} from "@angular/form
 import {ErrorStateMatcher, MatDialog, MatDialogConfig} from "@angular/material";
 import {CreateUserDialogComponent} from "./create-user-dialog/create-user-dialog.component";
 import {UserService} from "../core/_services/user.service";
+import {AuthService} from "./services/auth.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -31,26 +32,30 @@ export class AuthComponent implements OnInit {
   public email: string;
   public password: string;
 
-  constructor(private dialog: MatDialog, private userService: UserService) { }
+  constructor(private dialog: MatDialog, private userService: UserService, private authService: AuthService) { }
 
   ngOnInit() {}
 
-  login(){
+  login() {
     this.emailFormControl.markAsTouched();
     this.passwordFormControl.markAsTouched();
 
-    this.userService.getAll().then( res => {
-      console.log(res)
-    });
-
-    if(this.emailFormControl.hasError('email') || this.emailFormControl.hasError('required')){
+    if (this.emailFormControl.hasError('email') || this.emailFormControl.hasError('required')) {
       return;
     }
-    if(this.passwordFormControl.hasError('required')){
+    if (this.passwordFormControl.hasError('required')) {
       return;
     }
 
-    // TODO ADD WEB SERVICE
+    this.authService.login(this.email, this.password)
+      .then(
+        data => {
+          console.log(data);
+        },
+        err => {
+          console.log(err);
+        }
+      );
   }
 
   openCreationUserDialog(){

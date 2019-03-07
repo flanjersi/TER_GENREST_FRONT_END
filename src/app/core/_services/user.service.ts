@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {User} from "../_models/User";
-import {HttpClient} from "@angular/common/http";
+import {User} from '../_models/User';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class UserService {
@@ -20,7 +20,7 @@ export class UserService {
           msg => {
             reject(msg);
           }
-        )
+        );
     });
   }
 

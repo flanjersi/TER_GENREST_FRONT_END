@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ErrorStateMatcher, MatDialogRef} from "@angular/material";
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from "@angular/forms";
 import {UserService} from "../../core/_services/user.service";
+import {User} from "../../core/_models/User";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -41,7 +42,7 @@ export class CreateUserDialogComponent implements OnInit {
         Validators.required,
         Validators.email,
       ],
-      this.confirmEmailNotAlreadyUse.bind(this)
+      //this.confirmEmailNotAlreadyUse.bind(this)
     );
 
   public passwordFormControl = new FormControl('', [
@@ -88,7 +89,25 @@ export class CreateUserDialogComponent implements OnInit {
       return;
     }
 
-    this.dialogRef.close("close");
+    let user = new User();
+
+    user.firstName = this.firstNameFormControl.value;
+    user.lastName  = this.lastNameFormControl.value;
+    user.email     = this.emailFormControl.value;
+    user.password  = this.passwordFormControl.value;
+
+    console.log(user);
+
+    this.userService.create(user)
+      .then(
+        resp => {
+          console.log(resp);
+        this.dialogRef.close('close');
+        },
+        err => {
+          console.log(err);
+        }
+      );
   }
 
   close() {
