@@ -5,6 +5,7 @@ import {CreateUserDialogComponent} from "./create-user-dialog/create-user-dialog
 import {UserService} from "../core/_services/user.service";
 import {AuthService} from "./services/auth.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
+import {Router} from "@angular/router";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -36,7 +37,8 @@ export class AuthComponent implements OnInit {
   constructor(private dialog: MatDialog,
               private userService: UserService,
               private authService: AuthService,
-              private spinnerService: Ng4LoadingSpinnerService) { }
+              private spinnerService: Ng4LoadingSpinnerService,
+              private router: Router) { }
 
   ngOnInit() {}
 
@@ -58,6 +60,7 @@ export class AuthComponent implements OnInit {
         data => {
           this.spinnerService.hide();
           localStorage.setItem('currentUser', this.email);
+          this.router.navigateByUrl("/profil");
         },
         err => {
           this.emailFormControl.setErrors({'notGood' : true});

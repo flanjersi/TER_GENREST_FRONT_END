@@ -4,6 +4,7 @@ import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validat
 import {UserService} from "../../core/_services/user.service";
 import {User} from "../../core/_models/User";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
+import {Router} from "@angular/router";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -58,7 +59,8 @@ export class CreateUserDialogComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<CreateUserDialogComponent>,
               private formBuilder: FormBuilder,
               private userService: UserService,
-              private spinnerService: Ng4LoadingSpinnerService) {
+              private spinnerService: Ng4LoadingSpinnerService,
+              private router: Router) {
     this.form = this.formBuilder.group({
       firstName: this.firstNameFormControl,
       lastName: this.lastNameFormControl,
@@ -101,13 +103,12 @@ export class CreateUserDialogComponent implements OnInit {
           user.email     = this.emailFormControl.value;
           user.password  = this.passwordFormControl.value;
 
-          console.log(user);
-
           this.userService.create(user)
             .then(
               resp => {
                 this.spinnerService.hide();
                 this.dialogRef.close('close');
+                this.router.navigateByUrl("/profil");
               },
               err => {
                 this.spinnerService.hide();

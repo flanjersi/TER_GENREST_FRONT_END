@@ -13,7 +13,7 @@ export class MenuComponent implements OnInit {
   }
 
   isLogged(){
-    return localStorage.getItem('user') != null;
+    return localStorage.getItem('currentUser') != null;
   }
 
 }

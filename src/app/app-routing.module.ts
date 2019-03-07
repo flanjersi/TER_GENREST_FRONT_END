@@ -13,6 +13,10 @@ const routes: Routes = [
   {
     path: 'project',
     loadChildren: './project-page/project-page.module#ProjectPageModule'
+  },
+  {
+    path: 'profil',
+    loadChildren: './user-profil/user-profil.module#UserProfilModule'
   }
 ];
 @NgModule({
