@@ -108,7 +108,7 @@ export class CreateUserDialogComponent implements OnInit {
               resp => {
                 this.spinnerService.hide();
                 this.dialogRef.close('close');
-                this.router.navigateByUrl("/profil");
+                this.router.navigateByUrl('/profil');
               },
               err => {
                 this.spinnerService.hide();
