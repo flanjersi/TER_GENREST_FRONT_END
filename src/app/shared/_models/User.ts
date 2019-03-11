@@ -1,6 +1,8 @@
 /**
  * Model of an user
  */
+import {Project} from "./Project";
+
 export class User {
   public id: number;
 
@@ -8,6 +10,8 @@ export class User {
   public lastName: string;
   public email: string;
   public password: string;
+
+  public projects: Project[];
 
   constructor(data?: any){
     if(data){
@@ -17,6 +21,13 @@ export class User {
       this.email = data.email;
       this.password = data.password;
 
+      this.projects = [];
+
+      if(data.projects){
+        data.projects.forEach(project => {
+          this.projects.push(new Project(project));
+        });
+      }
     }
   }
 }
