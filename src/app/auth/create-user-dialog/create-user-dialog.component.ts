@@ -5,6 +5,7 @@ import {UserService} from "../../shared/_services/user.service";
 import {User} from "../../shared/_models/User";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Router} from "@angular/router";
+import {CookieService} from "ngx-cookie-service";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -59,6 +60,7 @@ export class CreateUserDialogComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<CreateUserDialogComponent>,
               private formBuilder: FormBuilder,
               private userService: UserService,
+              private cookieService: CookieService,
               private spinnerService: Ng4LoadingSpinnerService,
               private router: Router) {
     this.form = this.formBuilder.group({
@@ -108,6 +110,7 @@ export class CreateUserDialogComponent implements OnInit {
               resp => {
                 this.spinnerService.hide();
                 this.dialogRef.close('close');
+                this.cookieService.set('user', resp['id']);
                 this.router.navigateByUrl("/profil");
               },
               err => {
