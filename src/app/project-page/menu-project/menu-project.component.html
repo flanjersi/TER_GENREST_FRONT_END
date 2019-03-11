@@ -1,0 +1,25 @@
+<!--Navbar-->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark indigo">
+  <!-- Navbar brand -->
+  <mdb-navbar-brand>
+    <a class="navbar-brand" href="#">GenRest</a>
+  </mdb-navbar-brand>
+
+  <!-- Collapsible content -->
+  <links>
+    <div *ngIf="!isLogged()" class="ml-auto">
+      <a class="nav-link d-inline" style="color: white" href="/auth">SignIn</a>
+    </div>
+    <div *ngIf="isLogged()" class="ml-auto">
+
+      <a class="nav-link d-inline" href="" style="color: white">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-link d-inline" href="/profil" style="color: white">Profil</a>
+      <button type="button" class="btn btn-default btn-sm">
+        <span class="glyphicon glyphicon-log-out"></span> Log out
+      </button>
+    </div>
+  </links>
+  <!-- Collapsible content -->
+
+</mdb-navbar>
+<!--/.Navbar-->
