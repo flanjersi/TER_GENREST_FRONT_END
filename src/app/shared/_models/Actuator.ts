@@ -8,6 +8,7 @@ export  class  Actuator {
   public  longitude: number;
   public  model: string;
   public  brand: string;
+  public  reference: string;
   public  state: string;
 
   constructor(data?: any){
@@ -18,6 +19,7 @@ export  class  Actuator {
       this.longitude = data.longitude;
       this.model = data.model;
       this.brand = data.brand;
+      this.reference = data.reference;
       this.state = data.state;
     }
   }
