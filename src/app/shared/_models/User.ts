@@ -1,8 +1,8 @@
+
+import {Project} from "./Project";
 /**
  * Model of an user
  */
-import {Project} from "./Project";
-
 export class User {
   public id: number;
 

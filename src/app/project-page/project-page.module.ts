@@ -9,13 +9,14 @@ import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import { GraphSpecComponent } from './graph-spec/graph-spec.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ProjectSpecificationComponent } from './project-specification/project-specification.component';
 
 
 const routes: Routes = [
   { path: '', component: ProjectPageComponent},
 ];
 @NgModule({
-  declarations: [ProjectPageComponent, TabSpecComponent, MenuProjectComponent, GraphSpecComponent],
+  declarations: [ProjectPageComponent, TabSpecComponent, MenuProjectComponent, GraphSpecComponent, ProjectSpecificationComponent],
   imports: [
     MaterialModule,
     CommonModule,
