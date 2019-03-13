@@ -108,14 +108,14 @@ export class CreateUserDialogComponent implements OnInit {
           this.userService.create(user)
             .then(
               resp => {
+                console.log(resp);
                 this.spinnerService.hide();
                 this.dialogRef.close('close');
-                this.cookieService.set('user', resp['id']);
+                this.cookieService.set('user', resp + '');
                 this.router.navigateByUrl("/profil");
               },
-              err => {
+              err2 => {
                 this.spinnerService.hide();
-                console.log(err);
               }
             );
         },
