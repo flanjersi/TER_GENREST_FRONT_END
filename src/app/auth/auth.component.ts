@@ -60,28 +60,17 @@ export class AuthComponent implements OnInit {
 
     this.authService.login(this.email, this.password)
       .then(
-        data => {
-          this.userService.getByEmail(this.email)
-            .subscribe(
               data => {
                 this.cookieService.set('user', data['id'] + '');
+                this.spinnerService.hide();
+                this.router.navigateByUrl("/profil");
               },
               err => {
-                this.spinnerService.hide();
-                console.log(err);
-              },
-              () => {
-              this.spinnerService.hide();
-              this.router.navigateByUrl("/profil");
-              }
-            );
-        },
-        err => {
-          this.emailFormControl.setErrors({'notGood' : true});
-          this.passwordFormControl.setErrors({'notGood' : true});
+                this.emailFormControl.setErrors({'notGood' : true});
+                this.passwordFormControl.setErrors({'notGood' : true});
 
-          this.spinnerService.hide();
-        }
+                this.spinnerService.hide();
+              }
       );
   }
 
