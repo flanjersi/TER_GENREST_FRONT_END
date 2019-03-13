@@ -6,6 +6,7 @@ import {MDBBootstrapModule} from "angular-bootstrap-md";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
+import {CookieService} from "ngx-cookie-service";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import {CommonModule} from "@angular/common";
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [UserService],
+  providers: [UserService, CookieService],
   exports: [
     MenuComponent
   ]

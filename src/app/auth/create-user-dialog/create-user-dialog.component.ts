@@ -93,11 +93,11 @@ export class CreateUserDialogComponent implements OnInit {
     this.spinnerService.show();
 
     this.userService.getByEmail(this.emailFormControl.value)
-      .then( user => {
+      .subscribe( (user) => {
           this.emailFormControl.setErrors({'alreadyUse': true});
           this.spinnerService.hide();
         },
-        err => {
+        (err) => {
           let user = new User();
 
           user.firstName = this.firstNameFormControl.value;
@@ -118,7 +118,8 @@ export class CreateUserDialogComponent implements OnInit {
                 console.log(err);
               }
             );
-        }
+        },
+       () => {}
       )
   }
 
