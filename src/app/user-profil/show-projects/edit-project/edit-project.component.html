@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Update project</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <table cellspacing="20px">
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput [value]="projectName"
+                 [errorStateMatcher]="matcher" formControlName="projectName" name="projectName" required>
+          <mat-error *ngIf="form.get('projectName').hasError('required')">
+            Project name is <strong>required</strong>.
+          </mat-error>
+          <mat-error *ngIf="form.get('projectName').hasError('alreadyUsed')">
+            Project name is <strong>already</strong> used.
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button mat-primary" (click)="updateProject()">Update project</button>
+  <button class="mat-raised-button" (click)="cancel()">Cancel</button>
+</mat-dialog-actions>
