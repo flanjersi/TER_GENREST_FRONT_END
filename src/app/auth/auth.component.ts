@@ -61,7 +61,7 @@ export class AuthComponent implements OnInit {
     this.authService.login(this.email, this.password)
       .then(
               data => {
-                this.cookieService.set('user', data['id'] + '');
+                this.cookieService.set('user', data.id + '');
                 this.spinnerService.hide();
                 this.router.navigateByUrl("/profil");
               },

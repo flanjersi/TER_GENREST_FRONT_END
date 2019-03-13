@@ -45,8 +45,8 @@ export class UserService {
     });
   }
 
-  create(user: User) {
-    return new Promise((resolve, reject) => {
+  create(user: User): Promise<number> {
+    return new Promise<number>((resolve, reject) => {
       this.http.put<any>('api/users/', JSON.stringify(user), {headers: {"Content-Type": "application/json"}})
         .toPromise()
         .then(
