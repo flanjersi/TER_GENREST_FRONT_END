@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Building} from "../_models/Building";
+import {HttpClient} from '@angular/common/http';
+import {Building} from '../_models/Building';
+import {Observable} from 'rxjs';
+import {Project} from '../_models/Project';
 
 
 @Injectable()
@@ -8,76 +10,53 @@ export class BuildingService {
 
   constructor(private http: HttpClient) {}
 
-
-  getAll(){
-    return new Promise((resolve, reject) => {
-      this.http.get<Building[]>('api/buildings')
-        .toPromise()
-        .then(
-          res => {
-            let buildings = [];
-            res.map(building => buildings.push(new Building(building)));
-            resolve(buildings);
-          },
-          msg => {
-            reject(msg);
-          }
+  getById(id: number): Observable<Building> {
+    return new Observable<Building>((observer) => {
+      this.http.get<any>('api/buildings/' + id)
+        .subscribe(
+          (building) => observer.next(new Building(building)),
+          (error) => observer.error(error),
+          () => observer.complete()
         );
     });
   }
 
-  getById(id: number) : Promise<Building>{
-    return new Promise<Building>((resolve, reject) => {
-      this.http.get('api/Buildings/' + id)
+  createBuilding(id: number, building: Building) {
+    return new Promise((resolve, reject) => {
+      this.http.put('api/projects/' + id + '/buildings', JSON.stringify(building), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
-        .then(res => {
-            resolve(new Building(res));
+        .then(data => {
+            resolve(new Project(data));
           },
           msg => {
             reject(msg);
-          })
+          });
     });
   }
 
-  create(building: Building) {
+  updateBuilding(idProject: number, building: Building) {
     return new Promise((resolve, reject) => {
-      this.http.put<any>('api/buildings/', JSON.stringify(building), {headers: {"Content-Type": "application/json"}})
-        .toPromise()
-        .then(
-          data => {
-            resolve(data.id);
-          },
-          msg => {
-            reject(msg);
-          }
-        );
-    });
-  }
-
-  update(building: Building) {
-    return new Promise((resolve, reject) => {
-      this.http.post('api/buildings/' + building.id, JSON.stringify(building), {headers: {"Content-Type": "application/json"}})
+      this.http.post('api/projects/' + idProject + '/buildings/' + building.id, JSON.stringify(building), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Building(data));
           },
           msg => {
             reject(msg);
-          })
+          });
     });
   }
 
-  delete(id: number) {
+  deleteBuilding(id: number, idBuilding: number) {
     return new Promise((resolve, reject) => {
-      this.http.delete('api/buildings/' + id)
+      this.http.delete('api/projects/' + id + '/buildings/' + idBuilding)
         .toPromise()
         .then(data => {
             resolve(data);
           },
           msg => {
             reject(msg);
-          })
+          });
     });
   }
-
 }
