@@ -9,6 +9,8 @@ import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import { GraphSpecComponent } from './graph-spec/graph-spec.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import {SharedModule} from "../shared/shared.module";
+import {HttpClientModule} from "@angular/common/http";
 
 
 
@@ -18,12 +20,14 @@ const routes: Routes = [
 @NgModule({
   declarations: [ProjectPageComponent, TabSpecComponent, MenuProjectComponent, GraphSpecComponent],
   imports: [
+    SharedModule.forRoot(),
     MaterialModule,
     CommonModule,
     NgxGraphModule,
     NgxChartsModule,
     MDBBootstrapModule.forRoot(),
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    HttpClientModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

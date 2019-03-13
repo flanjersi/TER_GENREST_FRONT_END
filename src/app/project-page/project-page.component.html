@@ -1,23 +1,24 @@
 <header>
  <app-menu-project></app-menu-project>
 </header>
-<br/>
-<div class="col-xl-2 col-lg-2 col-md-1 col-1" ></div>
+<div *ngIf="isLoaded">
+  <br/>
+  <div class="col-xl-2 col-lg-2 col-md-1 col-1" ></div>
 
-<div class="container-fluid">
+  <div class="container-fluid">
 
-  <div class="row">
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-auto" style="height: 400px">
-      <!-- mdb-card for Treeview-->
-      <mdb-card>
-        <mdb-card-body>
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-auto" style="height: 400px">
+        <!-- mdb-card for Treeview-->
+        <mdb-card>
+          <mdb-card-body>
 
-          <mdb-card-title>
-            <h4>Building topology</h4>
-          </mdb-card-title>
+            <mdb-card-title>
+              <h4>Building topology</h4>
+            </mdb-card-title>
 
-          <mdb-card-text>
-            <!-- TREEVIEW -->
+            <mdb-card-text>
+              <!-- TREEVIEW -->
               TODO
 
             </mdb-card-text>
@@ -27,7 +28,7 @@
         </mdb-card>
       </div>
 
-    <br/>
+      <br/>
       <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col-12 my-auto" style="height: 400px">
         <app-tab-spec></app-tab-spec>
 
@@ -35,6 +36,9 @@
     </div>
 
   </div>
-  <footer class="container-fluid my-auto text-center align-middle white-text" style="height: 50px; background-color: #00227a">
-    AMU 2018-2019
-  </footer>
+
+</div>
+
+<footer class="container-fluid my-auto text-center align-middle white-text" style="height: 50px; background-color: #00227a">
+  AMU 2018-2019
+</footer>
