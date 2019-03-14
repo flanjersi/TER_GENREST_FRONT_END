@@ -11,7 +11,28 @@ div.card {
   height: 100% !important;
 }
 
+#graph-project ngx-charts-chart div {
+  width: 100% !important;
+  height: 100% !important;
+}
 
+
+#graph-project ngx-charts-chart div svg{
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.mat-tab-body-wrapper{
+  flex-grow: 1;
+}
+
+#tab-group-project {
+  height: 100% !important;
+}
+
+#tab-group-project mat-tab-body{
+  flex-grow: 1;
+}
 
 
 
