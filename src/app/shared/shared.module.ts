@@ -1,5 +1,8 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {UserService} from "./_services/user.service";
+import {CookieService} from "ngx-cookie-service";
+import {ProjectService} from "./_services/project.service";
+import { BuildingService } from './_services/building.service';
 
 @NgModule({
   declarations: [],
@@ -9,7 +12,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [ UserService ]
+      providers: [ UserService, CookieService, ProjectService, BuildingService ]
     };
   }
 }

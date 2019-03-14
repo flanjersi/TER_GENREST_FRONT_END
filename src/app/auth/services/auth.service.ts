@@ -9,8 +9,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  login(email: string, password: string) {
-    return new Promise((resolve, reject) => {
+  login(email: string, password: string): Promise<User> {
+    return new Promise<User>((resolve, reject) => {
       this.http.get<any>('api/users/authentification?email=' + email + '&password=' + password)
         .toPromise()
         .then(data => {

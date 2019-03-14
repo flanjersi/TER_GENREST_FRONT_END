@@ -1,0 +1,29 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-4 my-auto">
+      <form>
+        <mat-form-field class="input">
+          <input matInput placeholder="Search project" [(ngModel)]="searchProject" (input)="filterProject()" name="projectName">
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="col-4 my-auto">
+      <button mat-raised-button (click)="openCreationProjectDialog()" color="primary">Add project</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <mat-list>
+        <h3 mat-subheader>Projects</h3>
+        <app-show-project *ngFor="let project of projectsFiltered; let last = last" [project]="project" [isLast]="last" (updatedProject)="refreshProjects($event)" (deletedProject)="refreshProjects($event)">
+        </app-show-project>
+
+      </mat-list>
+    </div>
+  </div>
+</div>
+
+
+

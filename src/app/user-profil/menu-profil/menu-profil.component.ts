@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {CookieService} from "ngx-cookie-service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-menu-profil',
@@ -7,8 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuProfilComponent implements OnInit {
 
-  constructor() { }
+  constructor(private cookieService: CookieService,
+              private router: Router) { }
 
   ngOnInit() {}
+
+
+  logout(){
+    this.cookieService.delete('user');
+    this.router.navigateByUrl('/');
+  }
 
 }

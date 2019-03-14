@@ -6,6 +6,8 @@ import {UserService} from "../shared/_services/user.service";
 import {AuthService} from "./services/auth.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Router} from "@angular/router";
+import {CookieService} from "ngx-cookie-service";
+import {Observable} from "rxjs";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -38,6 +40,7 @@ export class AuthComponent implements OnInit {
               private userService: UserService,
               private authService: AuthService,
               private spinnerService: Ng4LoadingSpinnerService,
+              private cookieService: CookieService,
               private router: Router) { }
 
   ngOnInit() {}
@@ -57,17 +60,17 @@ export class AuthComponent implements OnInit {
 
     this.authService.login(this.email, this.password)
       .then(
-        data => {
-          this.spinnerService.hide();
-          localStorage.setItem('currentUser', this.email);
-          this.router.navigateByUrl("/profil");
-        },
-        err => {
-          this.emailFormControl.setErrors({'notGood' : true});
-          this.passwordFormControl.setErrors({'notGood' : true});
+              data => {
+                this.cookieService.set('user', data.id + '');
+                this.spinnerService.hide();
+                this.router.navigateByUrl("/profil");
+              },
+              err => {
+                this.emailFormControl.setErrors({'notGood' : true});
+                this.passwordFormControl.setErrors({'notGood' : true});
 
-          this.spinnerService.hide();
-        }
+                this.spinnerService.hide();
+              }
       );
   }
 

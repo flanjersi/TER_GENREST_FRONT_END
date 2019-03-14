@@ -5,6 +5,7 @@ import {UserService} from "../../shared/_services/user.service";
 import {User} from "../../shared/_models/User";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Router} from "@angular/router";
+import {CookieService} from "ngx-cookie-service";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -59,6 +60,7 @@ export class CreateUserDialogComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<CreateUserDialogComponent>,
               private formBuilder: FormBuilder,
               private userService: UserService,
+              private cookieService: CookieService,
               private spinnerService: Ng4LoadingSpinnerService,
               private router: Router) {
     this.form = this.formBuilder.group({
@@ -91,11 +93,11 @@ export class CreateUserDialogComponent implements OnInit {
     this.spinnerService.show();
 
     this.userService.getByEmail(this.emailFormControl.value)
-      .then( user => {
+      .subscribe( (user) => {
           this.emailFormControl.setErrors({'alreadyUse': true});
           this.spinnerService.hide();
         },
-        err => {
+        (err) => {
           let user = new User();
 
           user.firstName = this.firstNameFormControl.value;
@@ -106,16 +108,18 @@ export class CreateUserDialogComponent implements OnInit {
           this.userService.create(user)
             .then(
               resp => {
+                console.log(resp);
                 this.spinnerService.hide();
                 this.dialogRef.close('close');
-                this.router.navigateByUrl('/profil');
+                this.cookieService.set('user', resp + '');
+                this.router.navigateByUrl("/profil");
               },
-              err => {
+              err2 => {
                 this.spinnerService.hide();
-                console.log(err);
               }
             );
-        }
+        },
+       () => {}
       )
   }
 
