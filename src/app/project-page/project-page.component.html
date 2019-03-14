@@ -1,39 +1,38 @@
-<header>
- <app-menu-project></app-menu-project>
- 
+<header style="height: 10%;">
+  <app-menu-project></app-menu-project>
 </header>
 
-
-<div *ngIf="isLoaded">
-  <br/>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-xl-7 col-lg-6 col-md-6 col-sm-12 col-12 my-auto">
-        <!-- mdb-card for Treeview-->
-        <mdb-card>
-          <mdb-card-body>
-            <mdb-card-title>
-              <h4>Building topology</h4>
-            </mdb-card-title>
-            <mdb-card-text>
-            <perfect-scrollbar style="max-height: 400px;" [config]="config">
-                <app-tree-view-specifications (addedSpecification)="refreshProject($event)" [project]="project"></app-tree-view-specifications>
+<div *ngIf="isLoaded" class="container-fluid h-100">
+  <div class="row h-100">
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 h-auto p-5">
+      <!-- mdb-card for Treeview-->
+      <mdb-card class="h-100">
+        <mdb-card-body class="h-100">
+          <mdb-card-title>
+            <h4>Building topology</h4>
+          </mdb-card-title>
+          <mdb-card-text class="h-100">
+            <perfect-scrollbar class="h-100" style="max-height: 100%;" [config]="config">
+              <app-tree-view-specifications (addedSpecification)="refreshProject($event)" [project]="project"></app-tree-view-specifications>
             </perfect-scrollbar>
-            </mdb-card-text>
+          </mdb-card-text>
+        </mdb-card-body>
+        <a href="#" mdbBtn color="primary" mdbWavesEffect>Deploy</a>
+      </mdb-card>
+    </div>
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 h-100 p-5">
+      <mdb-card class="h-100" >
+        <mdb-card-body class="h-100">
+          <mdb-card-text class="h-100">
+            <app-tab-spec [project]="project"></app-tab-spec>
+          </mdb-card-text>
+        </mdb-card-body>
+      </mdb-card>
 
-          </mdb-card-body>
-          <a href="#" mdbBtn color="primary" mdbWavesEffect>Deploy</a>
-        </mdb-card>
-      </div>
-
-      <br/>
-      <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col-12 my-auto" style="height: 400px">
-        <app-tab-spec [project]="project"></app-tab-spec>
-      </div>
     </div>
   </div>
-
 </div>
-<footer class="row container-fluid my-auto text-center align-middle white-text" style="height: 50px; background-color: #00227a">
+
+<footer class="my-auto text-center align-middle white-text" style="height: 5%; background-color: #00227a">
   AMU 2018-2019
 </footer>
