@@ -1,4 +1,9 @@
-import {HttpClient} from "@angular/common/http";
+import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import {Project} from '../_models/Project';
+import {id} from "@swimlane/ngx-graph/release/utils";
+import {Observable} from 'rxjs';
+import {User} from "../_models/User";
 
 @Injectable()
 export class ProjectService {
@@ -10,7 +15,7 @@ export class ProjectService {
       this.http.get<any>('api/projects/' + id)
         .subscribe(
           (project) => observer.next(new Project(project)),
-          (error)=> observer.error(error),
+          (error) => observer.error(error),
           () => observer.complete()
         );
     });
@@ -18,7 +23,7 @@ export class ProjectService {
 
   createProject(id: number, project: Project) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/users/' + id + "/projects", JSON.stringify(project), {headers: {"Content-Type": "application/json"}})
+      this.http.put('api/users/' + id + '/projects', JSON.stringify(project), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Project(data));
@@ -31,7 +36,7 @@ export class ProjectService {
 
   updateProject(idUser: number, project: Project) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/users/' + idUser + '/projects/' + project.id, JSON.stringify(project), {headers: {"Content-Type": "application/json"}})
+      this.http.post('api/users/' + idUser + '/projects/' + project.id, JSON.stringify(project), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Project(data));
@@ -76,8 +81,4 @@ export class ProjectService {
   }
 }
 
-import { Injectable } from '@angular/core';
-import {Project} from "../_models/Project";
-import {id} from "@swimlane/ngx-graph/release/utils";
-import {Observable} from "rxjs";
-import {User} from "../_models/User";
+

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {User} from '../_models/User';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -28,7 +28,7 @@ export class UserService {
       this.http.get<any>('api/users/' + id)
         .subscribe(
           (user) => observer.next(new User(user)),
-          (error)=> observer.error(error),
+          (error) => observer.error(error),
           () => observer.complete()
         );
     });
@@ -39,7 +39,7 @@ export class UserService {
       this.http.get<any>('api/users/query?email=' + email)
         .subscribe(
           (user) => observer.next(new User(user)),
-          (error)=> observer.error(error),
+          (error) => observer.error(error),
           () => observer.complete()
         );
     });
