@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Project} from '../../shared/_models/Project';
 
 @Component({
   selector: 'app-tab-spec',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tab-spec.component.scss']
 })
 export class TabSpecComponent implements OnInit {
+
+  @Input()
+  private project: Project;
 
   constructor() { }
 

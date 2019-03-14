@@ -11,6 +11,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {MaterialModule} from "../features/material.module";
 import {Ng4LoadingSpinnerModule} from "ng4-loading-spinner";
 
+
 const routes: Routes = [
   { path: '', component: AuthComponent },
 ];
@@ -31,7 +32,7 @@ const routes: Routes = [
 
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule,
+    FormsModule
   ],
   providers: [AuthService],
   entryComponents : [CreateUserDialogComponent]

@@ -1,11 +1,13 @@
-<div>
+<div class="container" style="width: 100vw; height:100vh;">
   <ngx-graph
     class="chart-container"
     [links]="hierarchialGraph.links"
     [nodes]="hierarchialGraph.nodes"
-    [legend]="true"
+    [legend]="false"
     [curve]="curve"
     [draggingEnabled]="false"
+    [autoZoom]="true"
+    [autoCenter]="false"
   >
 
     <ng-template #defsTemplate>

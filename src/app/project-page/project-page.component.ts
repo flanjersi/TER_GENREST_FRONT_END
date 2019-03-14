@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {ProjectService} from "../shared/_services/project.service";
-import {Project} from "../shared/_models/Project";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ProjectService} from '../shared/_services/project.service';
+import {Project} from '../shared/_models/Project';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-project-page',
@@ -16,8 +17,12 @@ export class ProjectPageComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private projectService: ProjectService) {
+              private projectService: ProjectService,
+              private cookieService: CookieService) {
     this.isLoaded = false;
+
+    if(!cookieService.get('user'))
+      this.router.navigateByUrl('/auth');
 
     this.route.queryParams.subscribe(params => {
         console.log(params);
@@ -36,10 +41,9 @@ export class ProjectPageComponent implements OnInit {
           () => {
               this.isLoaded = true;
           });
-      })
-  }
+      });
 
+  }
   ngOnInit() {
   }
-
 }
