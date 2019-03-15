@@ -44,7 +44,7 @@ export class ProjectPageComponent implements OnInit {
           .subscribe(
             data => {
               this.project = data;
-              this.simulateProject();
+             // this.simulateProject();
             },
             err => {},
           () => {

@@ -14,7 +14,7 @@ import { Sensor } from 'src/app/shared/_models/Sensor';
 import { Actuator } from 'src/app/shared/_models/Actuator';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { CreateBuildingEntityDialogComponent } from './create-building-entity-dialog/create-building-entity-dialog.component';
-
+import { CreateFloorEntityDialogComponent } from './create-floor-entity-dialog/create-floor-entity-dialog.component'
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -109,9 +109,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface',
       children: buildings
     };
-
     data.push(root);
-
     return data;
   }
 
@@ -130,16 +128,13 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         floors.push(floor);
       }
     }
-
     const floorInterfaceData = [{
       id: building.id,
       name: 'Floors',
       type: 'interface',
       children: floors
     }];
-
     buildingData['children'] = floorInterfaceData;
-
     return buildingData;
   }
 
@@ -347,7 +342,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Floors': {
-        console.log('fff');
+        this.openCreationFloorDialog(node1);
         break;
       }
       case 'Corridors': {
@@ -466,7 +461,27 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       id: node.id,
     };
 
-    const dialogRef = this.dialog.open(CreateBuildingEntityDialogComponent, dialogConfig);
+  const dialogRef = this.dialog.open(CreateBuildingEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if(data === 'added'){
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+  openCreationFloorDialog(node: FileNode){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+    };
+    
+  const dialogRef = this.dialog.open(CreateFloorEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
