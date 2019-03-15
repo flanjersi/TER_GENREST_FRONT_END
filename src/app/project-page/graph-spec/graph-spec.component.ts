@@ -51,7 +51,7 @@ export class GraphSpecComponent implements OnInit {
       nodes = nodes.concat(tuple[0]);
       links = links.concat(tuple[1]);
     }
-    
+
     return [nodes, links];
   }
 
