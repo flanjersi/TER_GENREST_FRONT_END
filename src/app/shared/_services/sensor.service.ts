@@ -21,4 +21,72 @@ export class SensorService {
           });
     });
   }
+
+
+  updateSensor(idCorridor: number, sensor: Sensor) {
+    return new Promise((resolve, reject) => {
+      this.http.post('api/sensors/' + sensor.id, JSON.stringify(sensor), {headers: {'Content-Type': 'application/json'}})
+        .toPromise()
+        .then(data => {
+            resolve(new Sensor(data));
+          },
+          msg => {
+            reject(msg);
+          });
+    });
+  }
+
+  createSensorInCorridor(idCorridor: number, sensor: Sensor) {
+    return new Promise((resolve, reject) => {
+      this.http.put('api/corridors/' + idCorridor + '/sensors', JSON.stringify(sensor), {headers: {'Content-Type': 'application/json'}})
+        .toPromise()
+        .then(data => {
+            resolve(new Sensor(data));
+          },
+          msg => {
+            reject(msg);
+          });
+    });
+  }
+
+
+  deleteSensorInCorridor(idCorridors: number, idSensor: number) {
+    return new Promise((resolve, reject) => {
+      this.http.delete('api/corridors/' + idCorridors + '/sensors/' + idSensor)
+        .toPromise()
+        .then(data => {
+            resolve(data);
+          },
+          msg => {
+            reject(msg);
+          });
+    });
+  }
+
+  createSensorInRoom(idRoom: number, sensor: Sensor) {
+    return new Promise((resolve, reject) => {
+      this.http.put('api/rooms/' + idRoom + '/sensors', JSON.stringify(sensor), {headers: {'Content-Type': 'application/json'}})
+        .toPromise()
+        .then(data => {
+            resolve(new Sensor(data));
+          },
+          msg => {
+            reject(msg);
+          });
+    });
+  }
+
+
+  deleteSensorInRoom(idRoom: number, idSensor: number) {
+    return new Promise((resolve, reject) => {
+      this.http.delete('api/rooms/' + idRoom + '/sensors/' + idSensor)
+        .toPromise()
+        .then(data => {
+            resolve(data);
+          },
+          msg => {
+            reject(msg);
+          });
+    });
+  }
 }
