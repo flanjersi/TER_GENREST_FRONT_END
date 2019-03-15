@@ -23,8 +23,9 @@ export class FloorService {
   }
 
   createFloor(idBuilding: number, floor: Floor) {
+    console.log(JSON.stringify(floor.toJson()));
     return new Promise((resolve, reject) => {
-      this.http.put('api/buildings/' + idBuilding + '/floors', JSON.stringify(floor), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/buildings/' + idBuilding + '/floors', JSON.stringify(floor.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Floor(data));
