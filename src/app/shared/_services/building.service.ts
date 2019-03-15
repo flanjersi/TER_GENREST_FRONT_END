@@ -26,7 +26,7 @@ export class BuildingService {
       this.http.put('api/projects/' + id + '/buildings', JSON.stringify(building), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
-            resolve(new Project(data));
+            resolve(data['id']);
           },
           msg => {
             reject(msg);

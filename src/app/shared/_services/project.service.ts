@@ -14,7 +14,10 @@ export class ProjectService {
     return new Observable<Project>((observer) => {
       this.http.get<any>('api/projects/' + id)
         .subscribe(
-          (project) => observer.next(new Project(project)),
+          (project) => {
+            console.log(project);
+            observer.next(new Project(project));
+          },
           (error) => observer.error(error),
           () => observer.complete()
         );

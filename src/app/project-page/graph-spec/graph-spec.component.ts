@@ -1,6 +1,14 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import * as shape from 'd3-shape';
-import { NgxGraphModule } from '@swimlane/ngx-graph';
+import {Project} from '../../shared/_models/Project';
+import {Building} from '../../shared/_models/Building';
+import {Floor} from '../../shared/_models/Floor';
+import {Corridor} from '../../shared/_models/Corridor';
+import {MotherRoom} from '../../shared/_models/MotherRoom';
+import {Sensor} from '../../shared/_models/Sensor';
+import {Actuator} from '../../shared/_models/Actuator';
+import {Room} from '../../shared/_models/Room';
+import {ColorHelper} from "@swimlane/ngx-charts";
 
 @Component({
   selector: 'app-graph-spec',
@@ -8,67 +16,238 @@ import { NgxGraphModule } from '@swimlane/ngx-graph';
   styleUrls: ['./graph-spec.component.scss']
 })
 export class GraphSpecComponent implements OnInit {
-  name = 'Graph project specification for GenREST';
-  hierarchialGraph = {nodes: [], links: []}
-  curve = shape.curveBundle.beta(1);
-  // curve = shape.curveLinear;
+  @Input()
+  private project: Project;
 
-  public ngOnInit():void {
-    this.showGraph();
+  public chartNames: string[];
+  public colors: ColorHelper;
+  public colorScheme = { domain: ['#4C516D', '#000080', '#1034A6', '#0F52BA', '#0080FF', '#0E4D92', '#008ECC', '#6593F5'] }; // Custom color scheme in hex
+
+
+  hierarchialGraph = {nodes: [], links: []};
+  curve = shape.curveBundle.beta(1);
+
+  public ngOnInit(): void {
+    this.chartNames = [];
+    this.chartNames.push("Project", "Building", "Floor", "Space", "Corridor", "Room", "Actuator", "Sensor");
+
+    this.colors = new ColorHelper(this.colorScheme, 'ordinal', this.chartNames, this.colorScheme);
+    console.log(this.colors);
+    const tuple = this.generateGraph(this.project);
+
+    this.hierarchialGraph.nodes = tuple[0];
+    this.hierarchialGraph.links = tuple[1];
   }
 
-  showGraph() {
-    this.hierarchialGraph.nodes = [
-      {
-        id: 'start',
-        label: 'ProjectX'
-      }, {
-        id: '1',
-        label: 'Building1'
-      }, {
-        id: '2',
-        label: 'Building2'
-      }, {
-        id: '3',
-        label: 'Floor1'
-      }, {
-        id: '4',
-        label: 'Floor1'
-      }, {
-        id: '5',
-        label: 'Room1'
-      }, {
-        id: '6',
-        label: 'Floor2'
-      }
-    ];
+  generateGraph(project: Project) : [any, any]{
 
-    this.hierarchialGraph.links = [
-      {
-        source: 'start',
-        target: '1',
-        label: ''
-      }, {
-        source: 'start',
-        target: '2',
-        label: ''
-      }, {
-        source: '1',
-        target: '3',
-        label: ''
-      }, {
-        source: '2',
-        target: '4',
-        label: ''
-      }, {
-        source: '2',
-        target: '6',
-        label: ''
-      }, {
-        source: '3',
-        target: '5'
-      }
-    ];
+    let nodes = [];
+    let links = [];
 
+    const root = {};
+    root['id'] = 'start';
+    root['label'] = project.projectName;
+    root['color'] = "#4C516D";
+
+    nodes.push(root);
+
+    if(!project.buildings) return [nodes, links];
+
+    for(const index in project.buildings) {
+      const building = project.buildings[index];
+      const tuple = this.generateBuildingNodeAndLinks(building);
+
+      nodes = nodes.concat(tuple[0]);
+      links = links.concat(tuple[1]);
+    }
+
+    console.log(nodes);
+    console.log(links);
+
+
+    return [nodes, links];
+  }
+
+  generateBuildingNodeAndLinks(building: Building): [any, any] {
+    let nodes = [];
+    let links = [];
+
+    nodes.push({id: 'Building' + building.id , label: building.type, color: '#000080'});
+    links.push({source: 'start', target: 'Building' + building.id  , label: ''});
+
+    if(!building.floors) return [nodes, links];
+
+    for(const index in building.floors) {
+      const floor = building.floors[index];
+      const tuple = this.generateFloorNodeAndLinks(floor, building.id);
+
+      nodes = nodes.concat(tuple[0]);
+      links = links.concat(tuple[1]);
+    }
+
+    return [nodes, links];
+  }
+
+  generateFloorNodeAndLinks(floor: Floor, idBuilding: number): [any, any] {
+    let nodes = [];
+    let links = [];
+
+    nodes.push({id: 'Floor' + floor.id, label: 'Floor ' + floor.floorNumber, color: '#1034A6'});
+    links.push({source: 'Building' + idBuilding, target: 'Floor' + floor.id, label: ''});
+
+    if (!floor.corridors) return [nodes, links];
+
+    for (const index in floor.corridors) {
+      const corridor = floor.corridors[index];
+      const tuple = this.generateCorridorNodeAndLinks(corridor, floor.id);
+
+      nodes = nodes.concat(tuple[0]);
+      links = links.concat(tuple[1]);
+    }
+    if (!floor.motherRooms) return [nodes, links];
+    for (const index in floor.motherRooms) {
+      const motherRoom = floor.motherRooms[index];
+      const tuple = this.generateMotherRoomNodeAndLinks(motherRoom, floor.id);
+
+      nodes = nodes.concat(tuple[0]);
+      links = links.concat(tuple[1]);
+    }
+    return [nodes, links];
+  }
+
+  generateCorridorNodeAndLinks(corridor: Corridor, idFloor: number): [any, any] {
+    let nodes = [];
+    let links = [];
+
+    nodes.push({id: 'Corridor' + corridor.id , label: 'Corridor ' + corridor.numberCorridor, color:'#0080FF'});
+    links.push({source: 'Floor' + idFloor , target: 'Corridor' + corridor.id , label: ''});
+
+    if (!corridor.sensors) return [nodes, links];
+
+    for (const index in corridor.sensors) {
+      const sensor = corridor.sensors[index];
+      const tuple = this.generateSensorNodeAndLinks(sensor, corridor.id);
+
+      nodes = nodes.concat(tuple[0]);
+      links = links.concat(tuple[1]);
+    }
+
+    if (!corridor.actuators) return [nodes, links];
+
+    for (const index in corridor.actuators) {
+      const actuator = corridor.actuators[index];
+      const tuple = this.generateActuatorNodeAndLinks(actuator, corridor.id);
+
+      nodes = nodes.concat(tuple[0]);
+      links = links.concat(tuple[1]);
+    }
+    return [nodes, links];
+  }
+
+  generateSensorNodeAndLinks(sensor: Sensor, idCorridor: number): [any, any] {
+    let nodes = [];
+    let links = [];
+
+    nodes.push({id: 'Sensor' + sensor.id , label: sensor.brand + ' ' + sensor.model, color: '#6593F5'});
+    links.push({source: 'Corridor' + idCorridor , target: 'Sensor' + sensor.id  , label: ''});
+
+    return [nodes, links];
+  }
+  generateActuatorNodeAndLinks(actuator: Actuator, idCorridor: number): [any, any] {
+    let nodes = [];
+    let links = [];
+
+    nodes.push({id: 'Actuator' + actuator.id , label:  actuator.brand + ' ' + actuator.model, color: '#008ECC'});
+    links.push({source: 'Corridor' + idCorridor , target: 'Actuator' + actuator.id  , label: ''});
+
+    return [nodes, links];
+  }
+
+  generateMotherRoomNodeAndLinks(motherRoom: MotherRoom, idFloor: number): [any, any] {
+    let nodes = [];
+    let links = [];
+
+    nodes.push({id: 'MotherRoom' + motherRoom.id , label: motherRoom.type, color: '#0F52BA'});
+    links.push({source: 'Floor' + idFloor , target: 'MotherRoom' + motherRoom.id  , label: ''});
+
+    if (!motherRoom.rooms) return [nodes, links];
+
+    for (const index in motherRoom.rooms) {
+      const room = motherRoom.rooms[index];
+      const tuple = this.generateRoomNodeAndLinks(room, motherRoom.id);
+
+      nodes = nodes.concat(tuple[0]);
+      links = links.concat(tuple[1]);
+    }
+
+    if (!motherRoom.corridors) return [nodes, links];
+
+    for (const index in motherRoom.corridors) {
+      const corridor = motherRoom.corridors[index];
+      const tuple = this.generateCorridorMotherRoomNodeAndLinks(corridor, motherRoom.id);
+
+      nodes = nodes.concat(tuple[0]);
+      links = links.concat(tuple[1]);
+    }
+    return [nodes, links];
+  }
+
+  generateCorridorMotherRoomNodeAndLinks(corridor: Corridor, idMotherRoom: number): [any, any] {
+    let nodes = [];
+    let links = [];
+
+    nodes.push({id: 'Corridor' + corridor.id , label: 'Corridor ' + corridor.numberCorridor, color:'#0080FF'});
+    links.push({source: 'MotherRoom' + idMotherRoom , target: 'Corridor' + corridor.id  , label: ''});
+
+    return [nodes, links];
+  }
+
+  generateRoomNodeAndLinks(room: Room, idMotherRoom: number): [any, any] {
+    let nodes = [];
+    let links = [];
+
+    nodes.push({id: 'Room' + room.id , label: room.type, color: '#0E4D92'});
+    links.push({source: 'MotherRoom' + idMotherRoom , target: 'Room' + room.id  , label: ''});
+
+    if (!room.actuators) return [nodes, links];
+
+    for (const index in room.actuators) {
+      const actuator = room.actuators[index];
+      const tuple = this.generateActuatorRoomNodeAndLinks(actuator, room.id);
+
+      nodes = nodes.concat(tuple[0]);
+      links = links.concat(tuple[1]);
+    }
+
+    if (!room.sensors) return [nodes, links];
+
+    for (const index in room.sensors) {
+      const sensor = room.sensors[index];
+      const tuple = this.generateSensorRoomNodeAndLinks(sensor, room.id);
+
+      nodes = nodes.concat(tuple[0]);
+      links = links.concat(tuple[1]);
+    }
+    return [nodes, links];
+  }
+
+  generateActuatorRoomNodeAndLinks(actuator: Actuator, idRoom: number): [any, any] {
+    let nodes = [];
+    let links = [];
+
+    nodes.push({id: 'Actuator' + actuator.id, label: actuator.model + ' ' + actuator.brand, color: '#008ECC'});
+    links.push({source: 'Room' + idRoom, target: 'Actuator' + actuator.id , label: ''});
+
+    return [nodes, links];
+  }
+
+  generateSensorRoomNodeAndLinks(sensor: Sensor, idRoom: number): [any, any] {
+    let nodes = [];
+    let links = [];
+
+    nodes.push({id: 'Sensor' + sensor.id, label: sensor.model + ' ' + sensor.brand, color: '#6593F5'});
+    links.push({source: 'Room' + idRoom, target: 'Sensor' + sensor.id, label: ''});
+
+    return [nodes, links];
   }
 }

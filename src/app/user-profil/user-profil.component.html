@@ -1,9 +1,11 @@
-<header>
+<header style="height: 10%;">
   <app-menu-profil></app-menu-profil>
 </header>
 
-
-
-<div *ngIf="isLoaded">
+<div *ngIf="isLoaded" class="container-fluid" style="height: 85%;">
   <app-show-projects [projects]="user.projects"></app-show-projects>
 </div>
+
+<footer class="my-auto text-center align-middle white-text" style="height: 5%; background-color: #00227a">
+  AMU 2018-2019
+</footer>
