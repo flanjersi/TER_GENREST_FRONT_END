@@ -13,13 +13,14 @@ import {HttpClientModule} from "@angular/common/http";
 import {Ng4LoadingSpinnerModule} from "ng4-loading-spinner";
 import { ShowProjectComponent } from './show-projects/show-project/show-project.component';
 import { EditProjectComponent } from './show-projects/edit-project/edit-project.component';
+import { EditProfilComponent } from './edit-profil/edit-profil.component';
 
 const routes: Routes = [
   { path: '', component: UserProfilComponent },
 ];
 
 @NgModule({
-  declarations: [UserProfilComponent, MenuProfilComponent, ShowProjectsComponent, CreateProjectDialogComponent, ShowProjectComponent, EditProjectComponent],
+  declarations: [UserProfilComponent, MenuProfilComponent, ShowProjectsComponent, CreateProjectDialogComponent, ShowProjectComponent, EditProjectComponent, EditProfilComponent],
   imports: [
     CommonModule,
     SharedModule.forRoot(),
