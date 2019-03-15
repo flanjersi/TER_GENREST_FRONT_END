@@ -1,0 +1,57 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+ 
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+      <button mat-icon-button disabled></button>
+  
+      <mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">
+        {{ node.type === 'interface' ? 'folder' : 'description' }}
+      </mat-icon>
+      {{node.name}}
+  
+   </mat-tree-node>
+  
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+
+      <button mat-icon-button matTreeNodeToggle
+              [attr.aria-label]="'toggle ' + node.name">
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+        </mat-icon>
+      </button>
+  
+  
+  
+      <mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">
+          {{ node.type === 'interface' ? 'folder' : 'description' }}
+      </mat-icon>
+
+      <h6 class="my-auto" *ngIf="node.type === 'interface'">
+        <b>{{node.name}}</b>
+      </h6>
+    
+      <p class="my-auto" *ngIf="node.type != 'interface'">
+        {{node.name}}
+      </p>
+    
+
+      <button mat-icon-button *ngIf="node.type != 'interface'" (click)="add(node)">
+        <mat-icon class="mat-icon-rtl-mirror">
+          edit
+      </mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="node.type === 'interface'" (click)="add(node)">
+        <mat-icon class="mat-icon-rtl-mirror">
+          add_circle_outline
+      </mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="node.type === 'interface'" (click)="add(node)">
+        <mat-icon class="mat-icon-rtl-mirror">
+          delete_outline
+      </mat-icon>
+      </button>
+
+  
+    </mat-tree-node>
+  
+  </mat-tree>
+  

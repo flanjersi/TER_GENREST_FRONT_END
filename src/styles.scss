@@ -3,17 +3,36 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-$primary-color: #3849aa;
-$primary-color-light: #6e74dc;
-$primary-color-dark: #00227a;
+body, html {
+  height: 100% !important;
+}
 
-$secondary-color: #f44333;
-$secondary-color-light: #ff795e;
-$secondary-color-dark: #b90008;
+div.card {
+  height: 100% !important;
+}
 
-$font-size-title: 50px;
-$font-size-sub-title: 40px;
-$font-size-normal: 20px;
+#graph-project ngx-charts-chart div {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+
+#graph-project ngx-charts-chart div svg{
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.mat-tab-body-wrapper{
+  flex-grow: 1;
+}
+
+#tab-group-project {
+  height: 100% !important;
+}
+
+#tab-group-project mat-tab-body{
+  flex-grow: 1;
+}
 
 
 

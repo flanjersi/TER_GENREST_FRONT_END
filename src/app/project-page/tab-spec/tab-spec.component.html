@@ -1,4 +1,6 @@
-<mat-tab-group animationDuration="0ms">
-  <mat-tab label="Project specification"> TODO  </mat-tab>
-  <mat-tab label="Graphical visualization"> <app-graph-spec></app-graph-spec></mat-tab>
+<mat-tab-group id="tab-group-project" animationDuration="0ms" class="h-100">
+  <mat-tab label="Graphical visualization" class="h-100">
+    <app-graph-spec [project]="project"></app-graph-spec>
+  </mat-tab>
+  <mat-tab label="Project specification"></mat-tab>
 </mat-tab-group>

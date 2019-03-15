@@ -1,44 +1,36 @@
 <header>
- <app-menu-project></app-menu-project>
+  <app-menu-project></app-menu-project>
 </header>
-<div *ngIf="isLoaded">
-  <br/>
-  <div class="col-xl-2 col-lg-2 col-md-1 col-1" ></div>
 
-  <div class="container-fluid">
-
-    <div class="row">
-      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-auto" style="height: 400px">
-        <!-- mdb-card for Treeview-->
-        <mdb-card>
-          <mdb-card-body>
-
-            <mdb-card-title>
-              <h4>Building topology</h4>
-            </mdb-card-title>
-
-            <mdb-card-text>
-              <!-- TREEVIEW -->
-              TODO
-
-            </mdb-card-text>
-
-          </mdb-card-body>
+<div *ngIf="isLoaded" class="container-fluid" style="height: 90%">
+  <div class="row h-100">
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 h-100 pt-3 pb-3">
+      <!-- mdb-card for Treeview-->
+      <div id="tree-header" class="row mr-1 ml-1 mb-2">
+        <div class="col-8 my-auto">
+          <h4>Building topology</h4>
+        </div>
+        <div class="col-4 my-auto d-flex justify-content-end">
           <a href="#" mdbBtn color="primary" mdbWavesEffect>Deploy</a>
-        </mdb-card>
+        </div>
       </div>
+      <perfect-scrollbar id="scrollBar" style="max-height: 92%;">
+        <app-tree-view-specifications (addedSpecification)="refreshProject($event)" [project]="project"></app-tree-view-specifications>
+      </perfect-scrollbar>
 
-      <br/>
-      <div class="col-xl-6 col-lg-6 col-md-6  col-sm-12 col-12 my-auto" style="height: 400px">
-        <app-tab-spec></app-tab-spec>
-
-      </div>
     </div>
-
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 h-100 pt-3 pb-3">
+      <mdb-card class="h-100" >
+        <mdb-card-body class="h-100">
+          <mdb-card-text class="h-100">
+            <app-tab-spec [project]="project"></app-tab-spec>
+          </mdb-card-text>
+        </mdb-card-body>
+      </mdb-card>
+    </div>
   </div>
-
 </div>
 
-<footer class="container-fluid my-auto text-center align-middle white-text" style="height: 50px; background-color: #00227a">
+<footer class="fixed-bottom my-auto text-center align-middle white-text" style="height: 4%; background-color: #00227a">
   AMU 2018-2019
 </footer>
