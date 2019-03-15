@@ -3,7 +3,7 @@
   [links]="hierarchialGraph.links"
   [nodes]="hierarchialGraph.nodes"
   [orientation]="topToBottom"
-  [legend]="true"
+  [legend]="false"
   [curve]="curve"
   [draggingEnabled]="true"
   [autoZoom]="true"
@@ -47,5 +47,7 @@
       </svg:text>
     </svg:g>
   </ng-template>
-
 </ngx-graph>
+<!--
+<ngx-charts-legend [data]="chartNames" [title]="'Legend'" [colors]="colors"></ngx-charts-legend>
+-->

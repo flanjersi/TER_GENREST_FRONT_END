@@ -8,6 +8,7 @@ import {MotherRoom} from '../../shared/_models/MotherRoom';
 import {Sensor} from '../../shared/_models/Sensor';
 import {Actuator} from '../../shared/_models/Actuator';
 import {Room} from '../../shared/_models/Room';
+import {ColorHelper} from "@swimlane/ngx-charts";
 
 @Component({
   selector: 'app-graph-spec',
@@ -18,12 +19,20 @@ export class GraphSpecComponent implements OnInit {
   @Input()
   private project: Project;
 
+  public chartNames: string[];
+  public colors: ColorHelper;
+  public colorScheme = { domain: ['#4C516D', '#000080', '#1034A6', '#0F52BA', '#0080FF', '#0E4D92', '#008ECC', '#6593F5'] }; // Custom color scheme in hex
 
-  hierarchialGraph = {nodes: [], links: []}
+
+  hierarchialGraph = {nodes: [], links: []};
   curve = shape.curveBundle.beta(1);
 
   public ngOnInit(): void {
+    this.chartNames = [];
+    this.chartNames.push("Project", "Building", "Floor", "Space", "Corridor", "Room", "Actuator", "Sensor");
 
+    this.colors = new ColorHelper(this.colorScheme, 'ordinal', this.chartNames, this.colorScheme);
+    console.log(this.colors);
     const tuple = this.generateGraph(this.project);
 
     this.hierarchialGraph.nodes = tuple[0];
@@ -197,7 +206,7 @@ export class GraphSpecComponent implements OnInit {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Room' + room.id , label: room.type});
+    nodes.push({id: 'Room' + room.id , label: room.type, color: '#0E4D92'});
     links.push({source: 'MotherRoom' + idMotherRoom , target: 'Room' + room.id  , label: ''});
 
     if (!room.actuators) return [nodes, links];
