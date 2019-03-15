@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Update profil</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <table cellspacing="20px">
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput [value]="firstName"
+                 [errorStateMatcher]="matcher" formControlName="firstName" name="firstName" required>
+          <mat-error *ngIf="form.get('firstName').hasError('required')">
+            First name is <strong>required</strong>.
+          </mat-error>
+          <mat-error *ngIf="form.get('firstName').hasError('alreadyUsed')">
+            first name is <strong>already</strong> used.
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button mat-primary" (click)="updateProfil()">Update profil</button>
+  <button class="mat-raised-button" (click)="cancel()">Cancel</button>
+</mat-dialog-actions>
