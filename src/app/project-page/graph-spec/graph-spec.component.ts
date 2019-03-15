@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, OnChanges} from '@angular/core';
 import * as shape from 'd3-shape';
 import {Project} from '../../shared/_models/Project';
 import {Building} from '../../shared/_models/Building';
@@ -15,7 +15,7 @@ import {ColorHelper} from "@swimlane/ngx-charts";
   templateUrl: './graph-spec.component.html',
   styleUrls: ['./graph-spec.component.scss']
 })
-export class GraphSpecComponent implements OnInit {
+export class GraphSpecComponent implements OnInit, OnChanges {
   @Input()
   private project: Project;
 
@@ -33,6 +33,13 @@ export class GraphSpecComponent implements OnInit {
 
     this.colors = new ColorHelper(this.colorScheme, 'ordinal', this.chartNames, this.colorScheme);
     console.log(this.colors);
+    const tuple = this.generateGraph(this.project);
+
+    this.hierarchialGraph.nodes = tuple[0];
+    this.hierarchialGraph.links = tuple[1];
+  }
+
+  public ngOnChanges(){
     const tuple = this.generateGraph(this.project);
 
     this.hierarchialGraph.nodes = tuple[0];
