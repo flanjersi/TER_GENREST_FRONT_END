@@ -2,11 +2,12 @@
   class="chart-container"
   [links]="hierarchialGraph.links"
   [nodes]="hierarchialGraph.nodes"
-  [legend]="false"
+  [orientation]="topToBottom"
+  [legend]="true"
   [curve]="curve"
-  [draggingEnabled]="false"
+  [draggingEnabled]="true"
   [autoZoom]="true"
-  [autoCenter]="false"
+  [autoCenter]="true"
 >
 
   <ng-template #defsTemplate>
@@ -22,8 +23,8 @@
            [tooltipType]="'tooltip'"
            [tooltipTitle]="node.position"
     >
-      <svg:rect [attr.width]="node.width" [attr.height]="node.height" [attr.fill]="node.options.color" />
-      <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.height / 2">{{node.label}}</svg:text>
+      <svg:rect [attr.width]="node.width" [attr.height]="node.height" [attr.fill]="node.color || node.options.color" />
+      <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.height / 2" fill="white">{{node.label}}</svg:text>
     </svg:g>
   </ng-template>
 
