@@ -5,6 +5,7 @@
     <tr>
       <td>
         <mat-form-field class="input">
+          <label>Project name:</label>
           <input matInput [value]="projectName"
                  [errorStateMatcher]="matcher" formControlName="projectName" name="projectName" required>
           <mat-error *ngIf="form.get('projectName').hasError('required')">

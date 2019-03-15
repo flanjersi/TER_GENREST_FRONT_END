@@ -19,7 +19,7 @@ export class ProjectPageComponent implements OnInit {
               private projectService: ProjectService) {
     this.isLoaded = false;
 
-    this.route.queryParams.subscribe(params => {
+   /* this.route.queryParams.subscribe(params => {
         console.log(params);
 
         if(!params['id']){
@@ -36,8 +36,10 @@ export class ProjectPageComponent implements OnInit {
           () => {
               this.isLoaded = true;
           });
-      })
+      })*/
+    this.isLoaded = true;
   }
+
 
   ngOnInit() {
   }
