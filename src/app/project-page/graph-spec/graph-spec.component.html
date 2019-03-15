@@ -1,28 +1,14 @@
-<<<<<<< HEAD
-<div>
-  <ngx-graph
-    class="chart-container"
-    [links]="hierarchialGraph.links"
-    [nodes]="hierarchialGraph.nodes"
-    [legend]="false"
-    [curve]="curve"
-    [draggingEnabled]="false"
-    [autoZoom]="true"
-    [autoCenter]="false"
-  >
-=======
 <ngx-graph id="graph-project"
-  class="chart-container"
-  [links]="hierarchialGraph.links"
-  [nodes]="hierarchialGraph.nodes"
-  [orientation]="topToBottom"
-  [legend]="false"
-  [curve]="curve"
-  [draggingEnabled]="false"
-  [autoZoom]="true"
-  [autoCenter]="true"
+           class="chart-container"
+           [links]="hierarchialGraph.links"
+           [nodes]="hierarchialGraph.nodes"
+           [orientation]="topToBottom"
+           [legend]="false"
+           [curve]="curve"
+           [draggingEnabled]="false"
+           [autoZoom]="true"
+           [autoCenter]="true"
 >
->>>>>>> 02e6481b8d31d951d538924d10b25bfbfb0c3c66
 
   <ng-template #defsTemplate>
     <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
