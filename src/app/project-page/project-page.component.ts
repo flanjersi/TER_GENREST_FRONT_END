@@ -18,7 +18,7 @@ export class ProjectPageComponent implements OnInit {
               private router: Router,
               private projectService: ProjectService) {
     this.isLoaded = false;
-
+/*
     this.route.queryParams.subscribe(params => {
         console.log(params);
 
@@ -36,7 +36,8 @@ export class ProjectPageComponent implements OnInit {
           () => {
               this.isLoaded = true;
           });
-      })
+      })*/
+this.isLoaded = true;
   }
 
   ngOnInit() {

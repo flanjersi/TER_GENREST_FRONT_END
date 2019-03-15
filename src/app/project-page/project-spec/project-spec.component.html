@@ -1,0 +1,13 @@
+<div class="pre-scrollable" >
+      <ul class="list-group" *ngFor="let data of datas | keyvalue ">
+        <li class="list-group-item " > {{data.key}} : {{data.value}} </li>
+      </ul>
+    <mat-list-item >
+      <button mat-icon-button >
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button >
+        <mat-icon>delete_forever</mat-icon>
+      </button>
+    </mat-list-item>
+  </div>
