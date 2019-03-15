@@ -15,8 +15,8 @@ export class Project {
       this.id = data.id;
       this.projectName = data.projectName;
       this.buildings = [];
-      if(data.buildings){
-        data.buildings.forEach(building => {
+      if(data.building){
+        data.building.forEach(building => {
           this.buildings.push(new Building(building));
         });
       }
