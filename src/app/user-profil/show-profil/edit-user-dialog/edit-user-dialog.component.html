@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Edit information</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <table cellspacing="20px">
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <label>FirstName</label> <br>
+          <input matInput
+                 [errorStateMatcher]="matcher" formControlName="firstName" name="firstName" required>
+          <mat-error *ngIf="form.get('firstName').hasError('required')">
+            FirstName name is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <label>LastName</label> <br>
+          <input matInput
+                 [errorStateMatcher]="matcher" formControlName="lastName" name="lastName" required>
+          <mat-error *ngIf="form.get('lastName').hasError('required')">
+            LastName name is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <label>Password</label> <br>
+          <input matInput
+                 [errorStateMatcher]="matcher" formControlName="password" name="password" required type="password">
+          <mat-error *ngIf="form.get('password').hasError('required')">
+            Password name is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+
+  </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button mat-primary" (click)="editUser()">Modify</button>
+  <button class="mat-raised-button" (click)="cancel()">Cancel</button>
+</mat-dialog-actions>

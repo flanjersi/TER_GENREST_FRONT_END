@@ -28,6 +28,7 @@ export class ProjectPageComponent implements OnInit {
               private cookieService: CookieService) {
     this.isLoaded = false;
 
+
     if(!cookieService.get('user'))
       this.router.navigateByUrl('/auth');
 
@@ -49,6 +50,7 @@ export class ProjectPageComponent implements OnInit {
           () => {
               this.isLoaded = true;
           });
+
       });
   }
 
