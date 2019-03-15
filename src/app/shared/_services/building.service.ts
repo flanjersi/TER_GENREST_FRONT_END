@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Building} from '../_models/Building';
 import {Observable} from 'rxjs';
-import {Project} from '../_models/Project';
 
 
 @Injectable()
@@ -34,9 +33,9 @@ export class BuildingService {
     });
   }
 
-  updateBuilding(idProject: number, building: Building) {
+  updateBuilding(building: Building) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/projects/' + idProject + '/buildings/' + building.id, JSON.stringify(building), {headers: {'Content-Type': 'application/json'}})
+      this.http.post('api/buildings/' + building.id, JSON.stringify(building), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Building(data));
@@ -47,9 +46,9 @@ export class BuildingService {
     });
   }
 
-  deleteBuilding(id: number, idBuilding: number) {
+  deleteBuilding(idProject: number, idBuilding: number) {
     return new Promise((resolve, reject) => {
-      this.http.delete('api/projects/' + id + '/buildings/' + idBuilding)
+      this.http.delete('api/projects/' + idProject + '/buildings/' + idBuilding)
         .toPromise()
         .then(data => {
             resolve(data);

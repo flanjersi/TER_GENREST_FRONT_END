@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {User} from "../shared/_models/User";
 import {UserService} from "../shared/_services/user.service";
-import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {CookieService} from "ngx-cookie-service";
+
 
 @Component({
   selector: 'app-user-profil',
@@ -11,14 +11,16 @@ import {CookieService} from "ngx-cookie-service";
 })
 export class UserProfilComponent implements OnInit {
 
+//  @Input()
   private user: User;
 
+  @Input()
   public isLoaded: boolean;
 
   constructor(private userService: UserService,
-              private spinnerService: Ng4LoadingSpinnerService,
               private cookieService: CookieService) {
   }
+
   ngOnInit() {
     this.isLoaded = false;
 
@@ -27,6 +29,7 @@ export class UserProfilComponent implements OnInit {
         (err)  => {},
       () => this.isLoaded = true
     );
-  }
 
+  }
 }
+

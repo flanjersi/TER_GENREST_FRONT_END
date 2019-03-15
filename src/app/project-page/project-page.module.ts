@@ -1,16 +1,16 @@
 import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ProjectPageComponent} from './project-page.component';
-import {RouterModule, Routes} from "@angular/router";
+import {RouterModule, Routes} from '@angular/router';
 import { TabSpecComponent } from './tab-spec/tab-spec.component';
-import {MaterialModule} from "../features/material.module";
+import {MaterialModule} from '../features/material.module';
 import {MenuProjectComponent} from './menu-project/menu-project.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import { GraphSpecComponent } from './graph-spec/graph-spec.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import {SharedModule} from "../shared/shared.module";
-import {HttpClientModule} from "@angular/common/http";
+import {SharedModule} from '../shared/shared.module';
+import {HttpClientModule} from '@angular/common/http';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -33,10 +33,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
 @NgModule({
   declarations: [
-     ProjectPageComponent, 
+     ProjectPageComponent,
      TabSpecComponent,
-     MenuProjectComponent, 
-     GraphSpecComponent, 
+     MenuProjectComponent,
+     GraphSpecComponent,
      CreateBuildingEntityDialogComponent,
      TreeViewSpecificationsComponent,
      CreateFloorEntityDialogComponent,
