@@ -14,6 +14,7 @@ import { Sensor } from 'src/app/shared/_models/Sensor';
 import { Actuator } from 'src/app/shared/_models/Actuator';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { CreateBuildingEntityDialogComponent } from './create-building-entity-dialog/create-building-entity-dialog.component';
+import {EditBuildingEntityDialogComponent} from './edit-building-entity-dialog/edit-building-entity-dialog.component';
 
 
 /** File node data with possible child nodes. */
@@ -47,7 +48,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   @Input()
   private project: Project;
 
+
+
   @Output() addedSpecification: EventEmitter<number>;
+  @Output() updatedBuilding: EventEmitter<number>;
   
 
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
@@ -68,6 +72,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     this.addedSpecification = new EventEmitter();
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    this.updatedBuilding = new EventEmitter();
   }
 
   ngOnInit() {
@@ -339,6 +344,17 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     return actutorData;
   }
 
+
+  update(node1){
+    console.log(node1);
+    switch (node1.type) {
+      case 'building': {
+        this.openUpdateBuildingDialog(node1);
+        break;
+      }
+    }
+  }
+
   add(node1){
     console.log(node1);
     switch(node1.name){
@@ -472,6 +488,27 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if(data === 'added'){
           this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+  openUpdateBuildingDialog(node){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      idProject: this.project.id,
+      idBuilding: node.id
+    };
+
+    const dialogRef = this.dialog.open(EditBuildingEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if(data === 'updated'){
+          this.updatedBuilding.emit(1);
         }
       }
     );
