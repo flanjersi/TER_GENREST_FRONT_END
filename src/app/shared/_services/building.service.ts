@@ -48,6 +48,7 @@ export class BuildingService {
   }
 
   deleteBuilding(id: number, idBuilding: number) {
+    console.log('------- La ');
     return new Promise((resolve, reject) => {
       this.http.delete('api/projects/' + id + '/buildings/' + idBuilding)
         .toPromise()

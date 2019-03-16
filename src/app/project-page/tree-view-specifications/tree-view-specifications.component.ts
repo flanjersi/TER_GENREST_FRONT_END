@@ -14,6 +14,9 @@ import { Sensor } from 'src/app/shared/_models/Sensor';
 import { Actuator } from 'src/app/shared/_models/Actuator';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { CreateBuildingEntityDialogComponent } from './create-building-entity-dialog/create-building-entity-dialog.component';
+import { BuildingService } from '../../shared/_services/building.service';
+import { FloorService } from '../../shared/_services/floor.service';
+import {CookieService} from "ngx-cookie-service";
 
 
 /** File node data with possible child nodes. */
@@ -47,6 +50,9 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   @Input()
   private project: Project;
 
+  @Input()
+  private building: Building;
+
   @Output() addedSpecification: EventEmitter<number>;
   
 
@@ -59,7 +65,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog, private buildingService: BuildingService,
+              private cookieService: CookieService) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
@@ -392,11 +399,14 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
  /* searchFlatTreeNode(node: FileNode) : FlatTreeNode {
     //A MODIFIER
     let array = this.treeControl.dataNodes;
+    Parcourir le tableau treeControl depuis la fin
 
     for(let index in array){
       let flatTreeNode = array[index];
       if(flatTreeNode.id === node.id && flatTreeNode.type === node.type)
-        return flatTreeNode;
+          let level = (node.level)-1;
+          if( level === flatTreeNode.level )
+             return flatTreeNode;
     }
     return null;
   }*/
@@ -476,5 +486,92 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       }
     );
   }
+
+  remove(node1) {
+    console.log(node1);
+    console.log(node1.type);
+    console.log(node1.level);
+    console.log(node1.id);
+    console.log(node1.name);
+    console.log(node1.data);
+    switch (node1.type) {
+      case 'Buildings': {
+
+        let idNode = node1.id;
+        // parentID
+        // let parentID = searchFlatTreeNode(node1);
+
+       // console.log(searchFlatTreeNode(node1).data);
+        this.buildingService.deleteBuilding(parseInt(this.cookieService.get('user')), node1.v )
+          .then( data => {
+              //this.spinnerService.hide();
+          },
+            err => {
+
+            });
+        break;
+      }
+      case 'Floors': {
+        console.log('fff');
+        break;
+      }
+      case 'Corridors': {
+        console.log('ccc');
+        break;
+      }
+      case 'Spaces': {
+        console.log('sss');
+        break;
+      }
+      case 'Rooms': {
+        console.log('rrrr');
+        break;
+      }
+      case 'Sensors': {
+        console.log('sssenn');
+        break;
+      }
+      case 'Actuators': {
+        console.log('aaa');
+        break;
+      }
+      default:
+        break;
+    }
+
+  }
+
+  removeEntities(node: FileNode){
+  /*  const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+    };
+
+    const dialogRef = this.dialog.open(CreateBuildingEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if(data === 'added'){
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+
+
+    // this.spinnerService.show();
+
+    this.projectService.deleteProject(parseInt(this.cookieService.get('user')), this.project.id)
+      .then(data => {
+          this.spinnerService.hide();
+          this.deletedProject.emit(this.project.id);
+        },
+        err => {
+          this.spinnerService.hide();
+        });
+        */
+    }
 
 }
