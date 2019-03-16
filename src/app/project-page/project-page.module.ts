@@ -18,6 +18,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { TreeViewSpecificationsComponent } from './tree-view-specifications/tree-view-specifications.component';
 import { CreateBuildingEntityDialogComponent } from './tree-view-specifications/create-building-entity-dialog/create-building-entity-dialog.component';
+import { CreateFloorEntityDialogComponent } from './tree-view-specifications/create-floor-entity-dialog/create-floor-entity-dialog.component';
+//import { CreateCorridorEntityDialogComponent } from './tree-view-specifications/create-corridor-entity-dialog/create-corridor-entity-dialog.component';
 import { EditBuildingEntityDialogComponent } from './tree-view-specifications/edit-building-entity-dialog/edit-building-entity-dialog.component';
 
 
@@ -32,14 +34,16 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
 @NgModule({
   declarations: [
-     ProjectPageComponent,
-     TabSpecComponent,
-     MenuProjectComponent,
-     GraphSpecComponent,
-     CreateBuildingEntityDialogComponent,
-     TreeViewSpecificationsComponent,
-     EditBuildingEntityDialogComponent
-    ],
+    ProjectPageComponent,
+    TabSpecComponent,
+    MenuProjectComponent,
+    GraphSpecComponent,
+    CreateBuildingEntityDialogComponent,
+    TreeViewSpecificationsComponent,
+    EditBuildingEntityDialogComponent,
+    CreateFloorEntityDialogComponent,
+    //CreateCorridorEntityDialogComponent
+  ],
   imports: [
     SharedModule.forRoot(),
     MaterialModule,
@@ -58,7 +62,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   entryComponents: [
     CreateBuildingEntityDialogComponent,
-    EditBuildingEntityDialogComponent
+    EditBuildingEntityDialogComponent,
+    CreateFloorEntityDialogComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

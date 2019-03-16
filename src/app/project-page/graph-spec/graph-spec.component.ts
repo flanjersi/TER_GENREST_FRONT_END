@@ -31,8 +31,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     this.chartNames = [];
     this.chartNames.push("Project", "Building", "Floor", "Space", "Corridor", "Room", "Actuator", "Sensor");
 
-    this.colors = new ColorHelper(this.colorScheme, 'ordinal', this.chartNames, this.colorScheme);
-    console.log(this.colors);
+    this.colors = new ColorHelper(this.colorScheme, 'ordinal', this.chartNames, this.colorScheme);;
     const tuple = this.generateGraph(this.project);
 
     this.hierarchialGraph.nodes = tuple[0];
