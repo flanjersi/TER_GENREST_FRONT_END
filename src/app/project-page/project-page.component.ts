@@ -33,8 +33,6 @@ export class ProjectPageComponent implements OnInit {
       this.router.navigateByUrl('/auth');
 
     this.route.queryParams.subscribe(params => {
-        console.log(params);
-
         if(!params['id']){
           this.router.navigateByUrl('/profil');
           return;
@@ -44,7 +42,7 @@ export class ProjectPageComponent implements OnInit {
           .subscribe(
             data => {
               this.project = data;
-             // this.simulateProject();
+              this.simulateProject();
             },
             err => {},
           () => {
@@ -163,12 +161,9 @@ export class ProjectPageComponent implements OnInit {
     this.project.buildings.push(building2);
   }
 
-  ngOnInit(){
-
-  }
+  ngOnInit(){}
   
   refreshProject(){
-    console.log("test");
     this.projectService.getById(this.project.id)
       .subscribe(
         data => {
