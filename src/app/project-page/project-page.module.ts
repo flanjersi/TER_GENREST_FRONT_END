@@ -19,7 +19,7 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { TreeViewSpecificationsComponent } from './tree-view-specifications/tree-view-specifications.component';
 import { CreateBuildingEntityDialogComponent } from './tree-view-specifications/create-building-entity-dialog/create-building-entity-dialog.component';
 import { CreateFloorEntityDialogComponent } from './tree-view-specifications/create-floor-entity-dialog/create-floor-entity-dialog.component';
-import { CreateCorridorEntityDialogComponent } from './tree-view-specifications/create-corridor-entity-dialog/create-corridor-entity-dialog.component';
+//import { CreateCorridorEntityDialogComponent } from './tree-view-specifications/create-corridor-entity-dialog/create-corridor-entity-dialog.component';
 
 
 
@@ -40,7 +40,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
      CreateBuildingEntityDialogComponent,
      TreeViewSpecificationsComponent,
      CreateFloorEntityDialogComponent,
-     CreateCorridorEntityDialogComponent
+     //CreateCorridorEntityDialogComponent
     ],
   imports: [
     SharedModule.forRoot(),

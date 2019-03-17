@@ -1,6 +1,5 @@
 <mat-list-item >
-
-  <h4 mat-line><a (click)="goToProject()">{{project.projectName}}</a></h4>
+  <h4 mat-line><a (click)="goToProject()"><u>{{project.projectName}}</u></a></h4>
 
   <button mat-icon-button (click)="edit()">
     <mat-icon>edit</mat-icon>
@@ -9,6 +8,6 @@
   <button mat-icon-button (click)="delete()">
     <mat-icon>delete_forever</mat-icon>
   </button>
-
-  <mat-divider *ngIf="!isLast"></mat-divider>
+  <mat-divider style="border: 0.5px dotted" *ngIf="!isLast"></mat-divider>
 </mat-list-item>
+

@@ -69,16 +69,20 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       this.getChildren);
     this.addedSpecification = new EventEmitter();
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
+
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   }
 
   ngOnInit() {
-    console.log(this.project);
     this.dataSource.data = this.generateData(this.project);
   }
 
   ngOnChanges(){
-    this.dataSource.data = this.generateData(this.project);    
+    let expandablesNodes = this.getAllExpandableNodes();
+
+    this.dataSource.data = this.generateData(this.project);
+
+    this.openOlderExpandableNodes(expandablesNodes);
   }
 
   /** Transform the data to something the tree can read. */
@@ -96,22 +100,26 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     const data = [];
 
-    const buildings = [];
-
-    if(!project.buildings) return data;
-
-    for(let index in project.buildings){
-      let building = this.generateBuilding(project.buildings[index]);
-      buildings.push(building);
-    }
-
     const root = {
       id: project.id,
       name: 'Buildings',
-      type: 'interface',
-      children: buildings
+      type: 'interface'
     };
+
+    if(project.buildings && project.buildings.length > 0){
+      const buildings = [];
+
+      for(let index in project.buildings.sort((b1, b2) => b1.type.localeCompare(b2.type))){
+        let building = this.generateBuilding(project.buildings[index]);
+        buildings.push(building);
+      }
+
+      root['children'] = buildings;
+    }
+
+
     data.push(root);
+
     return data;
   }
 
@@ -122,21 +130,25 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     buildingData['name'] = building.type;
     buildingData['type'] = 'building';
 
-    const floors = [];
-
-    if(building.floors){
-      for(let index in building.floors){
-        let floor = this.generateFloor(building.floors[index]);
-        floors.push(floor);
-      }
-    }
     const floorInterfaceData = [{
       id: building.id,
       name: 'Floors',
-      type: 'interface',
-      children: floors
+      type: 'interface'
     }];
+
+    if(building.floors && building.floors.length > 0){
+      const floors = [];
+
+      for(let index in building.floors.sort((f1, f2) => f1.floorNumber - f2.floorNumber)){
+        let floor = this.generateFloor(building.floors[index]);
+        floors.push(floor);
+      }
+
+      floorInterfaceData[0]['children'] = floors;
+    }
+
     buildingData['children'] = floorInterfaceData;
+
     return buildingData;
   }
 
@@ -147,37 +159,40 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     floorData['name'] = 'Floor '+ floor.floorNumber;
     floorData['type'] = 'floor';
 
-    const motherRooms = [];
-    const corridors = [];
-
-    if(floor.corridors){
-      for(let index in floor.corridors){
-        let corridor = this.generateCorridor(floor.corridors[index]);
-        corridors.push(corridor);
-      }
-    }
-
-    if(floor.motherRooms){
-      for(let index in floor.motherRooms){
-        let motherRoom = this.generateMotherRoom(floor.motherRooms[index]);
-        motherRooms.push(motherRoom);
-      }
-    }
-    
     const corridorInterfaceData = {
       id: floor.id,
       name: 'Corridors',
-      type: 'interface',
-      children: corridors
+      type: 'interface'
     };
 
+    if(floor.corridors && floor.corridors.length > 0){
+      const corridors = [];
+
+      for(let index in floor.corridors.sort((c1, c2) => c1.numberCorridor - c2.numberCorridor)){
+        let corridor = this.generateCorridor(floor.corridors[index]);
+        corridors.push(corridor);
+      }
+
+      corridorInterfaceData['children'] = corridors;
+    }
 
     const motherRoomInterfaceData = {
       id: floor.id,
       name: 'Spaces',
-      type: 'interface',
-      children: motherRooms
+      type: 'interface'
     };
+
+
+    if(floor.motherRooms && floor.motherRooms.length > 0){
+      const motherRooms = [];
+
+      for(let index in floor.motherRooms.sort((mr1, mr2) => mr1.type.localeCompare(mr2.type))){
+        let motherRoom = this.generateMotherRoom(floor.motherRooms[index]);
+        motherRooms.push(motherRoom);
+      }
+
+      motherRoomInterfaceData['children'] = motherRooms;
+    }
 
     floorData['children'] = [corridorInterfaceData, motherRoomInterfaceData];
 
@@ -189,43 +204,43 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     
     let motherRoomsData = {};
 
-
-    
     motherRoomsData['id'] = motherRoom.id;
     motherRoomsData['name'] = motherRoom.type;
     motherRoomsData['type'] = 'motherRoom';
 
-    const roomsTab = [];
-    const corridors = [];
-
-    if(motherRoom.corridors){
-      for(let index in motherRoom.corridors){
-        let corridor = this.generateCorridor(motherRoom.corridors[index]);
-        corridors.push(corridor);
-      }
-    }
-
-    if(motherRoom.rooms){
-      for(let index in motherRoom.rooms){
-        let room = this.generateRoom(motherRoom.rooms[index]);
-        roomsTab.push(room);
-      }
-    }
-
     const corridorInterfaceData = {
       id: motherRoom.id,
       name: 'Corridors',
-      type: 'interface',
-      children: corridors
+      type: 'interface'
     };
 
+    if(motherRoom.corridors && motherRoom.corridors.length > 0){
+      const corridors = [];
+
+      for(let index in motherRoom.corridors.sort((c1, c2) => c1.numberCorridor - c2.numberCorridor)){
+        let corridor = this.generateCorridor(motherRoom.corridors[index]);
+        corridors.push(corridor);
+      }
+
+      corridorInterfaceData['children'] = corridors;
+    }
 
     const roomsInterfaceData = {
       id: motherRoom.id,
       name: 'Rooms',
-      type: 'interface',
-      children: roomsTab
+      type: 'interface'
     };
+
+    if(motherRoom.rooms && motherRoom.rooms.length > 0){
+
+      const roomsTab = [];
+      for(let index in motherRoom.rooms.sort((r1, r2) => r1.type.localeCompare(r2.type))){
+        let room = this.generateRoom(motherRoom.rooms[index]);
+        roomsTab.push(room);
+      }
+
+      roomsInterfaceData['children'] = roomsTab;
+    }
 
     motherRoomsData['children'] = [corridorInterfaceData, roomsInterfaceData];
 
@@ -233,41 +248,48 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   generateCorridor(corridor: Corridor): any{
-
     let corridorData = {};
 
     corridorData['id'] = corridor.id;
     corridorData['name'] = 'Corridor '+ corridor.numberCorridor;
     corridorData['type'] = 'corridor';
 
-    const actuators = [];
-    const sensors = [];
-
-    if(corridor.sensors){
-      for(let index in corridor.sensors){
-        let room = this.generateSensor(corridor.sensors[index]);
-        sensors.push(room);
-      }
-    }
-    if(corridor.actuators){
-      for(let index in corridor.actuators){
-        let actuator = this.generateActuator(corridor.actuators[index]);
-        actuators.push(actuator);
-      }
-    }
     const sensorInterfaceData = {
       id: corridor.id,
       name: 'Sensors',
-      type: 'interface',
-      children: sensors
+      type: 'interface'
     };
+
+
+    if(corridor.sensors && corridor.sensors.length > 0){
+      const sensors = [];
+
+      for(let index in corridor.sensors.sort((s1, s2) => s1.id - s2.id)){
+        let room = this.generateSensor(corridor.sensors[index]);
+        sensors.push(room);
+      }
+
+      sensorInterfaceData['children'] = sensors;
+    }
+
 
     const actuatorInterfaceData = {
       id: corridor.id,
       name: 'Actuators',
-      type: 'interface',
-      children: actuators
+      type: 'interface'
     };
+
+
+    if(corridor.actuators && corridor.actuators.length > 0){
+      const actuators = [];
+
+      for(let index in corridor.actuators.sort((s1, s2) => s1.id - s2.id)){
+        let actuator = this.generateActuator(corridor.actuators[index]);
+        actuators.push(actuator);
+      }
+
+      actuatorInterfaceData['children'] = actuators;
+    }
 
     corridorData['children'] = [sensorInterfaceData, actuatorInterfaceData];
     return corridorData;
@@ -280,35 +302,41 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     roomData['name'] = 'Room '+ room.numberRoom;
     roomData['type'] = 'room';
 
-    const actuators = [];
-    const sensors = [];
 
-    if(room.sensors){
-      for(let index in room.sensors){
-        let sensor = this.generateSensor(room.sensors[index]);
-        sensors.push(sensor);
-      }
-    }
-    if(room.actuators){
-      for(let index in room.actuators){
-        let actuator = this.generateActuator(room.actuators[index]);
-        actuators.push(actuator);
-      }
-    }
 
     const sensorInterfaceData = {
       id: room.id,
       name: 'Sensors',
-      type: 'interface',
-      children: sensors
+      type: 'interface'
     };
+
+    if(room.sensors && room.sensors.length > 0){
+      const sensors = [];
+
+      for(let index in room.sensors.sort((s1, s2) => s1.id - s2.id)){
+        let sensor = this.generateSensor(room.sensors[index]);
+        sensors.push(sensor);
+      }
+      sensorInterfaceData['children'] = sensors;
+    }
 
     const actuatorInterfaceData = {
       id: room.id,
       name: 'Actuators',
-      type: 'interface',
-      children: actuators
+      type: 'interface'
     };
+
+    if(room.actuators && room.actuators.length > 0){
+      const actuators = [];
+
+      for(let index in room.actuators.sort((s1, s2) => s1.id - s2.id)){
+        let actuator = this.generateActuator(room.actuators[index]);
+        actuators.push(actuator);
+      }
+
+      actuatorInterfaceData['children'] = actuators;
+    }
+
 
     roomData['children'] = [sensorInterfaceData, actuatorInterfaceData];
 
@@ -337,7 +365,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   add(node1){
-    console.log(node1);
     switch(node1.name){
       case 'Buildings': {
         this.openCreationBuildingDialog(node1);
@@ -371,19 +398,12 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     }
 
     let nodeFinded = this.searchRoot(node1);
-    
-    //let fileNode ={ id: 48, name: 'filsRamzi', type: 'ramzi' , children: []}
 
-    
-    //nodeFinded.children.push(fileNode);
+    let expandablesNodes = this.getAllExpandableNodes();
 
     this.dataSource.data = this.generateData(this.project);
 
-    this.treeControl.expandAll();
-
-    //this.treeControl.expand(this.treeControl.dataNodes[0]);
-    //console.log(this.treeControl.dataNodes);
-    //this.treeControl.expandDescendants(this.searchFlatTreeNode(node1));
+    this.openOlderExpandableNodes(expandablesNodes);
   }
 
  /* searchFlatTreeNode(node: FileNode) : FlatTreeNode {
@@ -397,6 +417,37 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     }
     return null;
   }*/
+
+  getAllExpandableNodes() : FlatTreeNode[] {
+    const nodesExpanded = [];
+
+    for(let index in this.treeControl.dataNodes){
+      let node = this.treeControl.dataNodes[index];
+
+      if(this.treeControl.isExpanded(node)){
+        nodesExpanded.push(node);
+      }
+    }
+
+    return nodesExpanded;
+  }
+
+  openOlderExpandableNodes(expandablesNodes : FlatTreeNode[]) {
+    for(let index in expandablesNodes){
+      let oldNode = expandablesNodes[index];
+
+      for(let indexNewNode in this.treeControl.dataNodes){
+        let newNode = this.treeControl.dataNodes[indexNewNode];
+
+        if(oldNode.id === newNode.id
+          && oldNode.name === newNode.name
+          && oldNode.type === newNode.type
+          && oldNode.level === newNode.level){
+          this.treeControl.expand(newNode);
+        }
+      }
+    }
+  }
 
   searchRoot(node : FileNode) : FileNode{
     let array = this.dataSource.data;
@@ -513,5 +564,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       }
     );
   }
+
 
 }
