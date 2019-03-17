@@ -20,7 +20,7 @@ import {EditFloorEntityDialogComponent} from './edit-floor-entity-dialog/edit-fl
 import {EditCorridorEntityDialogComponent} from './edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
 import {EditMotherRoomEntityDialogComponent} from './edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
 import {EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room-entity-dialog.component';
-import { CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component';
+import {CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component';
 
 
 /** File node data with possible child nodes. */
@@ -84,9 +84,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  const dialogRef = this.dialog.open(CreateCorridorEntityDialogComponent, dialogConfig);
 
-    dialogRef; .
   ngOnInit() {
     this.dataSource.data = this.generateData(this.project);
   }

@@ -21,14 +21,11 @@ export class CorridorService {
     });
   }
 
-<<<<<<< HEAD
+
 
   updateCorridor(corridor: Corridor) {
-=======
-  updateCorridor(idMotherRoom: number, corridor: Corridor) {
->>>>>>> 56621e72d6e62502453837b083cebf90d5c0377f
     return new Promise((resolve, reject) => {
-      this.http.post('api/corridors/' + corridor.id, JSON.stringify(corridor), {headers: {'Content-Type': 'application/json'}})
+      this.http.post('api/corridors/' + corridor.id, JSON.stringify(corridor.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Corridor(data));
@@ -77,7 +74,6 @@ export class CorridorService {
           });
     });
   }
-
   deleteCorridorInMotherRoom(idMotherRoom: number, idCorridor: number) {
     return new Promise((resolve, reject) => {
       this.http.delete('api/motherRooms/' + idMotherRoom + '/corridors/' + idCorridor)

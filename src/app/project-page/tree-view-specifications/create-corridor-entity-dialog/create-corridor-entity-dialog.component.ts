@@ -26,47 +26,47 @@ export class CreateCorridorEntityDialogComponent implements OnInit {
   private idFloor: number;
 
   private form: FormGroup;
-  
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private corridorService: CorridorService,
               private dialogRef: MatDialogRef<CreateCorridorEntityDialogComponent>,
               private spinnerService: Ng4LoadingSpinnerService,
-              private formBuilder: FormBuilder) { 
-                this.form = this.formBuilder.group({
-                  name: new FormControl('', [
-                    Validators.required,
-                    Validators.maxLength(50)
-                  ]),
-                });
+              private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(50)
+      ]),
+    });
 
-              }
+  }
 
   ngOnInit() {
   }
 
   save(){
     this.form.get('name').markAsTouched;
-    
+
     if(!this.form.valid){
       return;
     }
 
     let corridor = new Corridor();
     corridor.numberCorridor = this.form.get('name').value;
-  
+
     this.spinnerService.show();
 
     this.corridorService.createCorridorInFloor(this.data.id, corridor)
-          .then(
-            data => {
-              this.spinnerService.hide();
-              this.dialogRef.close('added');
-            },
-            err => {
-              console.log(err);
-              this.dialogRef.close('error');
-            }
-          )
+      .then(
+        data => {
+          this.spinnerService.hide();
+          this.dialogRef.close('added');
+        },
+        err => {
+          console.log(err);
+          this.dialogRef.close('error');
+        }
+      )
   }
 
   close(){

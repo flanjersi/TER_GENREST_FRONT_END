@@ -48,7 +48,7 @@ export class EditCorridorEntityDialogComponent implements OnInit {
     }
 
     const corridor = new Corridor();
-    this.idCorridor = corridor.id;
+    corridor.id = this.idCorridor;
 
     corridor.numberCorridor = this.form.get('name').value;
 
@@ -57,7 +57,7 @@ export class EditCorridorEntityDialogComponent implements OnInit {
 
     this.corridorService.updateCorridor(corridor)
       .then(
-        data => {
+        data => { console.log(data)
           this.spinnerService.hide();
           this.dialogRef.close({
             action: 'updated',
