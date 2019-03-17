@@ -136,6 +136,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     return data;
   }
 
+
+
   generateBuilding(building: Building): any {
     const buildingData = {};
 
