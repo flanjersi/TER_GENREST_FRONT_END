@@ -19,12 +19,27 @@ export class ShowProjectsComponent implements OnInit {
 
   private projectsFiltered: Project[];
 
+  private showedProjects: Project[];
+
+  private length : number;
+  private pageSize : number = 10;
+  private pageIndex: number = 0;
+
   constructor(private dialog: MatDialog,
               private projectService: ProjectService,
-              private cookieService: CookieService) { }
+              private cookieService: CookieService) {
+  }
 
   ngOnInit() {
+    this.showedProjects = [];
+
     this.projectsFiltered = Object.assign([], this.projects);
+
+    for(let index = 0 ; index < (this.pageSize < this.projectsFiltered.length ? this.pageSize : this.projectsFiltered.length) ; index++){
+      this.showedProjects.push(this.projectsFiltered[index]);
+    }
+
+    this.length = this.projectsFiltered.length;
   }
 
   openCreationProjectDialog() {
@@ -62,6 +77,9 @@ export class ShowProjectsComponent implements OnInit {
         return project.projectName.toLowerCase().indexOf(this.searchProject.toLowerCase()) > -1
       }
     );
+
+    this.prepareShowedProject(this.pageIndex);
+
   }
 
   /**
@@ -75,6 +93,31 @@ export class ShowProjectsComponent implements OnInit {
           this.filterProject();
         },
         err => {}
-      )
+      );
+
+  }
+
+  paginatorEvent(event){
+    this.pageIndex = event.pageIndex;
+    this.prepareShowedProject(event.pageIndex);
+  }
+
+  prepareShowedProject(pageIndex){
+    this.showedProjects = [];
+
+    let numberProjectToShow = this.projectsFiltered.length - (this.pageSize * pageIndex);
+
+    if(numberProjectToShow >= this.pageSize){
+      for(let index = 0 ; index < this.pageSize ; index++){
+        this.showedProjects.push(this.projectsFiltered[index + (pageIndex * this.pageSize)]);
+      }
+    }
+    else {
+      for(let index = 0 ; index < numberProjectToShow ; index++){
+        this.showedProjects.push(this.projectsFiltered[index + (pageIndex * this.pageSize)]);
+      }
+    }
+
+    this.length = this.projectsFiltered.length;
   }
 }
