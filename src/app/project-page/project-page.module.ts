@@ -25,6 +25,7 @@ import { EditFloorEntityDialogComponent } from './tree-view-specifications/edit-
 import { EditCorridorEntityDialogComponent } from './tree-view-specifications/edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
 import { EditMotherRoomEntityDialogComponent } from './tree-view-specifications/edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
 import { EditRoomEntityDialogComponent } from './tree-view-specifications/edit-room-entity-dialog/edit-room-entity-dialog.component';
+import {CreateCorridorEntityDialogComponent} from './tree-view-specifications/create-corridor-entity-dialog/create-corridor-entity-dialog.component';
 
 
 
@@ -75,7 +76,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     EditMotherRoomEntityDialogComponent,
     EditCorridorEntityDialogComponent,
     EditRoomEntityDialogComponent,
-    CreateFloorEntityDialogComponent
+    CreateFloorEntityDialogComponent,
+    CreateCorridorEntityDialogComponent
+
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

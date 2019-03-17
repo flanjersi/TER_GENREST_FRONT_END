@@ -17,9 +17,6 @@ export class ShowProfilComponent implements OnInit {
   @Input()
   private user: User;
 
-  @Input()
-  public isLoaded : boolean;
-
   @Output()
   updatedUser: EventEmitter<number>;
 
@@ -31,15 +28,7 @@ export class ShowProfilComponent implements OnInit {
     this.updatedUser = new EventEmitter();
   }
 
-  ngOnInit() {
-    this.isLoaded = false;
-
-    this.userService.getById(parseInt(this.cookieService.get('user'))).subscribe(
-      (resp) => { this.user = resp},
-      (err)  => {},
-      () => this.isLoaded = true
-    );
-  }
+  ngOnInit() {}
 
   openEditUserDialog() {
     const dialogConfig = new MatDialogConfig();

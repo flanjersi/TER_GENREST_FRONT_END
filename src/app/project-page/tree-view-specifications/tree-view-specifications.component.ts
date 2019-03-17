@@ -1,3 +1,4 @@
+
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
@@ -19,6 +20,8 @@ import {EditFloorEntityDialogComponent} from './edit-floor-entity-dialog/edit-fl
 import {EditCorridorEntityDialogComponent} from './edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
 import {EditMotherRoomEntityDialogComponent} from './edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
 import {EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room-entity-dialog.component';
+import { CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component';
+
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -48,6 +51,20 @@ export interface FlatTreeNode {
 })
 export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
+  constructor(private dialog: MatDialog) {
+    this.treeFlattener = new MatTreeFlattener(
+      this.transformer,
+      this.getLevel,
+      this.isExpandable,
+      this.getChildren);
+    this.addedSpecification = new EventEmitter();
+    this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
+
+    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    this.updated = new EventEmitter();
+  }
+
+
   @Input()
   private project: Project;
 
@@ -67,19 +84,9 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor(private dialog: MatDialog) {
-    this.treeFlattener = new MatTreeFlattener(
-      this.transformer,
-      this.getLevel,
-      this.isExpandable,
-      this.getChildren);
-    this.addedSpecification = new EventEmitter();
-    this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
+  const dialogRef = this.dialog.open(CreateCorridorEntityDialogComponent, dialogConfig);
 
-    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-    this.updated = new EventEmitter();
-  }
-
+    dialogRef; .
   ngOnInit() {
     this.dataSource.data = this.generateData(this.project);
   }
@@ -408,7 +415,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Corridors': {
-        console.log('ccc');
+        this.openCreationCorridorDialog(node1);
         break;
       }
       case 'Spaces': {
@@ -561,6 +568,47 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     );
   }
 
+  openCreationBuildingDialog(node: FileNode) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+    };
+
+    const dialogRef = this.dialog.open(CreateBuildingEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'added') {
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+  openCreationCorridorDialog(node: FileNode) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+    };
+
+    const dialogRef = this.dialog.open(CreateCorridorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'added') {
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+
   openUpdateBuildingDialog(node) {
 
     const dialogConfig = new MatDialogConfig();
@@ -641,6 +689,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   openUpdateRoomDialog(node) {
+
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -657,25 +706,5 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
           this.updated.emit(1);
         }
       });
-  }
-
-  openCreationBuildingDialog(node: FileNode) {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      id: node.id,
-    };
-
-    const dialogRef = this.dialog.open(CreateBuildingEntityDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(
-      data => {
-        if (data === 'added') {
-          this.addedSpecification.emit(1);
-        }
-      }
-    );
   }
 }

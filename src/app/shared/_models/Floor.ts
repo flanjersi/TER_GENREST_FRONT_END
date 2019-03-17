@@ -30,10 +30,7 @@ export  class  Floor {
         data.corridors.forEach( corridor => {
           this.corridors.push(new Corridor(corridor));
         });
-
       }
-
-
     }
   }
 
@@ -69,6 +66,5 @@ export  class  Floor {
 
       return motherRoomsJson;
     }
-
 
 }
