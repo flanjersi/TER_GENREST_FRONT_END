@@ -64,11 +64,6 @@ export class EditBuildingEntityDialogComponent implements OnInit {
         Validators.maxLength(50)
       ]),
     });
-    this.form.get('name').markAsTouched;
-    this.form.get('country').markAsTouched;
-    this.form.get('city').markAsTouched;
-    this.form.get('street').markAsTouched;
-
   }
 
   ngOnInit() {

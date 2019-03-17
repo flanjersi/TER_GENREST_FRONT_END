@@ -21,7 +21,8 @@ import {EditCorridorEntityDialogComponent} from './edit-corridor-entity-dialog/e
 import {EditMotherRoomEntityDialogComponent} from './edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
 import {EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room-entity-dialog.component';
 import {CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component';
-
+import {EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
+import {EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -365,11 +366,11 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     return sensorData;
   }
-  /* generateActuator(actuator: Actuator): any {
+  /* generateActuator(edit-actuator-entity-dialog: Actuator): any {
     const actutorData = {};
 
-    actutorData.id = actuator.id;
-    actutorData.name = 'Actuator ' + actuator.reference;
+    actutorData.id = edit-actuator-entity-dialog.id;
+    actutorData.name = 'Actuator ' + edit-actuator-entity-dialog.reference;
     actutorData.type = 'Actuator';
 
     return actutorData;
@@ -397,6 +398,14 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       }
       case'room': {
         this.openUpdateRoomDialog(node1);
+        break;
+      }
+      case'actuator' : {
+        this.openUpdateActuatorDialog(node1);
+        break;
+      }
+      case'sensor' : {
+        this.openUpdateSensorDialog(node1);
         break;
       }
     }
@@ -697,6 +706,46 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     };
 
     const dialogRef = this.dialog.open(EditRoomEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'updated') {
+          this.updated.emit(1);
+        }
+      });
+  }
+
+  openUpdateActuatorDialog(node) {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      idActuator: node.id
+    };
+
+    const dialogRef = this.dialog.open(EditActuatorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'updated') {
+          this.updated.emit(1);
+        }
+      });
+  }
+
+  openUpdateSensorDialog(node) {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      idSensor: node.id
+    };
+
+    const dialogRef = this.dialog.open(EditSensorEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
