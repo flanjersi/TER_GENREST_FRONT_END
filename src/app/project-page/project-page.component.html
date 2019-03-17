@@ -15,7 +15,7 @@
         </div>
       </div>
       <perfect-scrollbar id="scrollBar" style="max-height: 92%;">
-        <app-tree-view-specifications (addedSpecification)="refreshProject($event)" [project]="project"></app-tree-view-specifications>
+        <app-tree-view-specifications (addedSpecification)="refreshProject($event)" (updatedBuilding)="refreshProject($event)" [project]="project"></app-tree-view-specifications>
       </perfect-scrollbar>
 
     </div>

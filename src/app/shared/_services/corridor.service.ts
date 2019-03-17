@@ -22,7 +22,7 @@ export class CorridorService {
   }
 
 
-  updateCorridor(idMotherRoom: number, corridor: Corridor) {
+  updateCorridor(corridor: Corridor) {
     return new Promise((resolve, reject) => {
       this.http.post('api/corridors/' + corridor.id, JSON.stringify(corridor), {headers: {'Content-Type': 'application/json'}})
         .toPromise()

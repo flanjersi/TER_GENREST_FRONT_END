@@ -33,10 +33,9 @@ export class FloorService {
           });
     });
   }
-
   updateFloor(floor: Floor) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/floors/' + floor.id, JSON.stringify(floor), {headers: {'Content-Type': 'application/json'}})
+      this.http.post('api/floors/' + floor.id, JSON.stringify(floor.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Floor(data));

@@ -21,6 +21,10 @@ import { CreateBuildingEntityDialogComponent } from './tree-view-specifications/
 import { CreateFloorEntityDialogComponent } from './tree-view-specifications/create-floor-entity-dialog/create-floor-entity-dialog.component';
 //import { CreateCorridorEntityDialogComponent } from './tree-view-specifications/create-corridor-entity-dialog/create-corridor-entity-dialog.component';
 import { EditBuildingEntityDialogComponent } from './tree-view-specifications/edit-building-entity-dialog/edit-building-entity-dialog.component';
+import { EditFloorEntityDialogComponent } from './tree-view-specifications/edit-floor-entity-dialog/edit-floor-entity-dialog.component';
+import { EditCorridorEntityDialogComponent } from './tree-view-specifications/edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
+import { EditMotherRoomEntityDialogComponent } from './tree-view-specifications/edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
+import { EditRoomEntityDialogComponent } from './tree-view-specifications/edit-room-entity-dialog/edit-room-entity-dialog.component';
 
 
 
@@ -42,6 +46,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     TreeViewSpecificationsComponent,
     EditBuildingEntityDialogComponent,
     CreateFloorEntityDialogComponent,
+    EditFloorEntityDialogComponent,
+    EditCorridorEntityDialogComponent,
+    EditMotherRoomEntityDialogComponent,
+    EditRoomEntityDialogComponent,
     //CreateCorridorEntityDialogComponent
   ],
   imports: [
@@ -63,6 +71,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   entryComponents: [
     CreateBuildingEntityDialogComponent,
     EditBuildingEntityDialogComponent,
+    EditFloorEntityDialogComponent,
+    EditMotherRoomEntityDialogComponent,
+    EditCorridorEntityDialogComponent,
+    EditRoomEntityDialogComponent,
     CreateFloorEntityDialogComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

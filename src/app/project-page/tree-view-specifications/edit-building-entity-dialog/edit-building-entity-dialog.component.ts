@@ -64,6 +64,10 @@ export class EditBuildingEntityDialogComponent implements OnInit {
         Validators.maxLength(50)
       ]),
     });
+    this.form.get('name').markAsTouched;
+    this.form.get('country').markAsTouched;
+    this.form.get('city').markAsTouched;
+    this.form.get('street').markAsTouched;
 
   }
 
@@ -71,21 +75,18 @@ export class EditBuildingEntityDialogComponent implements OnInit {
   }
 
   editBuilding() {
-    this.form.get('name').markAsTouched;
-    this.form.get('country').markAsTouched;
-    this.form.get('city').markAsTouched;
-    this.form.get('street').markAsTouched;
+    this.form.markAsTouched();
 
-    if(!this.form.valid){
+    if (!this.form.valid) {
       return;
     }
 
-    let building = new Building();
+    const building = new Building();
     building.id = this.idBuilding;
 
     building.type = this.form.get('name').value;
 
-    let address = new Address();
+    const address = new Address();
     address.city = this.form.get('city').value;
     address.country = this.form.get('country').value;
     address.street = this.form.get('street').value;
@@ -93,19 +94,24 @@ export class EditBuildingEntityDialogComponent implements OnInit {
 
     this.spinnerService.show();
 
-    this.buildingService.updateBuilding(this.data.idProject, building)
+    this.buildingService.updateBuilding(building)
       .then(
         data => {
           this.spinnerService.hide();
-          this.dialogRef.close('updated');
+          this.dialogRef.close({
+            action: 'updated',
+
+            type : this.form.get('name').value
+          });
           console.log(building);
           console.log(data);
         },
+
         err => {
           console.log(err);
           this.dialogRef.close('error');
         }
-      )
+      );
   }
 
   cancel() {
