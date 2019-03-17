@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Add Floor</h2>
+
+<mat-dialog-content [formGroup]="form">
+    <table>
+      <tr>
+        <td>
+          <mat-form-field class="input">
+            <input matInput placeholder="Number of your corridor"
+                   [errorStateMatcher]="matcher" formControlName="name" name="name" required>
+            <mat-error *ngIf="form.get('name').hasError('required')">
+              Number of your corridor is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="form.get('name').hasError('maxlength')">
+              Please, give a corridor number with 50 number maximum
+            </mat-error>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button mat-primary" (click)="save()">Add</button>
+  <button class="mat-raised-button" (click)="close()">Cancel</button>
+</mat-dialog-actions>

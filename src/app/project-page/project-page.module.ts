@@ -60,7 +60,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   entryComponents: [
     CreateBuildingEntityDialogComponent,
-    CreateFloorEntityDialogComponent
+    CreateFloorEntityDialogComponent,
+    CreateCorridorEntityDialogComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

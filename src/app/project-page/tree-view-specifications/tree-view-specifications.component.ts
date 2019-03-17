@@ -15,6 +15,8 @@ import { Actuator } from 'src/app/shared/_models/Actuator';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { CreateBuildingEntityDialogComponent } from './create-building-entity-dialog/create-building-entity-dialog.component';
 import { CreateFloorEntityDialogComponent } from './create-floor-entity-dialog/create-floor-entity-dialog.component'
+import { CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component'
+
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -346,7 +348,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Corridors': {
-        console.log('ccc');
+        this.openCreationCorridorDialog(node1);
         break;
       }
       case 'Spaces': {
@@ -462,6 +464,26 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     };
 
   const dialogRef = this.dialog.open(CreateBuildingEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if(data === 'added'){
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+  openCreationCorridorDialog(node: FileNode){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+    };
+
+  const dialogRef = this.dialog.open(CreateCorridorEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
