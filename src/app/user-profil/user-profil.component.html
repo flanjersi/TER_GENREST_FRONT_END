@@ -1,11 +1,27 @@
-<header style="height: 10%;">
+<header>
   <app-menu-profil></app-menu-profil>
 </header>
 
-<div *ngIf="isLoaded" class="container-fluid" style="height: 85%;">
-  <app-show-projects [projects]="user.projects"></app-show-projects>
+<br>
+
+<div *ngIf="isLoaded" class="profil mt-3 h-auto">
+  <!--Grid row-->
+  <div class="row h-100 w-100">
+    <!--Grid column-->
+    <div class="col-xl-1 col-lg-1"></div>
+
+    <div class="col-xl-4 col-lg-4 col-md-12 col-12 mr-xl-0 mr-lg-0 ml-3 mr-3 mb-5">
+      <!--User profil component -->
+      <app-show-profil [user]="user" class="h-100"></app-show-profil>
+    </div>
+
+    <div class="col-xl-6 col-lg-6 col-md-12 col-12 ml-xl-0 ml-lg-0 ml-3 mr-3 mb-5">
+      <app-show-projects class="h-100" [projects]="user.projects"></app-show-projects>
+    </div>
+  </div>
+  <!--Grid row-->
 </div>
 
-<footer class="my-auto text-center align-middle white-text" style="height: 5%; background-color: #00227a">
+<footer class="my-auto text-center align-middle white-text" style="background-color: #00227a">
   AMU 2018-2019
 </footer>

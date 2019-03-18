@@ -1,29 +1,45 @@
 
-<div class="container">
-  <div class="row">
-    <div class="col-4 my-auto">
-      <form>
-        <mat-form-field class="input">
-          <input matInput placeholder="Search project" [(ngModel)]="searchProject" (input)="filterProject()" name="projectName">
-        </mat-form-field>
-      </form>
-    </div>
-    <div class="col-4 my-auto">
-      <button mat-raised-button (click)="openCreationProjectDialog()" color="primary">Add project</button>
-    </div>
-  </div>
+<!--Card-->
+<mdb-card class="h-100">
+  <mdb-card-body class="pt-0">
+    <div class="row my-auto" style="height: 50px">
+      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 my-auto mat-title">
+        <div class="d-inline-block">Projects</div>
+        <button mat-icon-button (click)="openCreationProjectDialog()">
+          <mat-icon>add_box</mat-icon>
+        </button>
+      </div>
 
-  <div class="row">
-    <div class="col-12">
-      <mat-list>
-        <h3 mat-subheader>Projects</h3>
-        <app-show-project *ngFor="let project of projectsFiltered; let last = last" [project]="project" [isLast]="last" (updatedProject)="refreshProjects($event)" (deletedProject)="refreshProjects($event)">
-        </app-show-project>
+      <div class="col-xl-8 col-lg-8 col-md-8 my-auto justify-content-end d-none d-md-flex">
+        <form>
+          <mat-form-field class="input">
+            <input matInput placeholder="Search project" [(ngModel)]="searchProject" (input)="filterProject()" name="projectName">
+          </mat-form-field>
+        </form>
+      </div>
 
-      </mat-list>
     </div>
-  </div>
-</div>
 
+    <hr>
+
+    <div class="row h-auto">
+      <div class="col-12" *ngIf="projectsFiltered.length > 0">
+        <mat-list>
+          <app-show-project *ngFor="let project of showedProjects; let last = last" [project]="project" [isLast]="last" (updatedProject)="refreshProjects($event)" (deletedProject)="refreshProjects($event)">
+          </app-show-project>
+        </mat-list>
+        <mat-paginator [length]="length"
+                       [pageSize]="pageSize"
+                       (page)="paginatorEvent($event)">
+        </mat-paginator>
+
+      </div>
+      <div class="col-12" *ngIf="projectsFiltered.length === 0">
+        No Project.
+      </div>
+    </div>
+
+  </mdb-card-body>
+</mdb-card>
 
 

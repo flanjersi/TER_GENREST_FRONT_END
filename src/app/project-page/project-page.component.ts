@@ -10,6 +10,10 @@ import {Actuator} from "../shared/_models/Actuator";
 import {Sensor} from "../shared/_models/Sensor";
 import {MotherRoom} from "../shared/_models/MotherRoom";
 import {Room} from "../shared/_models/Room";
+import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
+import {MatDialog, MatDialogConfig} from "@angular/material";
+import {CreateProjectDialogComponent} from "../user-profil/show-projects/create-project-dialog/create-project-dialog.component";
+import {DeployDialogComponent} from "./deploy-dialog/deploy-dialog.component";
 
 @Component({
   selector: 'app-project-page',
@@ -27,31 +31,34 @@ export class ProjectPageComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private projectService: ProjectService,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private spinnerService: Ng4LoadingSpinnerService,
+              private dialog: MatDialog) {
     this.isLoaded = false;
 /*
 
     if(!cookieService.get('user'))
       this.router.navigateByUrl('/auth');
 
+
     this.route.queryParams.subscribe(params => {
-        console.log(params);
+      if(!params['id']){
+        this.router.navigateByUrl('/profil');
+        return;
+      }
 
-        if(!params['id']){
-          this.router.navigateByUrl('/profil');
-          return;
-        }
-
-        this.projectService.getById(parseInt(params['id']))
-          .subscribe(
-            data => {
-              this.project = data;
-              this.simulateProject();
-            },
-            err => {},
+      this.spinnerService.show();
+      this.projectService.getById(parseInt(params['id']))
+        .subscribe(
+          data => {
+            this.project = data;
+          },
+          err => {},
           () => {
-              this.isLoaded = true;
+            this.spinnerService.hide();
+            this.isLoaded = true;
           });
+<<<<<<< HEAD
       })*/
       this.simulateProject();
       this.isLoaded = true;
@@ -104,72 +111,11 @@ export class ProjectPageComponent implements OnInit {
 
     motherRoom.id = 1;
     motherRoom.type = "motherRoom";
-
-    motherRoom.corridors = [];
-
-    let corridor2 = new Corridor();
-
-    corridor2.id = 2;
-    corridor2.numberCorridor = 1;
-
-    corridor2.actuators = [];
-
-    let actuator2 = new Actuator();
-    actuator2.id = 2;
-    actuator2.brand = "test";
-
-    corridor2.actuators.push(actuator2);
-
-    corridor2.sensors = [];
-
-    let sensor2 = new Sensor();
-    sensor2.id = 2;
-    sensor2.brand = "test";
-
-    corridor2.sensors.push(sensor2);
-
-    motherRoom.corridors.push(corridor2);
-
-    motherRoom.rooms = [];
-
-    let room = new Room();
-    room.id = 1;
-    room.type = "test";
-
-    room.actuators = [];
-    room.sensors = [];
-
-    let actuator3 = new Actuator();
-    actuator3.id = 3;
-    actuator3.brand = "test";
-
-    let sensor3 = new Sensor();
-    sensor3.id = 2;
-    sensor3.brand = "test";
-
-    room.actuators.push(actuator3);
-    room.sensors.push(sensor3);
-
-    motherRoom.rooms.push(room);
-
-    floor.motherRooms.push(motherRoom);
-
-    building.floors.push(floor);
-
-    // CREATION BAT 2
-    let building2 = new Building();
-    building2.id = 2;
-    building2.type = "Batiment 2";
-    building2.floors = [];
-
-    this.project.buildings.push(building);
-    this.project.buildings.push(building2);
   }
 
   ngOnInit(){}
-  
+
   refreshProject(){
-    console.log("test");
     this.projectService.getById(this.project.id)
       .subscribe(
         data => {
@@ -185,4 +131,14 @@ export class ProjectPageComponent implements OnInit {
     this.entitySpec = event;
   }
 
+
+  openDeployDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    const dialogRef = this.dialog.open(DeployDialogComponent, dialogConfig);
+
+  }
 }

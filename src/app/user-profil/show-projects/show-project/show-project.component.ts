@@ -82,4 +82,5 @@ export class ShowProjectComponent implements OnInit {
     this.router.navigate(['project'], navigationExtras);
   }
 
+
 }
