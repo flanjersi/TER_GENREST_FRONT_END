@@ -35,28 +35,28 @@ export class ProjectPageComponent implements OnInit {
 
 
     this.route.queryParams.subscribe(params => {
-        if(!params['id']){
-          this.router.navigateByUrl('/profil');
-          return;
-        }
+      if(!params['id']){
+        this.router.navigateByUrl('/profil');
+        return;
+      }
 
-        this.spinnerService.show();
-        this.projectService.getById(parseInt(params['id']))
-          .subscribe(
-            data => {
-              this.project = data;
-            },
-            err => {},
+      this.spinnerService.show();
+      this.projectService.getById(parseInt(params['id']))
+        .subscribe(
+          data => {
+            this.project = data;
+          },
+          err => {},
           () => {
-              this.spinnerService.hide();
-              this.isLoaded = true;
+            this.spinnerService.hide();
+            this.isLoaded = true;
           });
 
-      });
+    });
   }
 
   ngOnInit(){}
-  
+
   refreshProject(){
     this.projectService.getById(this.project.id)
       .subscribe(

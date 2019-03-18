@@ -22,9 +22,10 @@ export class CorridorService {
   }
 
 
-  updateCorridor(idMotherRoom: number, corridor: Corridor) {
+
+  updateCorridor(corridor: Corridor) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/corridors/' + corridor.id, JSON.stringify(corridor), {headers: {'Content-Type': 'application/json'}})
+      this.http.post('api/corridors/' + corridor.id, JSON.stringify(corridor.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Corridor(data));
@@ -37,7 +38,7 @@ export class CorridorService {
 
   createCorridorInFloor(idFloor: number, corridor: Corridor) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/floors/' + idFloor + '/corridors', JSON.stringify(corridor), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/floors/' + idFloor + '/corridors', JSON.stringify(corridor.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Corridor(data));
@@ -73,7 +74,6 @@ export class CorridorService {
           });
     });
   }
-
   deleteCorridorInMotherRoom(idMotherRoom: number, idCorridor: number) {
     return new Promise((resolve, reject) => {
       this.http.delete('api/motherRooms/' + idMotherRoom + '/corridors/' + idCorridor)

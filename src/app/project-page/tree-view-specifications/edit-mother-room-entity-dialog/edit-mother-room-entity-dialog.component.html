@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Edit MotherRoom</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <table>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="Number of your MotherRoom"
+                 [errorStateMatcher]="matcher" formControlName="numberMotherRoom" name="numberMotherRoom" required>
+          <mat-error *ngIf="form.get('numberMotherRoom').hasError('required')">
+            Number of your MotherRoom is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('NumberMotherRoom').hasError('maxlength')">
+            Please, give a MotherRoom number with 50 number maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="Type of your MotherRoom"
+                 [errorStateMatcher]="matcher" formControlName="type" name="type" required>
+          <mat-error *ngIf="form.get('type').hasError('required')">
+            Type od your MotherRoom is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('type').hasError('minlength')">
+            Please, give a type with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('type').hasError('maxlength')">
+            Please, give a type with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button mat-primary" (click)="editMotherRoom()">Update</button>
+  <button class="mat-raised-button" (click)="close()">Cancel</button>
+</mat-dialog-actions>

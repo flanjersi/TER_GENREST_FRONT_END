@@ -1,0 +1,130 @@
+<h2 mat-dialog-title>Edit sensor</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <table>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="latitude of your sensor"
+                 [errorStateMatcher]="matcher" formControlName="latitude" name="latitude" required>
+          <mat-error *ngIf="form.get('name').hasError('required')">
+            latitude of your sensor is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('latitude').hasError('minlength')">
+            Please, give a latitude with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('latitude').hasError('maxlength')">
+            Please, give a latitude with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="longitude of your sensor"
+                 [errorStateMatcher]="matcher" formControlName="longitude" name="longitude" required>
+          <mat-error *ngIf="form.get('longitude').hasError('required')">
+            longitude of your sensor is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('longitude').hasError('minlength')">
+            Please, give a longitude with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('longitude').hasError('maxlength')">
+            Please, give a longitude with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="model of your sensor"
+                 [errorStateMatcher]="matcher" formControlName="model" name="model" required>
+          <mat-error *ngIf="form.get('model').hasError('required')">
+            model of your sensor is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('model').hasError('minlength')">
+            Please, give a model with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('model').hasError('maxlength')">
+            Please, give a model with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="brand of your sensor"
+                 [errorStateMatcher]="matcher" formControlName="brand" name="brand" required>
+          <mat-error *ngIf="form.get('brand').hasError('required')">
+            brand of your sensor is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('brand').hasError('minlength')">
+            Please, give a brand with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('brand').hasError('maxlength')">
+            Please, give a brand with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="reference of your sensor"
+                 [errorStateMatcher]="matcher" formControlName="reference" name="reference" required>
+          <mat-error *ngIf="form.get('reference').hasError('required')">
+            reference of your sensor is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('reference').hasError('minlength')">
+            Please, give a reference with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('reference').hasError('maxlength')">
+            Please, give a reference with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="state of your sensor"
+                 [errorStateMatcher]="matcher" formControlName="state" name="state" required>
+          <mat-error *ngIf="form.get('state').hasError('required')">
+            state of your sensor is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('state').hasError('minlength')">
+            Please, give a state with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('state').hasError('maxlength')">
+            Please, give a state with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="uniData of your sensor"
+                 [errorStateMatcher]="matcher" formControlName="uniData" name="uniData" required>
+          <mat-error *ngIf="form.get('uniData').hasError('required')">
+            uniData of your sensor is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('uniData').hasError('minlength')">
+            Please, give a uniData with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('uniData').hasError('maxlength')">
+            Please, give a uniData with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button mat-primary" (click)="editSensor()">Update</button>
+  <button class="mat-raised-button" (click)="cancel()">Cancel</button>
+</mat-dialog-actions>

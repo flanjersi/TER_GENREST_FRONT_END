@@ -1,3 +1,4 @@
+
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
@@ -13,7 +14,15 @@ import {Sensor} from 'src/app/shared/_models/Sensor';
 import {Actuator} from 'src/app/shared/_models/Actuator';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {CreateBuildingEntityDialogComponent} from './create-building-entity-dialog/create-building-entity-dialog.component';
-import {CreateFloorEntityDialogComponent} from './create-floor-entity-dialog/create-floor-entity-dialog.component'
+import {CreateFloorEntityDialogComponent} from './create-floor-entity-dialog/create-floor-entity-dialog.component';
+import {EditBuildingEntityDialogComponent} from './edit-building-entity-dialog/edit-building-entity-dialog.component';
+import {EditFloorEntityDialogComponent} from './edit-floor-entity-dialog/edit-floor-entity-dialog.component';
+import {EditCorridorEntityDialogComponent} from './edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
+import {EditMotherRoomEntityDialogComponent} from './edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
+import {EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room-entity-dialog.component';
+import {CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component';
+import {EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
+import {EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -43,21 +52,6 @@ export interface FlatTreeNode {
 })
 export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
-  @Input()
-  private project: Project;
-
-  @Output() addedSpecification: EventEmitter<number>;
-  
-
-  /** The TreeControl controls the expand/collapse state of tree nodes.  */
-  treeControl: FlatTreeControl<FlatTreeNode>;
-
-  /** The TreeFlattener is used to generate the flat list of items from hierarchical data. */
-  treeFlattener: MatTreeFlattener<FileNode, FlatTreeNode>;
-
-  /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
-  dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
-
   constructor(private dialog: MatDialog) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
@@ -68,14 +62,36 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
 
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    this.updated = new EventEmitter();
   }
+
+
+  @Input()
+  private project: Project;
+
+
+
+  @Output() addedSpecification: EventEmitter<number>;
+  @Output() updated: EventEmitter<number>;
+
+
+
+  /** The TreeControl controls the expand/collapse state of tree nodes.  */
+  treeControl: FlatTreeControl<FlatTreeNode>;
+
+  /** The TreeFlattener is used to generate the flat list of items from hierarchical data. */
+  treeFlattener: MatTreeFlattener<FileNode, FlatTreeNode>;
+
+  /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
+  dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
+
 
   ngOnInit() {
     this.dataSource.data = this.generateData(this.project);
   }
 
-  ngOnChanges(){
-    let expandablesNodes = this.getAllExpandableNodes();
+  ngOnChanges() {
+    const expandablesNodes = this.getAllExpandableNodes();
 
     this.dataSource.data = this.generateData(this.project);
 
@@ -88,12 +104,12 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       id: node.id,
       name: node.name,
       type: node.type,
-      level: level,
+      level,
       expandable: !!node.children
     };
   }
 
-  generateData(project: Project): any{
+  generateData(project: Project): any {
 
     const data = [];
 
@@ -103,15 +119,15 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     };
 
-    if(project.buildings && project.buildings.length > 0){
+    if (project.buildings && project.buildings.length > 0) {
       const buildings = [];
 
-      for(let index in project.buildings.sort((b1, b2) => b1.type.localeCompare(b2.type))){
-        let building = this.generateBuilding(project.buildings[index]);
+      for (const index in project.buildings.sort((b1, b2) => b1.type.localeCompare(b2.type))) {
+        const building = this.generateBuilding(project.buildings[index]);
         buildings.push(building);
       }
 
-      root['children'] = buildings;
+      root.children = buildings;
     }
 
 
@@ -120,12 +136,14 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     return data;
   }
 
-  generateBuilding(building: Building) : any{  
-    let buildingData = {};
 
-    buildingData['id'] = building.id;
-    buildingData['name'] = building.type;
-    buildingData['type'] = 'building';
+
+  generateBuilding(building: Building): any {
+    const buildingData = {};
+
+    buildingData.id = building.id;
+    buildingData.name = building.type;
+    buildingData.type = 'building';
 
     const floorInterfaceData = [{
       id: building.id,
@@ -133,28 +151,28 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     }];
 
-    if(building.floors && building.floors.length > 0){
+    if (building.floors && building.floors.length > 0) {
       const floors = [];
 
-      for(let index in building.floors.sort((f1, f2) => f1.floorNumber - f2.floorNumber)){
-        let floor = this.generateFloor(building.floors[index]);
+      for (const index in building.floors.sort((f1, f2) => f1.floorNumber - f2.floorNumber)) {
+        const floor = this.generateFloor(building.floors[index]);
         floors.push(floor);
       }
 
-      floorInterfaceData[0]['children'] = floors;
+      floorInterfaceData[0].children = floors;
     }
 
-    buildingData['children'] = floorInterfaceData;
+    buildingData.children = floorInterfaceData;
 
     return buildingData;
   }
 
-  generateFloor(floor: Floor): any{
-    let floorData = {};
+  generateFloor(floor: Floor): any {
+    const floorData = {};
 
-    floorData['id'] = floor.id;
-    floorData['name'] = 'Floor '+ floor.floorNumber;
-    floorData['type'] = 'floor';
+    floorData.id = floor.id;
+    floorData.name = 'Floor ' + floor.floorNumber;
+    floorData.type = 'floor';
 
     const corridorInterfaceData = {
       id: floor.id,
@@ -162,15 +180,15 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     };
 
-    if(floor.corridors && floor.corridors.length > 0){
+    if (floor.corridors && floor.corridors.length > 0) {
       const corridors = [];
 
-      for(let index in floor.corridors.sort((c1, c2) => c1.numberCorridor - c2.numberCorridor)){
-        let corridor = this.generateCorridor(floor.corridors[index]);
+      for (const index in floor.corridors.sort((c1, c2) => c1.numberCorridor - c2.numberCorridor)) {
+        const corridor = this.generateCorridor(floor.corridors[index]);
         corridors.push(corridor);
       }
 
-      corridorInterfaceData['children'] = corridors;
+      corridorInterfaceData.children = corridors;
     }
 
     const motherRoomInterfaceData = {
@@ -180,30 +198,30 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     };
 
 
-    if(floor.motherRooms && floor.motherRooms.length > 0){
+    if (floor.motherRooms && floor.motherRooms.length > 0) {
       const motherRooms = [];
 
-      for(let index in floor.motherRooms.sort((mr1, mr2) => mr1.type.localeCompare(mr2.type))){
-        let motherRoom = this.generateMotherRoom(floor.motherRooms[index]);
+      for (const index in floor.motherRooms.sort((mr1, mr2) => mr1.type.localeCompare(mr2.type))) {
+        const motherRoom = this.generateMotherRoom(floor.motherRooms[index]);
         motherRooms.push(motherRoom);
       }
 
-      motherRoomInterfaceData['children'] = motherRooms;
+      motherRoomInterfaceData.children = motherRooms;
     }
 
-    floorData['children'] = [corridorInterfaceData, motherRoomInterfaceData];
+    floorData.children = [corridorInterfaceData, motherRoomInterfaceData];
 
     return floorData;
 
   }
 
-  generateMotherRoom(motherRoom: MotherRoom): any{
-    
-    let motherRoomsData = {};
+  generateMotherRoom(motherRoom: MotherRoom): any {
 
-    motherRoomsData['id'] = motherRoom.id;
-    motherRoomsData['name'] = motherRoom.type;
-    motherRoomsData['type'] = 'motherRoom';
+    const motherRoomsData = {};
+
+    motherRoomsData.id = motherRoom.id;
+    motherRoomsData.name = motherRoom.type;
+    motherRoomsData.type = 'motherRoom';
 
     const corridorInterfaceData = {
       id: motherRoom.id,
@@ -211,15 +229,15 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     };
 
-    if(motherRoom.corridors && motherRoom.corridors.length > 0){
+    if (motherRoom.corridors && motherRoom.corridors.length > 0) {
       const corridors = [];
 
-      for(let index in motherRoom.corridors.sort((c1, c2) => c1.numberCorridor - c2.numberCorridor)){
-        let corridor = this.generateCorridor(motherRoom.corridors[index]);
+      for (const index in motherRoom.corridors.sort((c1, c2) => c1.numberCorridor - c2.numberCorridor)) {
+        const corridor = this.generateCorridor(motherRoom.corridors[index]);
         corridors.push(corridor);
       }
 
-      corridorInterfaceData['children'] = corridors;
+      corridorInterfaceData.children = corridors;
     }
 
     const roomsInterfaceData = {
@@ -228,28 +246,28 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     };
 
-    if(motherRoom.rooms && motherRoom.rooms.length > 0){
+    if (motherRoom.rooms && motherRoom.rooms.length > 0) {
 
       const roomsTab = [];
-      for(let index in motherRoom.rooms.sort((r1, r2) => r1.type.localeCompare(r2.type))){
-        let room = this.generateRoom(motherRoom.rooms[index]);
+      for (const index in motherRoom.rooms.sort((r1, r2) => r1.type.localeCompare(r2.type))) {
+        const room = this.generateRoom(motherRoom.rooms[index]);
         roomsTab.push(room);
       }
 
-      roomsInterfaceData['children'] = roomsTab;
+      roomsInterfaceData.children = roomsTab;
     }
 
-    motherRoomsData['children'] = [corridorInterfaceData, roomsInterfaceData];
+    motherRoomsData.children = [corridorInterfaceData, roomsInterfaceData];
 
     return motherRoomsData;
   }
 
-  generateCorridor(corridor: Corridor): any{
-    let corridorData = {};
+  generateCorridor(corridor: Corridor): any {
+    const corridorData = {};
 
-    corridorData['id'] = corridor.id;
-    corridorData['name'] = 'Corridor '+ corridor.numberCorridor;
-    corridorData['type'] = 'corridor';
+    corridorData.id = corridor.id;
+    corridorData.name = 'Corridor ' + corridor.numberCorridor;
+    corridorData.type = 'corridor';
 
     const sensorInterfaceData = {
       id: corridor.id,
@@ -258,15 +276,15 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     };
 
 
-    if(corridor.sensors && corridor.sensors.length > 0){
+    if (corridor.sensors && corridor.sensors.length > 0) {
       const sensors = [];
 
-      for(let index in corridor.sensors.sort((s1, s2) => s1.id - s2.id)){
-        let room = this.generateSensor(corridor.sensors[index]);
+      for (const index in corridor.sensors.sort((s1, s2) => s1.id - s2.id)) {
+        const room = this.generateSensor(corridor.sensors[index]);
         sensors.push(room);
       }
 
-      sensorInterfaceData['children'] = sensors;
+      sensorInterfaceData.children = sensors;
     }
 
 
@@ -277,27 +295,27 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     };
 
 
-    if(corridor.actuators && corridor.actuators.length > 0){
+    if (corridor.actuators && corridor.actuators.length > 0) {
       const actuators = [];
 
-      for(let index in corridor.actuators.sort((s1, s2) => s1.id - s2.id)){
-        let actuator = this.generateActuator(corridor.actuators[index]);
+      for (const index in corridor.actuators.sort((s1, s2) => s1.id - s2.id)) {
+        const actuator = this.generateActuator(corridor.actuators[index]);
         actuators.push(actuator);
       }
 
-      actuatorInterfaceData['children'] = actuators;
+      actuatorInterfaceData.children = actuators;
     }
 
-    corridorData['children'] = [sensorInterfaceData, actuatorInterfaceData];
+    corridorData.children = [sensorInterfaceData, actuatorInterfaceData];
     return corridorData;
   }
 
-  generateRoom(room: Room): any{
-    let roomData = {};
+  generateRoom(room: Room): any {
+    const roomData = {};
 
-    roomData['id'] = room.id;
-    roomData['name'] = 'Room '+ room.numberRoom;
-    roomData['type'] = 'room';
+    roomData.id = room.id;
+    roomData.name = 'Room ' + room.numberRoom;
+    roomData.type = 'room';
 
 
 
@@ -307,14 +325,14 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     };
 
-    if(room.sensors && room.sensors.length > 0){
+    if (room.sensors && room.sensors.length > 0) {
       const sensors = [];
 
-      for(let index in room.sensors.sort((s1, s2) => s1.id - s2.id)){
-        let sensor = this.generateSensor(room.sensors[index]);
+      for (const index in room.sensors.sort((s1, s2) => s1.id - s2.id)) {
+        const sensor = this.generateSensor(room.sensors[index]);
         sensors.push(sensor);
       }
-      sensorInterfaceData['children'] = sensors;
+      sensorInterfaceData.children = sensors;
     }
 
     const actuatorInterfaceData = {
@@ -323,46 +341,80 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     };
 
-    if(room.actuators && room.actuators.length > 0){
+    if (room.actuators && room.actuators.length > 0) {
       const actuators = [];
 
-      for(let index in room.actuators.sort((s1, s2) => s1.id - s2.id)){
-        let actuator = this.generateActuator(room.actuators[index]);
+      for (const index in room.actuators.sort((s1, s2) => s1.id - s2.id)) {
+        const actuator = this.generateActuator(room.actuators[index]);
         actuators.push(actuator);
       }
 
-      actuatorInterfaceData['children'] = actuators;
+      actuatorInterfaceData.children = actuators;
     }
 
 
-    roomData['children'] = [sensorInterfaceData, actuatorInterfaceData];
+    roomData.children = [sensorInterfaceData, actuatorInterfaceData];
 
     return roomData;
 
   }
 
-  generateSensor(sensor: Sensor) : any{  
-    let sensorData = {};
+  generateSensor(sensor: Sensor): any {
+    const sensorData = {};
 
-    sensorData['id'] = sensor.id;
-    sensorData['name'] = 'Sensor '+ sensor.reference;
-    sensorData['type'] = 'sensor';
+    sensorData.id = sensor.id;
+    sensorData.name = 'Sensor ' + sensor.reference;
+    sensorData.type = 'sensor';
 
     return sensorData;
   }
+  /* generateActuator(edit-actuator-entity-dialog: Actuator): any {
+    const actutorData = {};
 
-  generateActuator(actuator: Actuator) : any{  
-    let actutorData = {};
-
-    actutorData['id'] = actuator.id;
-    actutorData['name'] = 'Actuator '+ actuator.reference;
-    actutorData['type'] = 'Actuator';
+    actutorData.id = edit-actuator-entity-dialog.id;
+    actutorData.name = 'Actuator ' + edit-actuator-entity-dialog.reference;
+    actutorData.type = 'Actuator';
 
     return actutorData;
   }
 
-  add(node1){
-    switch(node1.name){
+*/
+  update(node1) {
+    console.log(node1);
+    switch (node1.type) {
+      case 'building': {
+        this.openUpdateBuildingDialog(node1);
+        break;
+      }
+      case 'floor': {
+        this.openUpdateFloorDialog(node1);
+        break;
+      }
+      case 'corridor': {
+        this.openUpdateCorridorDialog(node1);
+        break;
+      }
+      case'motherRoom': {
+        this.openUpdateMotherRoomDialog(node1);
+        break;
+      }
+      case'room': {
+        this.openUpdateRoomDialog(node1);
+        break;
+      }
+      case'actuator' : {
+        this.openUpdateActuatorDialog(node1);
+        break;
+      }
+      case'sensor' : {
+        this.openUpdateSensorDialog(node1);
+        break;
+      }
+    }
+  }
+
+  add(node1) {
+    switch (node1.name) {
       case 'Buildings': {
         this.openCreationBuildingDialog(node1);
         break;
@@ -372,7 +424,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Corridors': {
-        console.log('ccc');
+        this.openCreationCorridorDialog(node1);
         break;
       }
       case 'Spaces': {
@@ -394,66 +446,65 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       default: break;
     }
 
-    let nodeFinded = this.searchRoot(node1);
+    const nodeFinded = this.searchRoot(node1);
 
-    let expandablesNodes = this.getAllExpandableNodes();
+    const expandablesNodes = this.getAllExpandableNodes();
 
     this.dataSource.data = this.generateData(this.project);
 
     this.openOlderExpandableNodes(expandablesNodes);
   }
+  /* searchFlatTreeNode(node: FileNode) : FlatTreeNode {
+     //A MODIFIER
+     let array = this.treeControl.dataNodes;
 
- /* searchFlatTreeNode(node: FileNode) : FlatTreeNode {
-    //A MODIFIER
-    let array = this.treeControl.dataNodes;
+     for(let index in array){
+       let flatTreeNode = array[index];
+       if(flatTreeNode.id === node.id && flatTreeNode.type === node.type)
+         return flatTreeNode;
+     }
+     return null;
+   }*/
 
-    for(let index in array){
-      let flatTreeNode = array[index];
-      if(flatTreeNode.id === node.id && flatTreeNode.type === node.type)
-        return flatTreeNode;
-    }
-    return null;
-  }*/
-
-  getAllExpandableNodes() : FlatTreeNode[] {
+  getAllExpandableNodes(): FlatTreeNode[] {
     const nodesExpanded = [];
 
-    for(let index in this.treeControl.dataNodes){
-      let node = this.treeControl.dataNodes[index];
+    for (const index in this.treeControl.dataNodes) {
+      const node = this.treeControl.dataNodes[index];
 
-      if(this.treeControl.isExpanded(node)){
+      if (this.treeControl.isExpanded(node)) {
         nodesExpanded.push(node);
       }
     }
 
     return nodesExpanded;
   }
+  openOlderExpandableNodes(expandablesNodes: FlatTreeNode[]) {
+    for (const index in expandablesNodes) {
+      const oldNode = expandablesNodes[index];
 
-  openOlderExpandableNodes(expandablesNodes : FlatTreeNode[]) {
-    for(let index in expandablesNodes){
-      let oldNode = expandablesNodes[index];
+      for (const indexNewNode in this.treeControl.dataNodes) {
+        const newNode = this.treeControl.dataNodes[indexNewNode];
 
-      for(let indexNewNode in this.treeControl.dataNodes){
-        let newNode = this.treeControl.dataNodes[indexNewNode];
-
-        if(oldNode.id === newNode.id
+        if (oldNode.id === newNode.id
           && oldNode.name === newNode.name
           && oldNode.type === newNode.type
-          && oldNode.level === newNode.level){
+          && oldNode.level === newNode.level) {
           this.treeControl.expand(newNode);
         }
       }
     }
   }
 
-  searchRoot(node : FileNode) : FileNode{
-    let array = this.dataSource.data;
+  searchRoot(node: FileNode): FileNode {
+    const array = this.dataSource.data;
 
-    for(let index in array){
-      let nodeFinded = this.search(node, array[index]);
-      
-      if(nodeFinded != null)
+    for (const index in array) {
+      const nodeFinded = this.search(node, array[index]);
+
+      if (nodeFinded != null) {
         return nodeFinded;
+      }
     }
 
     return null;
@@ -462,19 +513,22 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   /**
    * Le chemin est composé avec des '/' entre chaque elements
    */
-  search(node: FileNode, currentNode:FileNode): FileNode{
-    
-    if(node.id == currentNode.id && node.type == currentNode.type && node.name == currentNode.name)
+  search(node: FileNode, currentNode: FileNode): FileNode {
+
+    if (node.id == currentNode.id && node.type == currentNode.type && node.name == currentNode.name) {
       return currentNode;
+    }
 
-    if(!currentNode.children)
+    if (!currentNode.children) {
       return null;
+    }
 
-    for(let indexNode in currentNode.children){
-      let nodeFinded = this.search(node, currentNode.children[indexNode]);
-      
-      if(nodeFinded != null)
+    for (const indexNode in currentNode.children) {
+      const nodeFinded = this.search(node, currentNode.children[indexNode]);
+
+      if (nodeFinded != null) {
         return nodeFinded;
+      }
     }
 
     return null;
@@ -502,7 +556,28 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     return observableOf(node.children);
   }
 
-  openCreationBuildingDialog(node: FileNode){
+
+  openCreationFloorDialog(node: FileNode) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id
+    };
+
+    const dialogRef = this.dialog.open(CreateFloorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'added') {
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+  openCreationBuildingDialog(node: FileNode) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -511,18 +586,18 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       id: node.id,
     };
 
-  const dialogRef = this.dialog.open(CreateBuildingEntityDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(CreateBuildingEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
-        if(data === 'added'){
+        if (data === 'added') {
           this.addedSpecification.emit(1);
         }
       }
     );
   }
 
-  openCreationFloorDialog(node: FileNode){
+  openCreationCorridorDialog(node: FileNode) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -530,12 +605,12 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     dialogConfig.data = {
       id: node.id,
     };
-    
-  const dialogRef = this.dialog.open(CreateFloorEntityDialogComponent, dialogConfig);
+
+    const dialogRef = this.dialog.open(CreateCorridorEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
-        if(data === 'added'){
+        if (data === 'added') {
           this.addedSpecification.emit(1);
         }
       }
@@ -543,4 +618,142 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
 
+  openUpdateBuildingDialog(node) {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      idProject: this.project.id,
+      idBuilding: node.id
+    };
+
+    const dialogRef = this.dialog.open(EditBuildingEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'updated') {
+          this.updated.emit(1);
+        }
+      });
+  }
+
+  openUpdateFloorDialog(node) {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      idFloor: node.id
+    };
+
+    const dialogRef = this.dialog.open(EditFloorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'updated') {
+          this.updated.emit(1);
+        }
+      });
+  }
+
+  openUpdateCorridorDialog(node) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      idCorridor: node.id
+    };
+
+    const dialogRef = this.dialog.open(EditCorridorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'updated') {
+          this.updated.emit(1);
+        }
+      });
+  }
+
+  openUpdateMotherRoomDialog(node) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      idMotherRoom: node.id
+    };
+
+    const dialogRef = this.dialog.open(EditMotherRoomEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'updated') {
+          this.updated.emit(1);
+        }
+      });
+  }
+
+  openUpdateRoomDialog(node) {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      idRoom: node.id
+    };
+
+    const dialogRef = this.dialog.open(EditRoomEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'updated') {
+          this.updated.emit(1);
+        }
+      });
+  }
+
+  openUpdateActuatorDialog(node) {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      idActuator: node.id
+    };
+
+    const dialogRef = this.dialog.open(EditActuatorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'updated') {
+          this.updated.emit(1);
+        }
+      });
+  }
+
+  openUpdateSensorDialog(node) {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      idSensor: node.id
+    };
+
+    const dialogRef = this.dialog.open(EditSensorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'updated') {
+          this.updated.emit(1);
+        }
+      });
+  }
 }
