@@ -21,12 +21,13 @@ export class CorridorService {
     });
   }
 
-  createActuator(id: number, actuator: Actuator) {
+
+  updateCorridor(idMotherRoom: number, corridor: Corridor) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/corridors/' + id + '/actuators', JSON.stringify(actuator), {headers: {'Content-Type': 'application/json'}})
+      this.http.post('api/corridors/' + corridor.id, JSON.stringify(corridor), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
-            resolve(new Actuator(data));
+            resolve(new Corridor(data));
           },
           msg => {
             reject(msg);
@@ -34,12 +35,12 @@ export class CorridorService {
     });
   }
 
-  updateActuator(idCorridor: number, actuator: Actuator) {
+  createCorridorInFloor(idFloor: number, corridor: Corridor) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/corridors/' + idCorridor + '/corridors/' + actuator.id, JSON.stringify(actuator), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/floors/' + idFloor + '/corridors', JSON.stringify(corridor), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
-            resolve(new Actuator(data));
+            resolve(new Corridor(data));
           },
           msg => {
             reject(msg);
@@ -47,9 +48,9 @@ export class CorridorService {
     });
   }
 
-  deleteActuator(idCorridors: number, idActuator: number) {
+  deleteCorridorInFloor(idFloor: number, idCorridor: number) {
     return new Promise((resolve, reject) => {
-      this.http.delete('api/corridors/' + idCorridors + '/actuators/' + idActuator)
+      this.http.delete('api/floors/' + idFloor + '/corridors/' + idCorridor)
         .toPromise()
         .then(data => {
             resolve(data);
@@ -60,12 +61,12 @@ export class CorridorService {
     });
   }
 
-  createSensor(id: number, sensor: Sensor) {
+  createCorridorInMotherRoom(idMotherRoom: number, corridor: Corridor) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/corridors/' + id + '/sensors', JSON.stringify(sensor), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/motherRooms/' + idMotherRoom + '/corridors', JSON.stringify(corridor), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
-            resolve(new Sensor(data));
+            resolve(new Corridor(data));
           },
           msg => {
             reject(msg);
@@ -73,22 +74,9 @@ export class CorridorService {
     });
   }
 
-  updateSensor(idCorridor: number, sensor: Sensor) {
+  deleteCorridorInMotherRoom(idMotherRoom: number, idCorridor: number) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/corridors/' + idCorridor + '/sensors/' + sensor.id, JSON.stringify(sensor), {headers: {'Content-Type': 'application/json'}})
-        .toPromise()
-        .then(data => {
-            resolve(new Sensor(data));
-          },
-          msg => {
-            reject(msg);
-          });
-    });
-  }
-
-  deleteSensor(idCorridors: number, idSensor: number) {
-    return new Promise((resolve, reject) => {
-      this.http.delete('api/corridors/' + idCorridors + '/sensors/' + idSensor)
+      this.http.delete('api/motherRooms/' + idMotherRoom + '/corridors/' + idCorridor)
         .toPromise()
         .then(data => {
             resolve(data);

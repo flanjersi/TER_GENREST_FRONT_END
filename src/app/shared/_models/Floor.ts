@@ -35,9 +35,40 @@ export  class  Floor {
 
 
     }
-
-
   }
+
+    toJson()  {
+      return {
+        id: new Number(this.id),
+        floorNumber: new Number(this.floorNumber),
+        corridors: this.corridorsToJson(),
+        motherRooms: this.motherRoomstoJson()
+      } 
+    }
+
+    corridorsToJson() {
+      const corridorsJson = [];
+
+      if(!this.corridors) corridorsJson;
+  
+      for(let index in this.corridors){
+        corridorsJson.push(this.corridors[index]);
+      }
+
+      return corridorsJson;
+    }
+
+    motherRoomstoJson() {
+      const motherRoomsJson = [];
+
+      if(!this.motherRooms) motherRoomsJson;
+  
+      for(let index in this.motherRooms){
+        motherRoomsJson.push(this.motherRooms[index]);
+      }
+
+      return motherRoomsJson;
+    }
 
 
 }
