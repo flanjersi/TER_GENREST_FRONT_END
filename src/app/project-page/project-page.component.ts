@@ -22,6 +22,8 @@ export class ProjectPageComponent implements OnInit {
   private project: Project;
   private isLoaded: boolean;
 
+  private entitySpec: any;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private projectService: ProjectService,
@@ -177,6 +179,10 @@ export class ProjectPageComponent implements OnInit {
         () => {
         }
       );
+  }
+
+  updateEntitySpec(event){
+    this.entitySpec = event;
   }
 
 }

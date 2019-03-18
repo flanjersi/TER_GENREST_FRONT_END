@@ -18,9 +18,7 @@
           {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
         </mat-icon>
       </button>
-  
-  
-  
+
       <mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">
           {{ node.type === 'interface' ? 'folder' : 'description' }}
       </mat-icon>
@@ -39,6 +37,11 @@
           edit
       </mat-icon>
       </button>
+      <button mat-icon-button *ngIf="node.type != 'interface'" (click)="showSpec(node)">
+        <mat-icon class="mat-icon-rtl-mirror">
+          search
+        </mat-icon>
+      </button>
       <button mat-icon-button *ngIf="node.type === 'interface'" (click)="add(node)">
         <mat-icon class="mat-icon-rtl-mirror">
           add_circle_outline
@@ -54,4 +57,3 @@
     </mat-tree-node>
   
   </mat-tree>
-  

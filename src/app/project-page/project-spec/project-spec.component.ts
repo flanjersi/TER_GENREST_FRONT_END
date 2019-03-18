@@ -1,4 +1,6 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
+
+
 
 @Component({
   selector: 'app-project-spec',
@@ -6,19 +8,13 @@ import {Component, OnInit, Output} from '@angular/core';
   styleUrls: ['./project-spec.component.scss']
 })
 export class ProjectSpecComponent implements OnInit {
-  @Output()
-  datas: any;
+
+
+  @Input()
+  public datas: any;
+
   constructor() {
 
-    this.datas = {
-      name: 'Composant1',
-      id: '1',
-      latitude: '200',
-      longitude: '300',
-      type: 'Actuator',
-      reference: 'Ref1',
-      model: 'Model1'
-    };
   }
 
   ngOnInit() {

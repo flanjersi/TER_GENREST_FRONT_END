@@ -1,19 +1,26 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { of as observableOf, generate } from 'rxjs';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { DataSource } from '@angular/cdk/table';
-import { Project } from 'src/app/shared/_models/Project';
-import { Building } from 'src/app/shared/_models/Building';
-import { Floor } from 'src/app/shared/_models/Floor';
-import { Corridor } from 'src/app/shared/_models/Corridor';
-import { MotherRoom } from 'src/app/shared/_models/MotherRoom';
-import { Room } from 'src/app/shared/_models/Room';
-import { Sensor } from 'src/app/shared/_models/Sensor';
-import { Actuator } from 'src/app/shared/_models/Actuator';
-import { MatDialogConfig, MatDialog } from '@angular/material';
-import { CreateBuildingEntityDialogComponent } from './create-building-entity-dialog/create-building-entity-dialog.component';
+import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import {of as observableOf} from 'rxjs';
+import {FlatTreeControl} from '@angular/cdk/tree';
+import {Project} from 'src/app/shared/_models/Project';
+import {Building} from 'src/app/shared/_models/Building';
+import {Floor} from 'src/app/shared/_models/Floor';
+import {Corridor} from 'src/app/shared/_models/Corridor';
+import {MotherRoom} from 'src/app/shared/_models/MotherRoom';
+import {Room} from 'src/app/shared/_models/Room';
+import {Sensor} from 'src/app/shared/_models/Sensor';
+import {Actuator} from 'src/app/shared/_models/Actuator';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {CreateBuildingEntityDialogComponent} from './create-building-entity-dialog/create-building-entity-dialog.component';
+import {RoomService} from '../../shared/_services/room.service';
+import {HttpClient} from "@angular/common/http";
+import {any} from "codelyzer/util/function";
+import {BuildingService} from "../../shared/_services/building.service";
+import {MotherRoomService} from "../../shared/_services/mother-room.service";
+import {CorridorService} from "../../shared/_services/corridor.service";
+import {ActuatorService} from "../../shared/_services/actuator.service";
+import {SensorService} from "../../shared/_services/sensor.service";
 
 
 /** File node data with possible child nodes. */
@@ -48,7 +55,16 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   private project: Project;
 
   @Output() addedSpecification: EventEmitter<number>;
-  
+
+  @Output() showEntity: EventEmitter<any>;
+
+  private building: Building;
+
+  private httpClient: HttpClient;
+
+
+
+
 
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
   treeControl: FlatTreeControl<FlatTreeNode>;
@@ -59,24 +75,56 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog, private roomService: RoomService, private buildingService: BuildingService,
+              private motherRoomService: MotherRoomService, private actuatorService: ActuatorService, private corridorService: CorridorService,
+              private  sensorService: SensorService
+  ) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
       this.isExpandable,
       this.getChildren);
     this.addedSpecification = new EventEmitter();
+    this.showEntity = new EventEmitter();
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+
   }
 
+  showSpec(node) {
+    if (node.type === 'building') {
+      console.log(node.type);
+      this.showEntity.emit(this.buildingService.getById(node.id));
+    }
+    if (node.type === 'floor') {
+      console.log(node.type);
+      this.showEntity.emit(this.roomService.getById(node.id));
+    }
+    if (node.type === 'motherRoom') {
+      console.log(node.type);
+      this.showEntity.emit(this.motherRoomService.getById(node.id));
+    }
+    if (node.type === 'corridor') {
+      console.log(node.type);
+      this.showEntity.emit(this.corridorService.getById(node.id));
+    }
+    if (node.type === 'sensor') {
+      console.log(node.type);
+      this.showEntity.emit(this.sensorService.getById(node.id));
+    }
+    if (node.type === 'actuator') {
+      console.log(node.type);
+      this.showEntity.emit(this.actuatorService.getById(node.id));
+    }
+
+  }
   ngOnInit() {
     console.log(this.project);
     this.dataSource.data = this.generateData(this.project);
   }
 
   ngOnChanges(){
-    this.dataSource.data = this.generateData(this.project);    
+    this.dataSource.data = this.generateData(this.project);
   }
 
   /** Transform the data to something the tree can read. */

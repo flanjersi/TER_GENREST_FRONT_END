@@ -19,6 +19,8 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { TreeViewSpecificationsComponent } from './tree-view-specifications/tree-view-specifications.component';
 import { CreateBuildingEntityDialogComponent } from './tree-view-specifications/create-building-entity-dialog/create-building-entity-dialog.component';
 import { ProjectSpecComponent } from './project-spec/project-spec.component';
+// @ts-ignore
+import { ProjectSpecDialogComponent } from './project-spec/project-spec-dialog/project-spec-dialog.component';
 
 
 
@@ -39,7 +41,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
      GraphSpecComponent,
      CreateBuildingEntityDialogComponent,
      TreeViewSpecificationsComponent,
-    ProjectSpecComponent
+    ProjectSpecComponent,
     ],
   imports: [
     SharedModule.forRoot(),
