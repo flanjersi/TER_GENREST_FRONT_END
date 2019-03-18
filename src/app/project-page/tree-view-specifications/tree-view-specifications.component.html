@@ -1,5 +1,4 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
     <div class="tree-node row w-100">
       <div class="col-6 my-auto">
@@ -26,6 +25,12 @@
         <button mat-icon-button *ngIf="node.type != 'interface'" (click)="add(node)">
           <mat-icon class="mat-icon-rtl-mirror">
             delete_outline
+          </mat-icon>
+        </button>
+
+        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="showSpec(node)">
+          <mat-icon class="mat-icon-rtl-mirror">
+            search
           </mat-icon>
         </button>
       </div>
@@ -67,6 +72,12 @@
         <button mat-icon-button *ngIf="node.type != 'interface'" (click)="remove(node)">
           <mat-icon class="mat-icon-rtl-mirror">
             delete_outline
+          </mat-icon>
+        </button>
+
+        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="showSpec(node)">
+          <mat-icon class="mat-icon-rtl-mirror">
+            search
           </mat-icon>
         </button>
       </div>
