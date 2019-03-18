@@ -1,0 +1,79 @@
+<h2 mat-dialog-title>Edit building</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <table>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="Name of your building"
+                 [errorStateMatcher]="matcher" formControlName="name" name="name" required>
+          <mat-error *ngIf="form.get('name').hasError('required')">
+            Name of your building is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('name').hasError('minlength')">
+            Please, give a name with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('name').hasError('maxlength')">
+            Please, give a name with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="Country of your building"
+                 [errorStateMatcher]="matcher" formControlName="country" name="country" required>
+          <mat-error *ngIf="form.get('country').hasError('required')">
+            Country of your building is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('country').hasError('minlength')">
+            Please, give a country with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('country').hasError('maxlength')">
+            Please, give a country with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="City of your building"
+                 [errorStateMatcher]="matcher" formControlName="city" name="city" required>
+          <mat-error *ngIf="form.get('city').hasError('required')">
+            City of your building is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('city').hasError('minlength')">
+            Please, give a city with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('city').hasError('maxlength')">
+            Please, give a city with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <input matInput placeholder="Street of your building"
+                 [errorStateMatcher]="matcher" formControlName="street" name="street" required>
+          <mat-error *ngIf="form.get('street').hasError('required')">
+            Street of your building is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="form.get('street').hasError('minlength')">
+            Please, give a street with 2 letters minimum
+          </mat-error>
+          <mat-error *ngIf="form.get('street').hasError('maxlength')">
+            Please, give a street with 50 letters maximum
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button mat-primary" (click)="editBuilding()">Update</button>
+  <button class="mat-raised-button" (click)="cancel()">Cancel</button>
+</mat-dialog-actions>

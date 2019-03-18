@@ -33,16 +33,41 @@ export  class  Corridor {
           this.actuators.push( new Actuator(actuator));
 
         });
-
       }
+    }
+  }
 
+  toJson()  {
+    return {
+      id: new Number(this.id),
+      numberCorridor: new Number(this.numberCorridor),
+      sensors: this.sensorsToJson(),
+      actuators: this.actuatorstoJson()
+    } 
+  }
 
+  sensorsToJson() {
+    const sensorsJson = [];
 
+    if(!this.sensors) sensorsJson;
+
+    for(let index in this.sensors){
+      sensorsJson.push(this.sensors[index]);
     }
 
+    return sensorsJson;
+  }
 
+  actuatorstoJson() {
+    const actuatorsJson = [];
 
+    if(!this.actuators) actuatorsJson;
 
+    for(let index in this.actuators){
+      actuatorsJson.push(this.actuators[index]);
+    }
+
+    return actuatorsJson;
   }
 
 

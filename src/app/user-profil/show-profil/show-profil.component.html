@@ -1,36 +1,29 @@
 
-<div *ngIf="isLoaded">
+<!--Card-->
+<mdb-card>
+  <!--Avatar-->
+  <div class="avatar mx-auto">
+    <!--  <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2831%29.jpg" class="rounded-circle"> -->
+  </div>
 
-      <!--Card-->
-      <mdb-card class="testimonial-card">
-        <!--Bacground color-->
-        <div class="card-up aqua-gradient">
-        </div>
+  <mdb-card-body>
+    <!--Name-->
+    <mdb-card-title>
+      <h4>Profile Information</h4>
+    </mdb-card-title>
+    <hr>
+    <p>
+      <label> First name : </label> {{user.firstName}} <br/>
+      <label> Last name : </label> {{user.lastName}}  <br/>
+      <label> Email : </label> {{user.email}} <br/>
 
-        <!--Avatar-->
-        <div class="avatar mx-auto">
-          <!--  <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2831%29.jpg" class="rounded-circle"> -->
-        </div>
+    </p>
 
-        <mdb-card-body>
-          <!--Name-->
-          <mdb-card-title>
-            <h4>Profile Information</h4>
-          </mdb-card-title>
-          <hr>
-          <p>
-            <label> FirstName : </label> {{user.firstName}} <br/>
-            <label> LastName : </label>{{user.lastName}}  <br/>
-            <label> Email : </label> {{user.email}} <br/>
+    <button type="button" class="btn btn-default btn-large" (click)="openEditUserDialog()" >
+      <span class="glyphicon glyphicon-edit"></span> Edit
+    </button>
 
-          </p>
+  </mdb-card-body>
+</mdb-card>
+<!--/.Card-->
 
-          <button type="button" class="btn btn-default btn-large" (click)="openEditUserDialog()" >
-            <span class="glyphicon glyphicon-edit"></span> Edit
-          </button>
-
-        </mdb-card-body>
-      </mdb-card>
-      <!--/.Card-->
-
-    </div>

@@ -17,7 +17,13 @@ import { CreateBuildingEntityDialogComponent } from './create-building-entity-di
 import { BuildingService } from '../../shared/_services/building.service';
 import { FloorService } from '../../shared/_services/floor.service';
 import {CreateFloorEntityDialogComponent} from './create-floor-entity-dialog/create-floor-entity-dialog.component'
-import {CookieService} from "ngx-cookie-service";
+import {CookieService} from 'ngx-cookie-service';
+import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
+import {CorridorService} from "../../shared/_services/corridor.service";
+import {MotherRoomService} from "../../shared/_services/mother-room.service";
+import {RoomService} from "../../shared/_services/room.service";
+import {SensorService} from "../../shared/_services/sensor.service";
+import {ActuatorService} from "../../shared/_services/actuator.service";
 
 
 /** File node data with possible child nodes. */
@@ -67,7 +73,11 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
   constructor(private dialog: MatDialog, private buildingService: BuildingService,
-              private cookieService: CookieService) {
+              private cookieService: CookieService, private floorService: FloorService,
+              private corridorService: CorridorService, private motherRoomService: MotherRoomService,
+              private roomService: RoomService, private actuatorService: ActuatorService,
+              private sensorService: SensorService,
+              private spinnerService: Ng4LoadingSpinnerService) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
@@ -350,7 +360,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
   }
 
-  generateSensor(sensor: Sensor) : any{  
+  generateSensor(sensor: Sensor) : any{
     let sensorData = {};
 
     sensorData['id'] = sensor.id;
@@ -429,32 +439,22 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 */
 
   searchParent(node: any): FlatTreeNode {
-   // const currentLevel = this.getLevel(node);
-    const currentLevel = node.level;
-
-    if (currentLevel < 1) {
+    let level = node.level-1;
+    if (level < 1) {
       return null;
     }
-
     const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
 
     for (let i = startIndex; i >= 0; i--) {
       const currentNode = this.treeControl.dataNodes[i];
-
-     // if ( currentNode.id === node.id &&  currentNode.type === node.type)
-      // comparer à un type non interface
-        if(currentNode.level === (currentLevel - 1) && currentNode.type.valueOf() != 'interface') {
-          return currentNode;
+      const currentLevel = currentNode.level;
+       console.log(currentNode);
+      if (currentLevel === (level - 1) ){
+        console.log('LA');
+        return currentNode;
       }
-     /* if (this.getLevel(currentNode) < currentLevel) {
-        currentLevel = this.getLevel(currentNode) - 1;
-        if (this.getLevel(currentNode) == currentLevel) {
-          //this.treeControl.collapse(currentNode);
-        }
-        return this.treeControl.dataNodes[i-1];
-        if (this.getLevel(currentNode) === 0) {
-          break; }
-      }*/
+      if (this.getLevel(currentNode) === 0) {
+        break; }
     }
   }
 
@@ -587,49 +587,115 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
   remove(node1) {
     console.log(node1);
-
+    const parent = this.searchParent(node1);
     switch (node1.type) {
       case 'building': {
-        let idNode = node1.id;
-        // parentID
-        // let parentID = searchFlatTreeNode(node1);
-
-       // console.log(searchFlatTreeNode(node1).data);
-        this.buildingService.deleteBuilding(parseInt(this.cookieService.get('user')), node1.v )
+        this.spinnerService.show();
+        this.buildingService.deleteBuilding(this.project.id, node1.id )
           .then( data => {
-              //this.spinnerService.hide();
-          },
+              this.spinnerService.hide();
+              location.reload();
+            },
             err => {
-
             });
         break;
       }
       case 'floor': {
-        console.log('fff');
+        this.spinnerService.show();
+        this.floorService.deleteFloor(parent.id, node1.id )
+          .then( data => {
+              this.spinnerService.hide();
+              location.reload();
+            },
+            err => {}
+            );
 
-        //console.log(this.searchParent(node1).level);
-        console.log(this.searchParent(node1));
-
         break;
       }
-      case 'Corridors': {
-        console.log('ccc');
+      case 'corridor': {
+        if(parent.type === 'floor')
+        {
+          this.corridorService.deleteCorridorInFloor(parent.id, node1.id )
+            .then( data => {
+                this.spinnerService.hide();
+                location.reload();
+              },
+              err => {}
+            );
+        }
+        if(parent.type === 'space')
+        {
+          this.corridorService.deleteCorridorInMotherRoom(parent.id, node1.id )
+            .then( data => {
+                this.spinnerService.hide();
+                location.reload();
+              },
+              err => {}
+            );
+        }
         break;
       }
-      case 'Spaces': {
-        console.log('sss');
+      case 'space': {
+        this.motherRoomService.deleteMotherRoom(parent.id, node1.id )
+          .then( data => {
+              this.spinnerService.hide();
+              location.reload();
+            },
+            err => {}
+          );
         break;
       }
-      case 'Rooms': {
-        console.log('rrrr');
+      case 'room': {
+        this.roomService.deleteRoom(parent.id, node1.id )
+          .then( data => {
+              this.spinnerService.hide();
+              location.reload();
+            },
+            err => {}
+          );
         break;
       }
-      case 'Sensors': {
-        console.log('sssenn');
+      case 'sensor': {
+        if(parent.type === 'corridor') {
+          this.sensorService.deleteSensorInCorridor(parent.id, node1.id )
+            .then( data => {
+                this.spinnerService.hide();
+                location.reload();
+              },
+              err => {}
+            );
+        }
+        if(parent.type === 'room') {
+          this.sensorService.deleteSensorInRoom(parent.id, node1.id )
+            .then( data => {
+                this.spinnerService.hide();
+                location.reload();
+              },
+              err => {}
+            );
+        }
         break;
       }
       case 'Actuators': {
-        console.log('aaa');
+        if(parent.type === 'corridor')
+        {
+          this.actuatorService.deleteActuatorInCorridor(parent.id, node1.id )
+            .then( data => {
+                this.spinnerService.hide();
+                location.reload();
+              },
+              err => {}
+            );
+        }
+        if(parent.type === 'room') {
+          this.sensorService.deleteSensorInRoom(parent.id, node1.id )
+            .then( data => {
+                this.spinnerService.hide();
+                location.reload();
+              },
+              err => {}
+            );
+        }
         break;
       }
       default:

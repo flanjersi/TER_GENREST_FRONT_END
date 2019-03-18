@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="col-6 my-auto d-flex justify-content-end">
-        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="add(node)">
+        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="update(node)">
           <mat-icon class="mat-icon-rtl-mirror">
             edit
           </mat-icon>
@@ -41,6 +41,7 @@
 
         <div *ngIf="node.type != 'interface'" class="my-auto d-inline-block mat-subheading-1">
           {{node.name}}
+
         </div>
 
         <button mat-icon-button matTreeNodeToggle
@@ -52,7 +53,7 @@
       </div>
 
       <div class="col-6 my-auto d-flex justify-content-end">
-        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="add(node)">
+        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="update(node)">
           <mat-icon class="mat-icon-rtl-mirror">
             edit
           </mat-icon>
@@ -71,5 +72,4 @@
       </div>
     </div>
   </mat-tree-node>
-
 </mat-tree>
