@@ -14,8 +14,12 @@ import { Sensor } from 'src/app/shared/_models/Sensor';
 import { Actuator } from 'src/app/shared/_models/Actuator';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { CreateBuildingEntityDialogComponent } from './create-building-entity-dialog/create-building-entity-dialog.component';
-import { CreateFloorEntityDialogComponent } from './create-floor-entity-dialog/create-floor-entity-dialog.component'
-import { CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component'
+import { CreateFloorEntityDialogComponent } from './create-floor-entity-dialog/create-floor-entity-dialog.component';
+import { CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component';
+import { CreateMotherRoomEntityDialogComponent } from './create-mother-room-entity-dialog/create-mother-room-entity-dialog.component';
+import { CreateRoomEntityDialogComponent } from './create-room-entity-dialog/create-room-entity-dialog.component';
+import { CreateSensorEntityDialogComponent} from './create-sensor-entity-dialog/create-sensor-entity-dialog.component';
+import { CreateActuatorEntityDialogComponent } from './create-actuator-entity-dialog/create-actuator-entity-dialog.component';
 
 
 /** File node data with possible child nodes. */
@@ -69,7 +73,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       this.getChildren);
     this.addedSpecification = new EventEmitter();
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
-
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   }
 
@@ -116,7 +119,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
       root['children'] = buildings;
     }
-
 
     data.push(root);
 
@@ -181,7 +183,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       name: 'Spaces',
       type: 'interface'
     };
-
 
     if(floor.motherRooms && floor.motherRooms.length > 0){
       const motherRooms = [];
@@ -260,7 +261,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     };
 
-
     if(corridor.sensors && corridor.sensors.length > 0){
       const sensors = [];
 
@@ -272,13 +272,11 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       sensorInterfaceData['children'] = sensors;
     }
 
-
     const actuatorInterfaceData = {
       id: corridor.id,
       name: 'Actuators',
       type: 'interface'
     };
-
 
     if(corridor.actuators && corridor.actuators.length > 0){
       const actuators = [];
@@ -301,8 +299,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     roomData['id'] = room.id;
     roomData['name'] = 'Room '+ room.numberRoom;
     roomData['type'] = 'room';
-
-
 
     const sensorInterfaceData = {
       id: room.id,
@@ -375,28 +371,50 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Corridors': {
-        this.openCreationCorridorDialog(node1);
+        let array = this.treeControl.dataNodes;
+        
+        for(let index in array){
+          let flatTreeNode = array[index];
+          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
+            this.openCreationCorridorDialog(node1,flatTreeNode.level);
+            break;
+          }
+        }
         break;
       }
       case 'Spaces': {
-        console.log('sss');
+        this.openCreationMotherRoomDialog(node1);
         break;
       }
       case 'Rooms': {
-        console.log('rrrr');
+       this.openCreationRoomDialog(node1);
         break;
       }
       case 'Sensors': {
-        console.log('sssenn');
-        break;
+        let array = this.treeControl.dataNodes;
+        for(let index in array){
+          let flatTreeNode = array[index];
+          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
+            this.openCreationSensorDialog(node1,flatTreeNode.level);
+            break;
+          }
+        }
+        break;      
       }
       case 'Actuators': {
-        console.log('aaa');
-        break;
+        let array = this.treeControl.dataNodes;
+        for(let index in array){
+          let flatTreeNode = array[index];
+          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
+            this.openCreationActuatorDialog(node1,flatTreeNode.level);
+            break;
+          }
+        }
+        break;        
       }
       default: break;
     }
-
+    
     let nodeFinded = this.searchRoot(node1);
 
     let expandablesNodes = this.getAllExpandableNodes();
@@ -405,18 +423,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     this.openOlderExpandableNodes(expandablesNodes);
   }
-
- /* searchFlatTreeNode(node: FileNode) : FlatTreeNode {
-    //A MODIFIER
-    let array = this.treeControl.dataNodes;
-
-    for(let index in array){
-      let flatTreeNode = array[index];
-      if(flatTreeNode.id === node.id && flatTreeNode.type === node.type)
-        return flatTreeNode;
-    }
-    return null;
-  }*/
 
   getAllExpandableNodes() : FlatTreeNode[] {
     const nodesExpanded = [];
@@ -525,13 +531,15 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     );
   }
 
-  openCreationCorridorDialog(node: FileNode){
+  openCreationCorridorDialog(node: FileNode,levelFlatTreeNode){
+
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       id: node.id,
+      level: levelFlatTreeNode,
     };
 
   const dialogRef = this.dialog.open(CreateCorridorEntityDialogComponent, dialogConfig);
@@ -555,6 +563,87 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     };
     
   const dialogRef = this.dialog.open(CreateFloorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if(data === 'added'){
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+  openCreationMotherRoomDialog(node: FileNode){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+    };
+  
+  const dialogRef = this.dialog.open(CreateMotherRoomEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if(data === 'added'){
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+  openCreationRoomDialog(node: FileNode){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+    };
+  
+  const dialogRef = this.dialog.open(CreateRoomEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if(data === 'added'){
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+  openCreationSensorDialog(node: FileNode,levelFlatTreeNode){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+      level: levelFlatTreeNode,
+    };
+
+  const dialogRef = this.dialog.open(CreateSensorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if(data === 'added'){
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+  openCreationActuatorDialog(node: FileNode,levelFlatTreeNode){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+      level: levelFlatTreeNode,
+    };
+
+  const dialogRef = this.dialog.open(CreateActuatorEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {

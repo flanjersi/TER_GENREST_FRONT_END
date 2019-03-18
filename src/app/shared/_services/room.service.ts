@@ -22,7 +22,7 @@ export class RoomService {
 
   createRoom(id: number, room: Room) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/motherRooms/' + id + '/rooms', JSON.stringify(Room), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/motherRooms/' + id + '/rooms', JSON.stringify(room.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Room(data));

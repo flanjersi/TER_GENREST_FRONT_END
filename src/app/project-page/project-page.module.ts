@@ -19,7 +19,11 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { TreeViewSpecificationsComponent } from './tree-view-specifications/tree-view-specifications.component';
 import { CreateBuildingEntityDialogComponent } from './tree-view-specifications/create-building-entity-dialog/create-building-entity-dialog.component';
 import { CreateFloorEntityDialogComponent } from './tree-view-specifications/create-floor-entity-dialog/create-floor-entity-dialog.component';
-//import { CreateCorridorEntityDialogComponent } from './tree-view-specifications/create-corridor-entity-dialog/create-corridor-entity-dialog.component';
+import { CreateCorridorEntityDialogComponent } from './tree-view-specifications/create-corridor-entity-dialog/create-corridor-entity-dialog.component';
+import { CreateMotherRoomEntityDialogComponent } from './tree-view-specifications/create-mother-room-entity-dialog/create-mother-room-entity-dialog.component';
+import { CreateRoomEntityDialogComponent } from './tree-view-specifications/create-room-entity-dialog/create-room-entity-dialog.component';
+import { CreateSensorEntityDialogComponent } from './tree-view-specifications/create-sensor-entity-dialog/create-sensor-entity-dialog.component';
+import { CreateActuatorEntityDialogComponent } from './tree-view-specifications/create-actuator-entity-dialog/create-actuator-entity-dialog.component';
 
 
 
@@ -40,7 +44,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
      CreateBuildingEntityDialogComponent,
      TreeViewSpecificationsComponent,
      CreateFloorEntityDialogComponent,
-     //CreateCorridorEntityDialogComponent
+     CreateCorridorEntityDialogComponent,
+     CreateMotherRoomEntityDialogComponent,
+     CreateRoomEntityDialogComponent,
+     CreateSensorEntityDialogComponent,
+     CreateActuatorEntityDialogComponent
     ],
   imports: [
     SharedModule.forRoot(),
@@ -61,7 +69,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   entryComponents: [
     CreateBuildingEntityDialogComponent,
     CreateFloorEntityDialogComponent,
-    CreateCorridorEntityDialogComponent
+    CreateCorridorEntityDialogComponent,
+    CreateMotherRoomEntityDialogComponent,
+    CreateRoomEntityDialogComponent,
+    CreateSensorEntityDialogComponent,
+    CreateActuatorEntityDialogComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
@@ -71,4 +83,4 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     }
   ]
 })
-export class ProjectPageModule { }
+export class ProjectPageModule { } 

@@ -24,4 +24,16 @@ export  class  Actuator {
     }
   }
 
+  toJson()  {
+    return {
+      id: new Number(this.id),
+      latitude: new Number(this.latitude),
+      longitude: new Number(this.longitude),
+      model: new String(this.model),
+      brand: new String(this.brand),
+      reference: new String(this.reference),
+      state: new String(this.state)
+    } 
+  }
+
 }
