@@ -430,7 +430,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       name: 'Actuators',
       type: 'interface'
     } as any;
-    
+
     if (room.actuators && room.actuators.length > 0) {
       const actuators = [];
 
@@ -990,7 +990,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         }
         break;
       }
-      case 'space': {
+      case 'motherRoom': {
         this.motherRoomService.deleteMotherRoom(parent.id, node1.id )
           .then( data => {
               this.updated.emit(1);
@@ -1027,7 +1027,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         }
         break;
       }
-      case 'Actuators': {
+      case 'actuator': {
         if(parent.type === 'corridor')
         {
           this.actuatorService.deleteActuatorInCorridor(parent.id, node1.id )
