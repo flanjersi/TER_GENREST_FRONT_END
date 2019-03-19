@@ -98,8 +98,8 @@ export class CreateSensorEntityDialogComponent implements OnInit {
     sensor.unitData = this.form.get('unitData').value;
   
     this.spinnerService.show();
-
-    if(this.data.level === 6){
+console.log(this.data);
+    if(this.data.type === "corridor"){
     this.sensorService.createSensorInCorridor(this.data.id, sensor)
           .then(
             data => {
@@ -111,9 +111,7 @@ export class CreateSensorEntityDialogComponent implements OnInit {
               this.dialogRef.close('error');
             }
           )
-  }
-
-  if(this.data.level === 8){
+  }else{
     this.sensorService.createSensorInRoom(this.data.id, sensor)
           .then(
             data => {
