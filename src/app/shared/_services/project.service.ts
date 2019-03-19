@@ -37,9 +37,9 @@ export class ProjectService {
     });
   }
 
-  updateProject(idUser: number, project: Project) {
+  updateProject(project: Project) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/users/' + idUser + '/projects/' + project.id, JSON.stringify(project), {headers: {'Content-Type': 'application/json'}})
+      this.http.post('api/projects/' + project.id, JSON.stringify(project), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Project(data));

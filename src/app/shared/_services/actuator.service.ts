@@ -8,6 +8,7 @@ import {Observable} from 'rxjs';
 export class ActuatorService {
 
   constructor(private http: HttpClient) {}
+
   getById(id: number): Observable<Actuator> {
     return new Observable<Actuator>((observer) => {
       this.http.get<any>('api/actuators/' + id)

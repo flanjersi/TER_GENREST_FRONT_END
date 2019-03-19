@@ -56,9 +56,7 @@ export class ProjectPageComponent implements OnInit {
             this.spinnerService.hide();
             this.isLoaded = true;
           });
-  })
-  //    this.simulateProject();
-  //    this.isLoaded = true;
+      });
   }
 
   simulateProject(){

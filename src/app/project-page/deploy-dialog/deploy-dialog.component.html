@@ -1,11 +1,26 @@
 <h2 mat-dialog-title>Deployement specification</h2>
 
-<mat-dialog-content [formGroup]="form">
+<mat-dialog-content *ngIf="isLoaded" [formGroup]="form">
   <table cellspacing="20px">
+    <tr>
     <tr>
       <td>
         <mat-form-field class="input">
-          <mat-select placeholder="Choose a configuration" [errorStateMatcher]="matcher" formControlName="typeConfiguration" list="configurations" name="typeConfiguration" required>
+          <mat-select (selectionChange)="selectionLanguageChanged($event)" placeholder="Choose a language" [errorStateMatcher]="matcher" formControlName="typeLanguage" list="languagesEnum" name="typeLanguage" required>
+            <mat-option *ngFor="let language of languagesEnum" [value]="language.value">
+              {{language.viewValue}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('typeLanguage').hasError('required')">
+            The language is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <mat-select (selectionChange)="selectionConfigurationChanged($event)" placeholder="Choose a configuration" [errorStateMatcher]="matcher" formControlName="typeConfiguration" list="configurations" name="typeConfiguration" required>
             <mat-option *ngFor="let configuration of configurations" [value]="configuration.value">
               {{configuration.viewValue}}
             </mat-option>
@@ -19,21 +34,7 @@
     <tr>
       <td>
         <mat-form-field class="input">
-          <mat-select placeholder="Choose a language" [errorStateMatcher]="matcher" formControlName="typeLanguage" list="languages" name="typeLanguage" required>
-            <mat-option *ngFor="let language of languages" [value]="language.value">
-              {{language.viewValue}}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="form.get('typeLanguage').hasError('required')">
-            The language is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <mat-form-field class="input">
-          <mat-select placeholder="Choose a system" [errorStateMatcher]="matcher" formControlName="typeSystem" list="systems" name="typeSystem" required>
+          <mat-select  (selectionChange)="selectionSystemChanged($event)" placeholder="Choose a system" [errorStateMatcher]="matcher" formControlName="typeSystem" list="systems" name="typeSystem" required>
             <mat-option *ngFor="let system of systems" [value]="system.value">
               {{system.viewValue}}
             </mat-option>
