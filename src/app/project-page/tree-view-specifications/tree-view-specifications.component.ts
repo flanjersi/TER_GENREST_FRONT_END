@@ -445,6 +445,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   add(node1) {
+    console.log("99999999999999999999999999999");
+    console.log(node1);
     switch (node1.name) {
       case 'Buildings': {
         this.openCreationBuildingDialog(node1);
@@ -455,16 +457,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Corridors': {
-        let array = this.treeControl.dataNodes;
-        
-        for(let index in array){
-          let flatTreeNode = array[index];
-          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
-            this.openCreationCorridorDialog(node1,flatTreeNode.level);
+        this.openCreationCorridorDialog(node1,node1.level);
             break;
-          }
-        }
-        break;
       }
       case 'Spaces': {
         this.openCreationMotherRoomDialog(node1);
@@ -475,26 +469,12 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Sensors': {
-        let array = this.treeControl.dataNodes;
-        for(let index in array){
-          let flatTreeNode = array[index];
-          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
-            this.openCreationSensorDialog(node1,flatTreeNode.level);
-            break;
-          }
-        }
-        break;      
+        this.openCreationSensorDialog(node1,node1.level);
+            break;    
       }
       case 'Actuators': {
-        let array = this.treeControl.dataNodes;
-        for(let index in array){
-          let flatTreeNode = array[index];
-          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
-            this.openCreationActuatorDialog(node1,flatTreeNode.level);
-            break;
-          }
-        }
-        break;        
+        this.openCreationActuatorDialog(node1,node1.level);
+            break;       
       }
       default: break;
     }
