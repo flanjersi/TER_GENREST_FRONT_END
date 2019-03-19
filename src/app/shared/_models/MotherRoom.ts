@@ -67,4 +67,15 @@ export  class MotherRoom {
 
     return roomsJson;
   }
+
+  toJsonShowed() : any{
+    return [
+    {
+      title: "Zone"
+    },
+    {
+      type: this.type,
+      number: this.numberMotherRoom
+    }]
+  }
 }

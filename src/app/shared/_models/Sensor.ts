@@ -40,4 +40,20 @@ export class  Sensor {
       unitData: new String(this.unitData)
     } 
   }
+
+  toJsonShowed() : any{
+    return [ {
+        title: "Sensor"
+      },
+      {
+        brand: new String(this.brand),
+        model: new String(this.model),
+        reference: new String(this.reference),
+        latitude: new Number(this.latitude),
+        longitude: new Number(this.longitude),
+        state: new String(this.state),
+        unitData: new String(this.unitData)
+      }]
+
+  }
 }

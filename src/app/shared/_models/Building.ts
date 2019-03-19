@@ -25,4 +25,18 @@ export  class Building {
 
     }
   }
+
+  toJsonShowed() : any{
+    return [
+      {
+        title: "Building"
+      },
+      {
+      type: this.type,
+      country: this.address.country,
+      city: this.address.city,
+      street: this.address.street
+    }
+    ]
+  }
 }
