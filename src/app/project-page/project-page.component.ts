@@ -35,8 +35,6 @@ export class ProjectPageComponent implements OnInit {
               private spinnerService: Ng4LoadingSpinnerService,
               private dialog: MatDialog) {
     this.isLoaded = false;
-/*
-
     if(!cookieService.get('user'))
       this.router.navigateByUrl('/auth');
 
@@ -58,10 +56,7 @@ export class ProjectPageComponent implements OnInit {
             this.spinnerService.hide();
             this.isLoaded = true;
           });
-<<<<<<< HEAD
-      })*/
-      this.simulateProject();
-      this.isLoaded = true;
+      });
   }
 
   simulateProject(){
@@ -137,6 +132,9 @@ export class ProjectPageComponent implements OnInit {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      idProject: this.project.id
+    };
 
     const dialogRef = this.dialog.open(DeployDialogComponent, dialogConfig);
 

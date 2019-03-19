@@ -9,6 +9,7 @@ import { CorridorService } from './_services/corridor.service';
 import { MotherRoomService } from './_services/mother-room.service';
 import { SensorService } from './_services/sensor.service';
 import { ActuatorService } from './_services/actuator.service';
+import {LanguageService} from "./_services/language.service";
 
 @NgModule({
   declarations: [],
@@ -28,7 +29,8 @@ export class SharedModule {
         CorridorService,
         MotherRoomService,
         SensorService,
-        ActuatorService 
+        ActuatorService,
+        LanguageService
       ]
     };
   }

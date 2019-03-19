@@ -1,36 +1,43 @@
-import {RoomService} from '../../shared/_services/room.service';
-import {HttpClient} from '@angular/common/http';
-import {BuildingService} from '../../shared/_services/building.service';
-import {FloorService} from "../../shared/_services/floor.service";
-import {MotherRoomService} from '../../shared/_services/mother-room.service';
-import {CorridorService} from '../../shared/_services/corridor.service';
-import {ActuatorService} from '../../shared/_services/actuator.service';
-import {SensorService} from '../../shared/_services/sensor.service';
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
-import {of as observableOf} from 'rxjs';
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {Project} from 'src/app/shared/_models/Project';
-import {Building} from 'src/app/shared/_models/Building';
-import {Floor} from 'src/app/shared/_models/Floor';
-import {Corridor} from 'src/app/shared/_models/Corridor';
-import {MotherRoom} from 'src/app/shared/_models/MotherRoom';
-import {Room} from 'src/app/shared/_models/Room';
-import {Sensor} from 'src/app/shared/_models/Sensor';
-import {MatDialog, MatDialogConfig} from '@angular/material';
-import {CreateBuildingEntityDialogComponent} from './create-building-entity-dialog/create-building-entity-dialog.component';
-import {CreateFloorEntityDialogComponent} from './create-floor-entity-dialog/create-floor-entity-dialog.component';
-import {EditBuildingEntityDialogComponent} from './edit-building-entity-dialog/edit-building-entity-dialog.component';
-import {EditFloorEntityDialogComponent} from './edit-floor-entity-dialog/edit-floor-entity-dialog.component';
-import {EditCorridorEntityDialogComponent} from './edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
-import {EditMotherRoomEntityDialogComponent} from './edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
-import {EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room-entity-dialog.component';
-import {CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component';
-import {EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
-import {EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { of as observableOf, generate } from 'rxjs';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { DataSource } from '@angular/cdk/table';
+import { Project } from 'src/app/shared/_models/Project';
+import { Building } from 'src/app/shared/_models/Building';
+import { Floor } from 'src/app/shared/_models/Floor';
+import { Corridor } from 'src/app/shared/_models/Corridor';
+import { MotherRoom } from 'src/app/shared/_models/MotherRoom';
+import { Room } from 'src/app/shared/_models/Room';
+import { Sensor } from 'src/app/shared/_models/Sensor';
+import { Actuator } from 'src/app/shared/_models/Actuator';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { CreateBuildingEntityDialogComponent } from './create-building-entity-dialog/create-building-entity-dialog.component';
+import { CreateFloorEntityDialogComponent } from './create-floor-entity-dialog/create-floor-entity-dialog.component';
+import { CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component';
+import { CreateMotherRoomEntityDialogComponent } from './create-mother-room-entity-dialog/create-mother-room-entity-dialog.component';
+import { CreateRoomEntityDialogComponent } from './create-room-entity-dialog/create-room-entity-dialog.component';
+import { CreateSensorEntityDialogComponent} from './create-sensor-entity-dialog/create-sensor-entity-dialog.component';
+import { CreateActuatorEntityDialogComponent } from './create-actuator-entity-dialog/create-actuator-entity-dialog.component';
+import { RoomService} from '../../shared/_services/room.service';
+import { HttpClient} from '@angular/common/http';
+import { BuildingService} from '../../shared/_services/building.service';
+import { FloorService} from '../../shared/_services/floor.service';
+import { MotherRoomService} from '../../shared/_services/mother-room.service';
+import { CorridorService} from '../../shared/_services/corridor.service';
+import { ActuatorService} from '../../shared/_services/actuator.service';
+import { SensorService} from '../../shared/_services/sensor.service';
+import { EditBuildingEntityDialogComponent} from './edit-building-entity-dialog/edit-building-entity-dialog.component';
+import { EditFloorEntityDialogComponent} from './edit-floor-entity-dialog/edit-floor-entity-dialog.component';
+import { EditCorridorEntityDialogComponent} from './edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
+import { EditMotherRoomEntityDialogComponent} from './edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
+import { EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room-entity-dialog.component';
+import { EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
+import { EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
+import { Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {DeleteConfirmDialogComponent} from "./delete-confirm-dialog/delete-confirm-dialog.component";
-import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
+
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -170,7 +177,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
       root.children = buildings;
     }
-
 
     data.push(root);
 
@@ -329,7 +335,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       sensorInterfaceData.children = sensors;
     }
 
-
     const actuatorInterfaceData = {
       id: corridor.id,
       name: 'Actuators',
@@ -341,8 +346,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       const actuators = [];
       const instance = this;
       corridor.actuators.sort((s1, s2) => s1.id - s2.id).forEach(element => {
-        // const actuator = instance.generateActuator(element);
-        // actuators.push(actuator);
+         const actuator = instance.generateActuator(element);
+         actuators.push(actuator);
       });
 
       actuatorInterfaceData.children = actuators;
@@ -358,8 +363,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     roomData.id = room.id;
     roomData.name = 'Room ' + room.numberRoom;
     roomData.type = 'room';
-
-
 
     const sensorInterfaceData = {
       id: room.id,
@@ -383,18 +386,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     } as any;
 
-    /*if (room.actuators && room.actuators.length > 0) {
-      const actuators = [];
-
-      for (const index in room.actuators.sort((s1, s2) => s1.id - s2.id)) {
-        const actuator = this.generateActuator(room.actuators[index]);
-        actuators.push(actuator);
-      }
-
-      actuatorInterfaceData.children = actuators;
-    }*/
-
-
     roomData.children = [sensorInterfaceData, actuatorInterfaceData];
 
     return roomData;
@@ -410,15 +401,16 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     return sensorData;
   }
-  /* generateActuator(edit-actuator-entity-dialog: Actuator): any {
-    const actutorData = {};
 
-    actutorData.id = edit-actuator-entity-dialog.id;
-    actutorData.name = 'Actuator ' + edit-actuator-entity-dialog.reference;
+   generateActuator(actuator: Actuator): any {
+    const actutorData = {} as any;
+
+    actutorData.id = actuator.id;
+    actutorData.name = 'Actuator ' + actuator.reference;
     actutorData.type = 'Actuator';
 
     return actutorData;
-  }*/
+  }
 
   update(node1) {
     console.log(node1);
@@ -465,29 +457,51 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Corridors': {
-        this.openCreationCorridorDialog(node1);
+        let array = this.treeControl.dataNodes;
+        
+        for(let index in array){
+          let flatTreeNode = array[index];
+          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
+            this.openCreationCorridorDialog(node1,flatTreeNode.level);
+            break;
+          }
+        }
         break;
       }
       case 'Spaces': {
-        console.log('sss');
+        this.openCreationMotherRoomDialog(node1);
         break;
       }
       case 'Rooms': {
-        console.log('rrrr');
+       this.openCreationRoomDialog(node1);
         break;
       }
       case 'Sensors': {
-        console.log('sssenn');
-        break;
+        let array = this.treeControl.dataNodes;
+        for(let index in array){
+          let flatTreeNode = array[index];
+          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
+            this.openCreationSensorDialog(node1,flatTreeNode.level);
+            break;
+          }
+        }
+        break;      
       }
       case 'Actuators': {
-        console.log('aaa');
-        break;
+        let array = this.treeControl.dataNodes;
+        for(let index in array){
+          let flatTreeNode = array[index];
+          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
+            this.openCreationActuatorDialog(node1,flatTreeNode.level);
+            break;
+          }
+        }
+        break;        
       }
       default: break;
     }
-
-    const nodeFinded = this.searchRoot(node1);
+    
+    let nodeFinded = this.searchRoot(node1);
 
     const expandablesNodes = this.getAllExpandableNodes();
 
@@ -495,17 +509,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     this.openOlderExpandableNodes(expandablesNodes);
   }
-  /* searchFlatTreeNode(node: FileNode) : FlatTreeNode {
-     //A MODIFIER
-     let array = this.treeControl.dataNodes;
-
-     for(let index in array){
-       let flatTreeNode = array[index];
-       if(flatTreeNode.id === node.id && flatTreeNode.type === node.type)
-         return flatTreeNode;
-     }
-     return null;
-   }*/
 
   getAllExpandableNodes(): FlatTreeNode[] {
     const nodesExpanded = [];
@@ -623,6 +626,26 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     return observableOf(node.children);
   }
 
+  openCreationBuildingDialog(node: FileNode){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id
+    };
+
+    const dialogRef = this.dialog.open(CreateBuildingEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'added') {
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
 
   openCreationFloorDialog(node: FileNode) {
     const dialogConfig = new MatDialogConfig();
@@ -644,16 +667,18 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     );
   }
 
-  openCreationBuildingDialog(node: FileNode) {
+  openCreationCorridorDialog(node: FileNode,levelFlatTreeNode){
+
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       id: node.id,
+      level: levelFlatTreeNode,
     };
 
-    const dialogRef = this.dialog.open(CreateBuildingEntityDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(CreateCorridorEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
@@ -664,7 +689,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     );
   }
 
-  openCreationCorridorDialog(node: FileNode) {
+  openCreationMotherRoomDialog(node: FileNode){
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -672,12 +697,73 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     dialogConfig.data = {
       id: node.id,
     };
-
-    const dialogRef = this.dialog.open(CreateCorridorEntityDialogComponent, dialogConfig);
+  
+  const dialogRef = this.dialog.open(CreateMotherRoomEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
-        if (data === 'added') {
+        if(data === 'added'){
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+  openCreationRoomDialog(node: FileNode){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+    };
+  
+  const dialogRef = this.dialog.open(CreateRoomEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if(data === 'added'){
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+  openCreationSensorDialog(node: FileNode,levelFlatTreeNode){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+      level: levelFlatTreeNode,
+    };
+
+  const dialogRef = this.dialog.open(CreateSensorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if(data === 'added'){
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+  openCreationActuatorDialog(node: FileNode,levelFlatTreeNode){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+      level: levelFlatTreeNode,
+    };
+
+  const dialogRef = this.dialog.open(CreateActuatorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if(data === 'added'){
           this.addedSpecification.emit(1);
         }
       }

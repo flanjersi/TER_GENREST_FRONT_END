@@ -8,6 +8,7 @@ import {Observable} from 'rxjs';
 export class ActuatorService {
 
   constructor(private http: HttpClient) {}
+
   getById(id: number): Observable<Actuator> {
     return new Observable<Actuator>((observer) => {
       this.http.get<any>('api/actuators/' + id)
@@ -22,7 +23,7 @@ export class ActuatorService {
 
   createActuatorInCorridor(idCorridor: number, actuator: Actuator) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/corridors/' + idCorridor + '/actuators', JSON.stringify(actuator), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/corridors/' + idCorridor + '/actuators', JSON.stringify(actuator.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Actuator(data));
@@ -61,7 +62,7 @@ export class ActuatorService {
 
   createActuatorInRoom(idRoom: number, actuator: Actuator) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/rooms/' + idRoom + '/actuators', JSON.stringify(actuator), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/rooms/' + idRoom + '/actuators', JSON.stringify(actuator.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Actuator(data));

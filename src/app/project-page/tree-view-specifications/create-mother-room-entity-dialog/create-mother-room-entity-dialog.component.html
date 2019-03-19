@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Add space</h2>
+
+<mat-dialog-content [formGroup]="form">
+    <table>
+      <tr>
+        <td>
+          <mat-form-field class="input">
+            <input matInput placeholder="Type of your space"
+                   [errorStateMatcher]="matcher" formControlName="name" name="name" required>
+            <mat-error *ngIf="form.get('name').hasError('required')">
+              Type of your space is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="form.get('name').hasError('minlength')">
+              Please, give a type with 2 letters minimum
+            </mat-error>
+            <mat-error *ngIf="form.get('name').hasError('maxlength')">
+              Please, give a type with 50 letters maximum
+            </mat-error>
+          </mat-form-field>
+        </td>
+      </tr>
+        <tr>
+            <td>
+              <mat-form-field class="input">
+                <input matInput type="number" placeholder="Number of your space"
+                       [errorStateMatcher]="matcher" formControlName="city" name="city" required>
+                <mat-error *ngIf="form.get('city').hasError('required')">
+                  Number of your space is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="form.get('city').hasError('maxlength')">
+                  Please, give a space with 50 digits maximum
+                </mat-error>
+                <mat-error *ngIf="form.get('city').hasError('incorrect')">
+                  Value already exists
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr> 
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button mat-primary" (click)="save()">Add</button>
+  <button class="mat-raised-button" (click)="close()">Cancel</button>
+</mat-dialog-actions>

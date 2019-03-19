@@ -1,11 +1,9 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
-import { ErrorStateMatcher, MatDialogRef } from '@angular/material';
-import { FormGroupDirective, NgForm, FormControl, Validators, FormBuilder, Form, FormGroup } from '@angular/forms';
+import { ErrorStateMatcher, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { FormGroupDirective, NgForm, FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { RoomService } from 'src/app/shared/_services/room.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
-import {MAT_DIALOG_DATA} from '@angular/material';
-import { FloorService } from 'src/app/shared/_services/floor.service';
-import { Floor } from 'src/app/shared/_models/Floor';
-
+import { Room } from 'src/app/shared/_models/Room';
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -17,57 +15,65 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'app-create-floor-entity-dialog',
-  templateUrl: './create-floor-entity-dialog.component.html',
-  styleUrls: ['./create-floor-entity-dialog.component.scss']
+  selector: 'app-create-room-entity-dialog',
+  templateUrl: './create-room-entity-dialog.component.html',
+  styleUrls: ['./create-room-entity-dialog.component.scss']
 })
-
-
-export class CreateFloorEntityDialogComponent implements OnInit {
-
+export class CreateRoomEntityDialogComponent implements OnInit {
+  
   @Input()
-  private idBuulding: number;
+  private idFloor: number;
 
   private form: FormGroup;
 
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              private floorService: FloorService,
-              private dialogRef: MatDialogRef<CreateFloorEntityDialogComponent>,
+              private roomService: RoomService,
+              private dialogRef: MatDialogRef<CreateRoomEntityDialogComponent>,
               private spinnerService: Ng4LoadingSpinnerService,
               private formBuilder: FormBuilder) { 
-
                 this.form = this.formBuilder.group({
                   name: new FormControl('', [
+                    Validators.required,
+                    Validators.minLength(2),
+                    Validators.maxLength(50)
+                  ]),
+                  city: new FormControl('', [
                     Validators.required,
                     Validators.maxLength(50)
                   ]),
                 });
+            
               }
 
   ngOnInit() {
   }
 
+  
   save(){
+
     this.form.get('name').markAsTouched;
+    this.form.get('city').markAsTouched;
+    
     
     if(!this.form.valid){
       return;
     }
 
-    let floor = new Floor();
-    floor.floorNumber = this.form.get('name').value;
-    
-
+    let room = new Room();
+    room.type= this.form.get('name').value;
+    room.numberRoom = this.form.get('city').value;
+  
     this.spinnerService.show();
 
-    this.floorService.createFloor(this.data.id, floor)
+    this.roomService.createRoom(this.data.id, room)
           .then(
             data => {
               this.spinnerService.hide();
               this.dialogRef.close('added');
             },
             err => {
-              this.form.get('name').setErrors({'incorrect': true});
+              this.form.get('city').setErrors({'incorrect': true});
             }
           )
   }
@@ -75,5 +81,6 @@ export class CreateFloorEntityDialogComponent implements OnInit {
   close(){
     this.dialogRef.close('cancel');
   }
+
 
 }
