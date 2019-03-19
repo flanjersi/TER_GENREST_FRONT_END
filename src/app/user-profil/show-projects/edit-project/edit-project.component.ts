@@ -68,7 +68,7 @@ export class EditProjectComponent implements OnInit {
 
     this.spinnerService.show();
 
-    this.projectService.updateProject(parseInt(this.cookieService.get('user')), project)
+    this.projectService.updateProject(project)
       .then(
         data => {
           this.spinnerService.hide();
