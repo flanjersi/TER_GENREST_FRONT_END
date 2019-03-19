@@ -20,20 +20,22 @@ import { CreateMotherRoomEntityDialogComponent } from './create-mother-room-enti
 import { CreateRoomEntityDialogComponent } from './create-room-entity-dialog/create-room-entity-dialog.component';
 import { CreateSensorEntityDialogComponent} from './create-sensor-entity-dialog/create-sensor-entity-dialog.component';
 import { CreateActuatorEntityDialogComponent } from './create-actuator-entity-dialog/create-actuator-entity-dialog.component';
-import {RoomService} from '../../shared/_services/room.service';
-import {HttpClient} from '@angular/common/http';
-import {BuildingService} from '../../shared/_services/building.service';
-import {MotherRoomService} from '../../shared/_services/mother-room.service';
-import {CorridorService} from '../../shared/_services/corridor.service';
-import {ActuatorService} from '../../shared/_services/actuator.service';
-import {SensorService} from '../../shared/_services/sensor.service';
-import {EditBuildingEntityDialogComponent} from './edit-building-entity-dialog/edit-building-entity-dialog.component';
-import {EditFloorEntityDialogComponent} from './edit-floor-entity-dialog/edit-floor-entity-dialog.component';
-import {EditCorridorEntityDialogComponent} from './edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
-import {EditMotherRoomEntityDialogComponent} from './edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
-import {EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room-entity-dialog.component';
-import {EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
-import {EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
+import { RoomService} from '../../shared/_services/room.service';
+import { HttpClient} from '@angular/common/http';
+import { BuildingService} from '../../shared/_services/building.service';
+import { FloorService} from "../../shared/_services/floor.service";
+import { MotherRoomService} from '../../shared/_services/mother-room.service';
+import { CorridorService} from '../../shared/_services/corridor.service';
+import { ActuatorService} from '../../shared/_services/actuator.service';
+import { SensorService} from '../../shared/_services/sensor.service';
+import { EditBuildingEntityDialogComponent} from './edit-building-entity-dialog/edit-building-entity-dialog.component';
+import { EditFloorEntityDialogComponent} from './edit-floor-entity-dialog/edit-floor-entity-dialog.component';
+import { EditCorridorEntityDialogComponent} from './edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
+import { EditMotherRoomEntityDialogComponent} from './edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
+import { EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room-entity-dialog.component';
+import { EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
+import { EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
+import { Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -87,7 +89,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   constructor(private dialog: MatDialog, private roomService: RoomService,
               private buildingService: BuildingService, private motherRoomService: MotherRoomService,
               private actuatorService: ActuatorService, private corridorService: CorridorService,
-              private  sensorService: SensorService
+              private  sensorService: SensorService,  private spinnerService: Ng4LoadingSpinnerService,
+              private floorService: FloorService
   ) {
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
@@ -566,6 +569,26 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     return null;
   }
 
+  searchParent(node: any): FlatTreeNode {
+    let level = node.level-1;
+    if (level < 1) {
+      return null;
+    }
+    const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
+
+    for (let i = startIndex; i >= 0; i--) {
+      const currentNode = this.treeControl.dataNodes[i];
+      const currentLevel = currentNode.level;
+      console.log(currentNode);
+      if (currentLevel === (level - 1) ){
+        console.log('LA');
+        return currentNode;
+      }
+      if (this.getLevel(currentNode) === 0) {
+        break; }
+    }
+  }
+
   /**
    * Le chemin est composé avec des '/' entre chaque elements
    */
@@ -894,5 +917,113 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
           this.updated.emit(1);
         }
       });
+  }
+
+
+  remove(node1) {
+    console.log(node1);
+    const parent = this.searchParent(node1);
+    switch (node1.type) {
+      case 'building': {
+        this.buildingService.deleteBuilding(this.project.id, node1.id )
+          .then( data => {
+              this.updated.emit(1);
+            },
+            err => {
+            });
+        break;
+      }
+      case 'floor': {
+        this.floorService.deleteFloor(parent.id, node1.id )
+          .then( data => {
+              this.updated.emit(1);
+            },
+            err => {}
+          );
+
+        break;
+      }
+      case 'corridor': {
+        if(parent.type === 'floor')
+        {
+          this.corridorService.deleteCorridorInFloor(parent.id, node1.id )
+            .then( data => {
+                this.updated.emit(1);
+              },
+              err => {}
+            );
+        }
+        if(parent.type === 'space')
+        {
+          this.corridorService.deleteCorridorInMotherRoom(parent.id, node1.id )
+            .then( data => {
+                this.updated.emit(1);
+              },
+              err => {}
+            );
+        }
+        break;
+      }
+      case 'space': {
+        this.motherRoomService.deleteMotherRoom(parent.id, node1.id )
+          .then( data => {
+              this.updated.emit(1);
+            },
+            err => {}
+          );
+        break;
+      }
+      case 'room': {
+        this.roomService.deleteRoom(parent.id, node1.id )
+          .then( data => {
+              this.updated.emit(1);
+            },
+            err => {}
+          );
+        break;
+      }
+      case 'sensor': {
+        if(parent.type === 'corridor') {
+          this.sensorService.deleteSensorInCorridor(parent.id, node1.id )
+            .then( data => {
+                this.updated.emit(1);
+              },
+              err => {}
+            );
+        }
+        if(parent.type === 'room') {
+          this.sensorService.deleteSensorInRoom(parent.id, node1.id )
+            .then( data => {
+                this.updated.emit(1);
+              },
+              err => {}
+            );
+        }
+        break;
+      }
+      case 'Actuators': {
+        if(parent.type === 'corridor')
+        {
+          this.actuatorService.deleteActuatorInCorridor(parent.id, node1.id )
+            .then( data => {
+                this.updated.emit(1);
+              },
+              err => {}
+            );
+        }
+        if(parent.type === 'room') {
+          this.sensorService.deleteSensorInRoom(parent.id, node1.id )
+            .then( data => {
+                this.updated.emit(1);
+              },
+              err => {}
+            );
+        }
+        break;
+      }
+      default:
+        break;
+    }
+
   }
 }
