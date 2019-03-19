@@ -107,75 +107,28 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
   showSpec(node) {
     if (node.type === 'building') {
-      this.buildingService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
-
+      console.log(node.type);
+      this.showEntity.emit(this.buildingService.getById(node.id));
     }
-
     if (node.type === 'floor') {
-      this.floorService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
-    }
-    if (node.type === 'room') {
-      this.roomService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
+      console.log(node.type);
+      this.showEntity.emit(this.roomService.getById(node.id));
     }
     if (node.type === 'motherRoom') {
-      this.motherRoomService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
+      console.log(node.type);
+      this.showEntity.emit(this.motherRoomService.getById(node.id));
     }
     if (node.type === 'corridor') {
-      this.corridorService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
+      console.log(node.type);
+      this.showEntity.emit(this.corridorService.getById(node.id));
     }
     if (node.type === 'sensor') {
-      this.sensorService.getById(node.id)
-      .then(
-        data => {
-          this.showEntity.emit(data);
-        },
-        err => {}
-      );
-  }
+      console.log(node.type);
+      this.showEntity.emit(this.sensorService.getById(node.id));
+    }
     if (node.type === 'actuator') {
-      this.actuatorService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
+      console.log(node.type);
+      this.showEntity.emit(this.actuatorService.getById(node.id));
     }
 
   }
@@ -435,11 +388,13 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       const actuators = [];
 
       room.actuators.sort((s1, s2) => s1.id - s2.id).forEach(element => {
-        const actuator = this.generateActuator(element);
-        actuators.push(actuator);
+        const sensor = this.generateActuator(element);
+        actuators.push(sensor);
       });
+
       actuatorInterfaceData.children = actuators;
     }
+
 
     roomData.children = [sensorInterfaceData, actuatorInterfaceData];
 
@@ -502,8 +457,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   add(node1) {
-    console.log("99999999999999999999999999999");
-    console.log(node1);
     switch (node1.name) {
       case 'Buildings': {
         this.openCreationBuildingDialog(node1);
@@ -526,11 +479,11 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Sensors': {
-        this.openCreationSensorDialog(node1,node1.level);
+        this.openCreationSensorDialog(node1,this.searchParent(node1).type);
             break;    
       }
       case 'Actuators': {
-        this.openCreationActuatorDialog(node1,node1.level);
+        this.openCreationActuatorDialog(node1,this.searchParent(node1).type);
             break;       
       }
       default: break;
@@ -596,8 +549,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   searchParent(node: any): FlatTreeNode {
-    let level = node.level-1;
-    if (level < 1) {
+    let level = node.level - 1;
+    if (level < 0) {
       return null;
     }
     const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
@@ -605,14 +558,14 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     for (let i = startIndex; i >= 0; i--) {
       const currentNode = this.treeControl.dataNodes[i];
       const currentLevel = currentNode.level;
-      console.log(currentNode);
-      if (currentLevel === (level - 1) ){
-        console.log('LA');
+      if (currentLevel === level ){
         return currentNode;
       }
       if (this.getLevel(currentNode) === 0) {
-        break; }
+        break; 
+      }
     }
+    return null;
   }
 
   /**
@@ -763,14 +716,14 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       }
     );
   }
-  openCreationSensorDialog(node: FileNode,levelFlatTreeNode){
+  openCreationSensorDialog(node: FileNode,typeFlatTreeNode){
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       id: node.id,
-      level: levelFlatTreeNode,
+      type: typeFlatTreeNode,
     };
 
   const dialogRef = this.dialog.open(CreateSensorEntityDialogComponent, dialogConfig);
@@ -784,14 +737,14 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     );
   }
 
-  openCreationActuatorDialog(node: FileNode,levelFlatTreeNode){
+  openCreationActuatorDialog(node: FileNode,typeFlatTreeNode){
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       id: node.id,
-      level: levelFlatTreeNode,
+      type: typeFlatTreeNode,
     };
 
   const dialogRef = this.dialog.open(CreateActuatorEntityDialogComponent, dialogConfig);
@@ -947,8 +900,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
 
   remove(node1) {
-    console.log(node1);
-    const parent = this.searchParent(node1);
+
+    const parent = this.searchParent(this.searchParent(node1));
     switch (node1.type) {
       case 'building': {
         this.buildingService.deleteBuilding(this.project.id, node1.id )

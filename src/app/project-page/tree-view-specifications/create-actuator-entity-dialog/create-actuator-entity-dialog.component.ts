@@ -93,7 +93,7 @@ export class CreateActuatorEntityDialogComponent implements OnInit {
   
     this.spinnerService.show();
 
-    if(this.data.level === 6){
+    if(this.data.type === "corridor"){
     this.actuatorService.createActuatorInCorridor(this.data.id, actuator)
           .then(
             data => {
@@ -105,9 +105,7 @@ export class CreateActuatorEntityDialogComponent implements OnInit {
               this.dialogRef.close('error');
             }
           )
-  }
-
-  if(this.data.level === 8){
+  }else{
     this.actuatorService.createActuatorInRoom(this.data.id, actuator)
           .then(
             data => {
