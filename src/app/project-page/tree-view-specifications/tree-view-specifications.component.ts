@@ -447,6 +447,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   add(node1) {
+    console.log("99999999999999999999999999999");
+    console.log(node1);
     switch (node1.name) {
       case 'Buildings': {
         this.openCreationBuildingDialog(node1);
@@ -457,16 +459,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Corridors': {
-        let array = this.treeControl.dataNodes;
-        
-        for(let index in array){
-          let flatTreeNode = array[index];
-          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
-            this.openCreationCorridorDialog(node1,flatTreeNode.level);
+        this.openCreationCorridorDialog(node1,node1.level);
             break;
-          }
-        }
-        break;
       }
       case 'Spaces': {
         this.openCreationMotherRoomDialog(node1);
@@ -477,26 +471,12 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Sensors': {
-        let array = this.treeControl.dataNodes;
-        for(let index in array){
-          let flatTreeNode = array[index];
-          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
-            this.openCreationSensorDialog(node1,flatTreeNode.level);
-            break;
-          }
-        }
-        break;      
+        this.openCreationSensorDialog(node1,node1.level);
+            break;    
       }
       case 'Actuators': {
-        let array = this.treeControl.dataNodes;
-        for(let index in array){
-          let flatTreeNode = array[index];
-          if(flatTreeNode.id === node1.id && flatTreeNode.type === node1.type){
-            this.openCreationActuatorDialog(node1,flatTreeNode.level);
-            break;
-          }
-        }
-        break;        
+        this.openCreationActuatorDialog(node1,node1.level);
+            break;       
       }
       default: break;
     }
@@ -912,8 +892,9 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
 
   remove(node1) {
-    console.log(node1);
-    const parent = this.searchParent(node1);
+    // get parent of parent not to take into account about interface
+    const parent = this.searchParent(this.searchParent(node1));
+
     switch (node1.type) {
       case 'building': {
         this.buildingService.deleteBuilding(this.project.id, node1.id )
@@ -943,7 +924,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
               err => {}
             );
         }
-        if(parent.type === 'space')
+        if(parent.type === 'motherRoom')
         {
           this.corridorService.deleteCorridorInMotherRoom(parent.id, node1.id )
             .then( data => {
@@ -954,7 +935,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         }
         break;
       }
-      case 'space': {
+      case 'motherRoom': {
         this.motherRoomService.deleteMotherRoom(parent.id, node1.id )
           .then( data => {
               this.updated.emit(1);
@@ -991,7 +972,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         }
         break;
       }
-      case 'Actuators': {
+      case 'Actuator': {
         if(parent.type === 'corridor')
         {
           this.actuatorService.deleteActuatorInCorridor(parent.id, node1.id )

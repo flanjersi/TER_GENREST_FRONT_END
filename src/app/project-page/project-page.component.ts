@@ -133,7 +133,8 @@ export class ProjectPageComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      idProject: this.project.id
+      idProject: this.project.id,
+      projectName: this.project.projectName
     };
 
     const dialogRef = this.dialog.open(DeployDialogComponent, dialogConfig);
