@@ -23,7 +23,7 @@ import { CreateActuatorEntityDialogComponent } from './create-actuator-entity-di
 import { RoomService} from '../../shared/_services/room.service';
 import { HttpClient} from '@angular/common/http';
 import { BuildingService} from '../../shared/_services/building.service';
-import { FloorService} from "../../shared/_services/floor.service";
+import { FloorService} from '../../shared/_services/floor.service';
 import { MotherRoomService} from '../../shared/_services/mother-room.service';
 import { CorridorService} from '../../shared/_services/corridor.service';
 import { ActuatorService} from '../../shared/_services/actuator.service';
@@ -36,6 +36,8 @@ import { EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-roo
 import { EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
 import { EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
 import { Ng4LoadingSpinnerService} from "ng4-loading-spinner";
+import {DeleteConfirmDialogComponent} from "./delete-confirm-dialog/delete-confirm-dialog.component";
+
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -90,8 +92,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
               private buildingService: BuildingService, private motherRoomService: MotherRoomService,
               private actuatorService: ActuatorService, private corridorService: CorridorService,
               private  sensorService: SensorService,  private spinnerService: Ng4LoadingSpinnerService,
-              private floorService: FloorService
-  ) {
+              private floorService: FloorService ) {
+
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
@@ -938,6 +940,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
 
   remove(node1) {
+    // get parent of parent not to take into account about interface
     const parent = this.searchParent(this.searchParent(node1));
 
     switch (node1.type) {
@@ -951,13 +954,12 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'floor': {
-        this.floorService.deleteFloor(parent.id, node1.id )
-          .then( data => {
-              this.updated.emit(1);
-            },
-            err => {}
-          );
-
+          this.floorService.deleteFloor(parent.id, node1.id )
+            .then( data => {
+                this.updated.emit(1);
+              },
+              err => {}
+            );
         break;
       }
       case 'corridor': {
@@ -970,7 +972,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
               err => {}
             );
         }
-        if(parent.type === 'space')
+        if(parent.type === 'motherRoom')
         {
           this.corridorService.deleteCorridorInMotherRoom(parent.id, node1.id )
             .then( data => {
@@ -1018,7 +1020,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         }
         break;
       }
-      case 'actuator': {
+      case 'Actuator': {
         if(parent.type === 'corridor')
         {
           this.actuatorService.deleteActuatorInCorridor(parent.id, node1.id )
@@ -1041,6 +1043,30 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       default:
         break;
     }
-
   }
+/*
+  openDeleteConfirmDialog(): string {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    this.store.dispatch(new RemoveHeroConfirmDialogOpen({
+      delete: new RemoveHeroAction({ hero: hero }),
+      text: `Are you sure you want to remove the hero <em>${hero.name}</em> from the tour of heros?`,
+      title: "Remove Hero"
+    }));
+
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'deleted') {
+          //this.addedSpecification.emit(1);
+          return 'deleted';
+        }
+      }
+    );
+    return 'cancel';
+  }
+  */
 }
