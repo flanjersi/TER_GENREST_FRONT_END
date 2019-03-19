@@ -29,6 +29,7 @@ import {EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room
 import {CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component';
 import {EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
 import {EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
+import {DeleteConfirmDialogComponent} from "./delete-confirm-dialog/delete-confirm-dialog.component";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 
 /** File node data with possible child nodes. */
@@ -84,8 +85,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
               private buildingService: BuildingService, private motherRoomService: MotherRoomService,
               private actuatorService: ActuatorService, private corridorService: CorridorService,
               private  sensorService: SensorService,  private spinnerService: Ng4LoadingSpinnerService,
-              private floorService: FloorService
-  ) {
+              private floorService: FloorService ) {
+
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
@@ -838,13 +839,12 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'floor': {
-        this.floorService.deleteFloor(parent.id, node1.id )
-          .then( data => {
-              this.updated.emit(1);
-            },
-            err => {}
-          );
-
+          this.floorService.deleteFloor(parent.id, node1.id )
+            .then( data => {
+                this.updated.emit(1);
+              },
+              err => {}
+            );
         break;
       }
       case 'corridor': {
@@ -928,6 +928,30 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       default:
         break;
     }
-
   }
+/*
+  openDeleteConfirmDialog(): string {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    this.store.dispatch(new RemoveHeroConfirmDialogOpen({
+      delete: new RemoveHeroAction({ hero: hero }),
+      text: `Are you sure you want to remove the hero <em>${hero.name}</em> from the tour of heros?`,
+      title: "Remove Hero"
+    }));
+
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'deleted') {
+          //this.addedSpecification.emit(1);
+          return 'deleted';
+        }
+      }
+    );
+    return 'cancel';
+  }
+  */
 }

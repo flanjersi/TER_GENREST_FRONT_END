@@ -26,6 +26,7 @@ import {CreateCorridorEntityDialogComponent} from './tree-view-specifications/cr
 import {EditSensorEntityDialogComponent} from './tree-view-specifications/edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
 import {EditActuatorEntityDialogComponent} from './tree-view-specifications/edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
 import { DeployDialogComponent } from './deploy-dialog/deploy-dialog.component';
+import { DeleteConfirmDialogComponent } from './tree-view-specifications/delete-confirm-dialog/delete-confirm-dialog.component';
 
 const routes: Routes = [
   { path: '', component: ProjectPageComponent},
@@ -52,7 +53,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CreateCorridorEntityDialogComponent,
     EditSensorEntityDialogComponent,
     EditActuatorEntityDialogComponent,
-    DeployDialogComponent
+    DeployDialogComponent,
+    DeleteConfirmDialogComponent
   ],
   imports: [
     SharedModule.forRoot(),
