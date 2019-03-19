@@ -430,6 +430,16 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       name: 'Actuators',
       type: 'interface'
     } as any;
+    
+    if (room.actuators && room.actuators.length > 0) {
+      const actuators = [];
+
+      room.actuators.sort((s1, s2) => s1.id - s2.id).forEach(element => {
+        const actuator = this.generateActuator(element);
+        actuators.push(actuator);
+      });
+      actuatorInterfaceData.children = actuators;
+    }
 
     roomData.children = [sensorInterfaceData, actuatorInterfaceData];
 
