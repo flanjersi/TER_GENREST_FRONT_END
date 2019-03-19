@@ -93,11 +93,7 @@ export class EditBuildingEntityDialogComponent implements OnInit {
       .then(
         data => {
           this.spinnerService.hide();
-          this.dialogRef.close({
-            action: 'updated',
-
-            type : this.form.get('name').value
-          });
+          this.dialogRef.close('updated');
           console.log(building);
           console.log(data);
         },

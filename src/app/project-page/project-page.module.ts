@@ -32,7 +32,7 @@ import {CreateCorridorEntityDialogComponent} from './tree-view-specifications/cr
 import {EditSensorEntityDialogComponent} from './tree-view-specifications/edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
 import {EditActuatorEntityDialogComponent} from './tree-view-specifications/edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
 import { DeployDialogComponent } from './deploy-dialog/deploy-dialog.component';
-import {DeployService} from "./deploy-dialog/services/deploy.service";
+import {DeployService} from './deploy-dialog/services/deploy.service';
 
 const routes: Routes = [
   { path: '', component: ProjectPageComponent},
@@ -42,6 +42,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
 
+// @ts-ignore
 @NgModule({
   declarations: [
     ProjectPageComponent,
@@ -115,4 +116,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DeployService
   ]
 })
-export class ProjectPageModule { } 
+export class ProjectPageModule { }
+
+

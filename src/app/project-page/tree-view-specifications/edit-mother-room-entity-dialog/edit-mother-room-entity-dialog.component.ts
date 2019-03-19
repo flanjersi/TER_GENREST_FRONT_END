@@ -44,7 +44,7 @@ export class EditMotherRoomEntityDialogComponent implements OnInit {
   }
 
   editMotherRoom() {
-    this.form.get('name').markAsTouched;
+    this.form.get('type').markAsTouched;
     this.form.get('numberMotherRoom').markAsTouched;
 
     if (!this.form.valid) {
