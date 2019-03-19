@@ -73,8 +73,7 @@ export class CreateMotherRoomEntityDialogComponent implements OnInit {
               this.dialogRef.close('added');
             },
             err => {
-              console.log(err);
-              this.dialogRef.close('error');
+              this.form.get('city').setErrors({'incorrect': true});
             }
           )
   }

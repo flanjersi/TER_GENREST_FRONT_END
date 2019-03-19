@@ -27,34 +27,34 @@ export class CreateCorridorEntityDialogComponent implements OnInit {
 
 
   private form: FormGroup;
-  
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private corridorService: CorridorService,
               private dialogRef: MatDialogRef<CreateCorridorEntityDialogComponent>,
               private spinnerService: Ng4LoadingSpinnerService,
-              private formBuilder: FormBuilder) { 
-                this.form = this.formBuilder.group({
-                  name: new FormControl('', [
-                    Validators.required,
-                    Validators.maxLength(50)
-                  ]),
-                });
+              private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(50)
+      ]),
+    });
 
-              }
+  }
 
   ngOnInit() {
   }
 
   save(){
     this.form.get('name').markAsTouched;
-    
+
     if(!this.form.valid){
       return;
     }
 
     let corridor = new Corridor();
     corridor.numberCorridor = this.form.get('name').value;
-  
+
     this.spinnerService.show();
 
     if(this.data.level=== 4){
@@ -65,8 +65,7 @@ export class CreateCorridorEntityDialogComponent implements OnInit {
               this.dialogRef.close('added');
             },
             err => {
-              console.log(err);
-              this.dialogRef.close('error');
+              this.form.get('name').setErrors({'incorrect': true});
             }
           )
     }
@@ -79,8 +78,7 @@ export class CreateCorridorEntityDialogComponent implements OnInit {
           this.dialogRef.close('added');
         },
         err => {
-          console.log(err);
-          this.dialogRef.close('error');
+          this.form.get('name').setErrors({'incorrect': true});
         }
       )
     }

@@ -69,6 +69,8 @@ export class ShowProjectsComponent implements OnInit {
   filterProject() {
     if(!this.searchProject){
       this.projectsFiltered = Object.assign([], this.projects);
+      this.prepareShowedProject(this.pageIndex);
+
       return;
     }
 

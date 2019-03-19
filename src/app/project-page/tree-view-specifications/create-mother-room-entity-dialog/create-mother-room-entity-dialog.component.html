@@ -30,6 +30,9 @@
                 <mat-error *ngIf="form.get('city').hasError('maxlength')">
                   Please, give a space with 50 digits maximum
                 </mat-error>
+                <mat-error *ngIf="form.get('city').hasError('incorrect')">
+                  Value already exists
+                </mat-error>
               </mat-form-field>
             </td>
           </tr> 

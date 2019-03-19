@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Project} from '../../shared/_models/Project';
 
 @Component({
@@ -6,14 +6,20 @@ import {Project} from '../../shared/_models/Project';
   templateUrl: './tab-spec.component.html',
   styleUrls: ['./tab-spec.component.scss']
 })
-export class TabSpecComponent implements OnInit {
+export class TabSpecComponent implements OnInit, OnChanges {
 
   @Input()
   private project: Project;
+  @Input()
+  private specEntity: any;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
+
+  ngOnChanges() {}
+
 
 }

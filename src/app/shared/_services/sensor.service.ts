@@ -23,7 +23,7 @@ export class SensorService {
   }
 
 
-  updateSensor(idCorridor: number, sensor: Sensor) {
+  updateSensor(sensor: Sensor) {
     return new Promise((resolve, reject) => {
       this.http.post('api/sensors/' + sensor.id, JSON.stringify(sensor), {headers: {'Content-Type': 'application/json'}})
         .toPromise()

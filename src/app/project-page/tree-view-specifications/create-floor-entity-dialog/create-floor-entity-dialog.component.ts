@@ -67,8 +67,7 @@ export class CreateFloorEntityDialogComponent implements OnInit {
               this.dialogRef.close('added');
             },
             err => {
-              console.log(err);
-              this.dialogRef.close('error');
+              this.form.get('name').setErrors({'incorrect': true});
             }
           )
   }

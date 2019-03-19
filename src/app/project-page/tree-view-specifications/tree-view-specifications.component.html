@@ -1,75 +1,86 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
-      <div class="tree-node row w-100">
-        <div class="col-6 my-auto">
-          <div *ngIf="node.type === 'interface'" class="my-auto d-inline-block mat-subheading-2">
-            <b><u>{{node.name}}</u></b>
-          </div>
-
-          <div *ngIf="node.type != 'interface'" class="my-auto d-inline-block mat-subheading-1">
-            {{node.name}}
-          </div>
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+    <div class="tree-node row w-100">
+      <div class="col-6 my-auto">
+        <div *ngIf="node.type === 'interface'" class="my-auto d-inline-block mat-subheading-2">
+          <b><u>{{node.name}}</u></b>
         </div>
-        <div class="col-6 my-auto d-flex justify-content-end">
-          <button mat-icon-button *ngIf="node.type != 'interface'" (click)="add(node)">
-            <mat-icon class="mat-icon-rtl-mirror">
-              edit
-            </mat-icon>
-          </button>
-          <button mat-icon-button *ngIf="node.type === 'interface'" (click)="add(node)">
-            <mat-icon class="mat-icon-rtl-mirror">
-              add_circle_outline
-            </mat-icon>
-          </button>
 
-          <button mat-icon-button *ngIf="node.type != 'interface'" (click)="add(node)">
-            <mat-icon class="mat-icon-rtl-mirror">
-              delete_outline
-            </mat-icon>
-          </button>
+        <div *ngIf="node.type != 'interface'" class="my-auto d-inline-block mat-subheading-1">
+          {{node.name}}
         </div>
       </div>
-   </mat-tree-node>
-  
-    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-      <div class="tree-node row w-100">
-        <div class="col-6 my-auto">
-          <div *ngIf="node.type === 'interface'" class="my-auto d-inline-block mat-subheading-2">
-            <b><u>{{node.name}}</u></b>
-          </div>
+      <div class="col-6 my-auto d-flex justify-content-end">
+        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="update(node)">
+          <mat-icon class="mat-icon-rtl-mirror">
+            edit
+          </mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="node.type === 'interface'" (click)="add(node)">
+          <mat-icon class="mat-icon-rtl-mirror">
+            add_circle_outline
+          </mat-icon>
+        </button>
 
-          <div *ngIf="node.type != 'interface'" class="my-auto d-inline-block mat-subheading-1">
-            {{node.name}}
-          </div>
+        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="add(node)">
+          <mat-icon class="mat-icon-rtl-mirror">
+            delete_outline
+          </mat-icon>
+        </button>
 
-          <button mat-icon-button matTreeNodeToggle
-                  [attr.aria-label]="'toggle ' + node.name">
-            <mat-icon class="mat-icon-rtl-mirror">
-              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-            </mat-icon>
-          </button>
-        </div>
-
-        <div class="col-6 my-auto d-flex justify-content-end">
-          <button mat-icon-button *ngIf="node.type != 'interface'" (click)="add(node)">
-            <mat-icon class="mat-icon-rtl-mirror">
-              edit
-            </mat-icon>
-          </button>
-          <button mat-icon-button *ngIf="node.type === 'interface'" (click)="add(node)">
-            <mat-icon class="mat-icon-rtl-mirror">
-              add_circle_outline
-            </mat-icon>
-          </button>
-
-          <button mat-icon-button *ngIf="node.type != 'interface'" (click)="add(node)">
-            <mat-icon class="mat-icon-rtl-mirror">
-              delete_outline
-            </mat-icon>
-          </button>
-        </div>
+        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="showSpec(node)">
+          <mat-icon class="mat-icon-rtl-mirror">
+            search
+          </mat-icon>
+        </button>
       </div>
-    </mat-tree-node>
+    </div>
+  </mat-tree-node>
 
-  </mat-tree>
+  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+    <div class="tree-node row w-100">
+      <div class="col-6 my-auto">
+        <div *ngIf="node.type === 'interface'" class="my-auto d-inline-block mat-subheading-2">
+          <b><u>{{node.name}}</u></b>
+        </div>
+
+        <div *ngIf="node.type != 'interface'" class="my-auto d-inline-block mat-subheading-1">
+          {{node.name}}
+
+        </div>
+
+        <button mat-icon-button matTreeNodeToggle
+                [attr.aria-label]="'toggle ' + node.name">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+      </div>
+
+      <div class="col-6 my-auto d-flex justify-content-end">
+        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="update(node)">
+          <mat-icon class="mat-icon-rtl-mirror">
+            edit
+          </mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="node.type === 'interface'" (click)="add(node)">
+          <mat-icon class="mat-icon-rtl-mirror">
+            add_circle_outline
+          </mat-icon>
+        </button>
+
+        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="add(node)">
+          <mat-icon class="mat-icon-rtl-mirror">
+            delete_outline
+          </mat-icon>
+        </button>
+
+        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="showSpec(node)">
+          <mat-icon class="mat-icon-rtl-mirror">
+            search
+          </mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-tree-node>
+</mat-tree>
