@@ -344,8 +344,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       const actuators = [];
       const instance = this;
       corridor.actuators.sort((s1, s2) => s1.id - s2.id).forEach(element => {
-        // const actuator = instance.generateActuator(element);
-        // actuators.push(actuator);
+         const actuator = instance.generateActuator(element);
+         actuators.push(actuator);
       });
 
       actuatorInterfaceData.children = actuators;
@@ -384,18 +384,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     } as any;
 
-    /*if (room.actuators && room.actuators.length > 0) {
-      const actuators = [];
-
-      for (const index in room.actuators.sort((s1, s2) => s1.id - s2.id)) {
-        const actuator = this.generateActuator(room.actuators[index]);
-        actuators.push(actuator);
-      }
-
-      actuatorInterfaceData.children = actuators;
-    }*/
-
-
     roomData.children = [sensorInterfaceData, actuatorInterfaceData];
 
     return roomData;
@@ -411,15 +399,16 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     return sensorData;
   }
-  /* generateActuator(edit-actuator-entity-dialog: Actuator): any {
-    const actutorData = {};
 
-    actutorData.id = edit-actuator-entity-dialog.id;
-    actutorData.name = 'Actuator ' + edit-actuator-entity-dialog.reference;
+   generateActuator(actuator: Actuator): any {
+    const actutorData = {} as any;
+
+    actutorData.id = actuator.id;
+    actutorData.name = 'Actuator ' + actuator.reference;
     actutorData.type = 'Actuator';
 
     return actutorData;
-  }*/
+  }
 
   update(node1) {
     console.log(node1);
