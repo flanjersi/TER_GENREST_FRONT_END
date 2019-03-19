@@ -67,6 +67,17 @@ export  class  Room {
     return actuatorsJson;
   }
 
+  toJsonShowed() : any{
+    return [ {
+      title: "Room"
+    },
+      {
+        type: this.type,
+        number: this.numberRoom
+      }]
+
+  }
+
 }
 
 

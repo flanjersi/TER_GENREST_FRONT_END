@@ -67,4 +67,15 @@ export  class  Floor {
       return motherRoomsJson;
     }
 
+  toJsonShowed() : any{
+    return [
+    {
+      title: "Floor"
+    },
+    {
+      number: this.floorNumber
+    }
+    ]
+  }
+
 }

@@ -19,6 +19,10 @@ export class GraphSpecComponent implements OnInit, OnChanges {
   @Input()
   private project: Project;
 
+  @Input()
+  private refreshGraph: boolean;
+
+
   public chartNames: string[];
   public colors: ColorHelper;
   public colorScheme = { domain: ['#4C516D', '#000080', '#1034A6', '#0F52BA', '#0080FF', '#0E4D92', '#008ECC', '#6593F5'] }; // Custom color scheme in hex

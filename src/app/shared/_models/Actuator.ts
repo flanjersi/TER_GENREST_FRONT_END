@@ -36,4 +36,19 @@ export  class  Actuator {
     } 
   }
 
+  toJsonShowed() : any{
+    return [
+      {
+        title: "Actuator"
+      },
+      {
+      brand: new String(this.brand),
+      model: new String(this.model),
+      reference: new String(this.reference),
+      latitude: new Number(this.latitude),
+      longitude: new Number(this.longitude),
+      state: new String(this.state)
+    }]
+  }
+
 }

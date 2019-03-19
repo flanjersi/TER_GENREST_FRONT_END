@@ -384,6 +384,18 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     } as any;
 
+    if (room.actuators && room.actuators.length > 0) {
+      const actuators = [];
+
+      room.actuators.sort((s1, s2) => s1.id - s2.id).forEach(element => {
+        const sensor = this.generateActuator(element);
+        actuators.push(sensor);
+      });
+
+      actuatorInterfaceData.children = actuators;
+    }
+
+
     roomData.children = [sensorInterfaceData, actuatorInterfaceData];
 
     return roomData;
@@ -467,7 +479,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Sensors': {
-        console.log(this.searchParent(node1).type);
         this.openCreationSensorDialog(node1,this.searchParent(node1).type);
             break;    
       }
@@ -889,8 +900,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
 
   remove(node1) {
-    console.log(node1);
-    const parent = this.searchParent(node1);
+
+    const parent = this.searchParent(this.searchParent(node1));
     switch (node1.type) {
       case 'building': {
         this.buildingService.deleteBuilding(this.project.id, node1.id )

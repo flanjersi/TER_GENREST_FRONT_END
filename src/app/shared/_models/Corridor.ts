@@ -70,5 +70,16 @@ export  class  Corridor {
     return actuatorsJson;
   }
 
+  toJsonShowed() : any{
+    return [
+    {
+      title: "Corridor"
+    },
+    {
+      number: this.numberCorridor
+    }
+    ]
+  }
+
 
 }
