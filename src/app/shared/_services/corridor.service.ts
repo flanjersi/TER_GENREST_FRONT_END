@@ -64,7 +64,7 @@ export class CorridorService {
 
   createCorridorInMotherRoom(idMotherRoom: number, corridor: Corridor) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/motherRooms/' + idMotherRoom + '/corridors', JSON.stringify(corridor), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/motherRooms/' + idMotherRoom + '/corridors', JSON.stringify(corridor.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Corridor(data));

@@ -24,7 +24,7 @@ export class MotherRoomService {
 
   createMotherRoom(idFloor: number, motherRoom: MotherRoom) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/floors/' + idFloor + '/motherRooms', JSON.stringify(motherRoom), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/floors/' + idFloor + '/motherRooms', JSON.stringify(motherRoom.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new MotherRoom(data));
@@ -37,7 +37,7 @@ export class MotherRoomService {
 
   updateMotherRoom(motherRoom: MotherRoom) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/motherRooms/' + motherRoom.id, JSON.stringify(motherRoom), {headers: {'Content-Type': 'application/json'}})
+      this.http.post('api/motherRooms/' + motherRoom.id, JSON.stringify(motherRoom.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new MotherRoom(data));

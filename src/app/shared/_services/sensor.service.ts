@@ -38,7 +38,7 @@ export class SensorService {
 
   createSensorInCorridor(idCorridor: number, sensor: Sensor) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/corridors/' + idCorridor + '/sensors', JSON.stringify(sensor), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/corridors/' + idCorridor + '/sensors', JSON.stringify(sensor.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Sensor(data));
@@ -65,7 +65,7 @@ export class SensorService {
 
   createSensorInRoom(idRoom: number, sensor: Sensor) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/rooms/' + idRoom + '/sensors', JSON.stringify(sensor), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/rooms/' + idRoom + '/sensors', JSON.stringify(sensor.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Sensor(data));

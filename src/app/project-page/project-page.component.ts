@@ -35,7 +35,6 @@ export class ProjectPageComponent implements OnInit {
               private spinnerService: Ng4LoadingSpinnerService,
               private dialog: MatDialog) {
     this.isLoaded = false;
-
     if(!cookieService.get('user'))
       this.router.navigateByUrl('/auth');
 

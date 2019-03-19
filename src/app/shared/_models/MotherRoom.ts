@@ -31,11 +31,40 @@ export  class MotherRoom {
           this.rooms.push(new Room(room));
         });
       }
+    }
+  }
 
+  toJson()  {
+    return {
+      id: new Number(this.id),
+      type: new String(this.type),
+      numberMotherRoom: new Number(this.numberMotherRoom),
+      rooms: this.corridorsToJson(),
+      corridors: this.corridorsToJson()
+    } 
+  }
 
+  corridorsToJson() {
+    const corridorsJson = [];
 
+    if(!this.corridors) corridorsJson;
 
+    for(let index in this.corridors){
+      corridorsJson.push(this.corridors[index]);
     }
 
+    return corridorsJson;
+  }
+
+  roomstoJson() {
+    const roomsJson = [];
+
+    if(!this.rooms) roomsJson;
+
+    for(let index in this.rooms){
+      roomsJson.push(this.rooms[index]);
+    }
+
+    return roomsJson;
   }
 }

@@ -5,13 +5,16 @@
       <tr>
         <td>
           <mat-form-field class="input">
-            <input matInput placeholder="Number of your floor"
+            <input matInput type="number" placeholder="Number of your floor"
                    [errorStateMatcher]="matcher" formControlName="name" name="name" required>
             <mat-error *ngIf="form.get('name').hasError('required')">
               Number of your floor is <strong>required</strong>
             </mat-error>
             <mat-error *ngIf="form.get('name').hasError('maxlength')">
-              Please, give a floor number with 50 number maximum
+              Please, give a floor number with 50 digits maximum
+            </mat-error>
+            <mat-error *ngIf="form.get('name').hasError('incorrect')">
+              Value already exists
             </mat-error>
           </mat-form-field>
         </td>

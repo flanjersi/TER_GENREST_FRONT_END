@@ -25,6 +25,7 @@ export class CreateCorridorEntityDialogComponent implements OnInit {
   @Input()
   private idFloor: number;
 
+
   private form: FormGroup;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
@@ -56,19 +57,33 @@ export class CreateCorridorEntityDialogComponent implements OnInit {
 
     this.spinnerService.show();
 
-    this.corridorService.createCorridorInFloor(this.data.id, corridor)
+    if(this.data.level=== 4){
+      this.corridorService.createCorridorInFloor(this.data.id, corridor)
+          .then(
+            data => {
+              this.spinnerService.hide();
+              this.dialogRef.close('added');
+            },
+            err => {
+              this.form.get('name').setErrors({'incorrect': true});
+            }
+          )
+    }
+    
+    if(this.data.level === 6){
+      this.corridorService.createCorridorInMotherRoom(this.data.id, corridor)
       .then(
         data => {
           this.spinnerService.hide();
           this.dialogRef.close('added');
         },
         err => {
-          console.log(err);
-          this.dialogRef.close('error');
+          this.form.get('name').setErrors({'incorrect': true});
         }
       )
-  }
-
+    }
+}
+  
   close(){
     this.dialogRef.close('cancel');
   }
