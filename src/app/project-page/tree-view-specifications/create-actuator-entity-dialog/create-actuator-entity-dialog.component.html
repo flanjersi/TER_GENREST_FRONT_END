@@ -67,7 +67,7 @@
       <tr>
         <td>
           <mat-form-field class="input">
-            <input matInput placeholder="Reference of your actuator"
+            <input matInput type="number" placeholder="Reference of your actuator"
                    [errorStateMatcher]="matcher" formControlName="reference" name="reference" required>
             <mat-error *ngIf="form.get('reference').hasError('required')">
               reference of your actuator is <strong>required</strong>
@@ -78,13 +78,14 @@
             <mat-error *ngIf="form.get('reference').hasError('maxlength')">
               Please, give a reference with 50 letters maximum
             </mat-error>
+
           </mat-form-field>
         </td>
       </tr>
       <tr>
         <td>
           <mat-form-field class="input">
-            <input matInput type="number" placeholder="State of your actuator"
+            <input matInput placeholder="State of your actuator"
                    [errorStateMatcher]="matcher" formControlName="state" name="state" required>
             <mat-error *ngIf="form.get('state').hasError('required')">
               state of your actuator is <strong>required</strong>
@@ -92,7 +93,7 @@
             <mat-error *ngIf="form.get('state').hasError('minlength')">
               Please, give a state with 2 letters minimum
             </mat-error>
-            <mat-error *ngIf="form.get('state').hasError('maxlength')">
+            <mat-error *ngIf="form.get('reference').hasError('maxlength')">
               Please, give a state with 50 letters maximum
             </mat-error>
           </mat-form-field>

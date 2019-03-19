@@ -453,15 +453,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Corridors': {
-        const array = this.treeControl.dataNodes;
-
-        for (const index in array) {
-          const flatTreeNode = array[index];
-          if (flatTreeNode.id === node1.id && flatTreeNode.type === node1.type) {
-            this.openCreationCorridorDialog(node1, flatTreeNode.level);
-            break;
-          }
-        }
+        this.openCreationCorridorDialog(node1, node1.level);
         break;
       }
       case 'Spaces': {
@@ -473,25 +465,11 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Sensors': {
-        const array = this.treeControl.dataNodes;
-        for (const index in array) {
-          const flatTreeNode = array[index];
-          if (flatTreeNode.id === node1.id && flatTreeNode.type === node1.type) {
-            this.openCreationSensorDialog(node1, flatTreeNode.level);
-            break;
-          }
-        }
+        this.openCreationSensorDialog(node1, node1.level);
         break;
       }
       case 'Actuators': {
-        const array = this.treeControl.dataNodes;
-        for (const index in array) {
-          const flatTreeNode = array[index];
-          if (flatTreeNode.id === node1.id && flatTreeNode.type === node1.type) {
-            this.openCreationActuatorDialog(node1, flatTreeNode.level);
-            break;
-          }
-        }
+        this.openCreationActuatorDialog(node1, node1.level);
         break;
       }
       default: break;
