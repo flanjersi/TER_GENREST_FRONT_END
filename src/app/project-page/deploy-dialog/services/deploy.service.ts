@@ -10,13 +10,11 @@ export class DeployService {
   constructor(private http: HttpClient) { }
 
   getGeneratedAPI(idProject: number, idLanguage: number, idConfiguration: number, idOperatingSystem: number) : Observable<any> {
-    return new Observable<any> ((observer) => {
-      this.http.get<any>('http://localhost:8090/terGENREST/api/deploiement?project=' + idProject + '&language=' + idLanguage + '&configuration=' + idConfiguration + '&operatingSystem=' + idOperatingSystem)
+    return new Observable ((observer) => {
+      this.http.request('get', 'api/deploiement?project=' + idProject + '&language=' + idLanguage + '&configuration=' + idConfiguration + '&operatingSystem=' + idOperatingSystem, {
+        responseType: 'blob'
+      })
         .subscribe(
-          (data) => {
-           console.log(data);
-           observer.next(data);
-          },
           (error)=> observer.error(error),
           () => observer.complete()
         );

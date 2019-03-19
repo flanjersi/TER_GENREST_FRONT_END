@@ -5,6 +5,7 @@ import {LanguageService} from "../../shared/_services/language.service";
 import {Language} from "../../shared/_models/Language";
 import {DeployService} from "./services/deploy.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
+import {DomSanitizer} from "@angular/platform-browser";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -50,9 +51,12 @@ export class DeployDialogComponent implements OnInit {
   private indexLanguageSelected : number;
   private indexConfigurationSelected : number;
   private indexOperatingSystemSelected : number;
+
   private idProject: number;
+  private projectName : string;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+              private domSanitizer: DomSanitizer,
               private dialogRef: MatDialogRef<DeployDialogComponent>,
               private formBuilder: FormBuilder,
               private languageService: LanguageService,
@@ -73,6 +77,8 @@ export class DeployDialogComponent implements OnInit {
     this.isLoaded = false;
 
     this.idProject = data.idProject;
+
+    this.projectName = data.projectName;
 
     this.languageService.getAll()
       .subscribe(
@@ -173,14 +179,30 @@ export class DeployDialogComponent implements OnInit {
     this.deployService.getGeneratedAPI(this.idProject, languageId, configurationId, operatingSystemId)
       .subscribe(
         data => {
-          console.log(data);
           this.spinnerService.hide();
           this.dialogRef.close();
         },
         err => {
-          console.log(err);
-          this.dialogRef.close('error');
-        }
+          //In error, why don't know why, but that work ...
+          const blob = new Blob([err], {type : 'application/zip'});
+
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob);
+          }
+          else {
+            const fileUrl = window.URL.createObjectURL(blob);
+
+            var link = document.createElement('a');
+
+            link.href = fileUrl;
+            link.download = "GENREST APP N°" + this.idProject + " - " + this.projectName + '.zip';
+            link.click();
+          }
+
+          this.spinnerService.hide();
+          this.dialogRef.close();
+        },
+        () => {}
       );
   }
 
