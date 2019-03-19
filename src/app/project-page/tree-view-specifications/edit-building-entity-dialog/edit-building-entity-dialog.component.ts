@@ -30,6 +30,8 @@ export class EditBuildingEntityDialogComponent implements OnInit {
   public idBuilding: number;
   public idProject: number;
 
+  public isLoaded: boolean;
+
   constructor(private dialogRef: MatDialogRef<EditBuildingEntityDialogComponent>,
               private formBuilder: FormBuilder,
               private buildingService: BuildingService,
@@ -40,7 +42,6 @@ export class EditBuildingEntityDialogComponent implements OnInit {
 
     this.idBuilding = data.idBuilding;
     this.idProject = data.idProjet;
-
 
     this.form = this.formBuilder.group({
       type: new FormControl('', [
@@ -65,7 +66,24 @@ export class EditBuildingEntityDialogComponent implements OnInit {
       ]),
     });
 
-    this.form.get('type').setValue(data.type);
+
+    this.isLoaded = false;
+
+    let building = this.buildingService.getById(this.idBuilding).subscribe(
+      data => {
+        this.form.get('type').setValue(data.type);
+        this.form.get('city').setValue(data.address.city);
+        this.form.get('country').setValue(data.address.country);
+        this.form.get('street').setValue(data.address.street);
+      },
+      err => {},
+      () => {
+        this.isLoaded = true;
+      }
+    );
+
+
+
   }
 
   ngOnInit() {
