@@ -6,14 +6,14 @@
       <td>
         <mat-form-field class="input">
           <input matInput placeholder="Name of your building"
-                 [errorStateMatcher]="matcher" formControlName="name" name="name" required>
-          <mat-error *ngIf="form.get('name').hasError('required')">
+                 [errorStateMatcher]="matcher" formControlName="type" name="type" required>
+          <mat-error *ngIf="form.get('type').hasError('required')">
             Name of your building is <strong>required</strong>
           </mat-error>
-          <mat-error *ngIf="form.get('name').hasError('minlength')">
+          <mat-error *ngIf="form.get('type').hasError('minlength')">
             Please, give a name with 2 letters minimum
           </mat-error>
-          <mat-error *ngIf="form.get('name').hasError('maxlength')">
+          <mat-error *ngIf="form.get('type').hasError('maxlength')">
             Please, give a name with 50 letters maximum
           </mat-error>
         </mat-form-field>

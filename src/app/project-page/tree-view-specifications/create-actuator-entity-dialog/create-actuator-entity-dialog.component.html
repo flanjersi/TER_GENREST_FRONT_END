@@ -5,7 +5,7 @@
       <tr>
         <td>
           <mat-form-field class="input">
-            <input matInput type="number" placeholder="Latitude of your actuator"
+            <input matInput type="latitude" placeholder="Latitude of your actuator"
                    [errorStateMatcher]="matcher" formControlName="latitude" name="latitude" required>
             <mat-error *ngIf="form.get('latitude').hasError('required')">
               Latitude of your actuator is <strong>required</strong>

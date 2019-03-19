@@ -43,7 +43,7 @@ export class EditBuildingEntityDialogComponent implements OnInit {
 
 
     this.form = this.formBuilder.group({
-      name: new FormControl('', [
+      type: new FormControl('', [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50)
@@ -64,6 +64,8 @@ export class EditBuildingEntityDialogComponent implements OnInit {
         Validators.maxLength(50)
       ]),
     });
+
+    this.form.get('type').setValue(data.type);
   }
 
   ngOnInit() {
@@ -79,7 +81,7 @@ export class EditBuildingEntityDialogComponent implements OnInit {
     const building = new Building();
     building.id = this.idBuilding;
 
-    building.type = this.form.get('name').value;
+    building.type = this.form.get('type').value;
 
     const address = new Address();
     address.city = this.form.get('city').value;

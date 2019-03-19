@@ -36,6 +36,8 @@ import { EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-roo
 import { EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
 import { EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
 import { Ng4LoadingSpinnerService} from 'ng4-loading-spinner';
+import {observable} from 'rxjs';
+
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -431,7 +433,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         this.openUpdateRoomDialog(node1);
         break;
       }
-      case'actuator' : {
+      case'Actuator' : {
         this.openUpdateActuatorDialog(node1);
         break;
       }
@@ -749,11 +751,19 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     const dialogConfig = new MatDialogConfig();
 
+    /*  let building = this.buildingService.getById(node.id).subscribe(
+      (data) => building.next(new Building(data)),
+      err => {
+
+      },
+      () => {}
+    ); */
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       idProject: this.project.id,
-      idBuilding: node.id
+      idBuilding: node.id,
+      //type: this.building.type
     };
 
     const dialogRef = this.dialog.open(EditBuildingEntityDialogComponent, dialogConfig);

@@ -97,11 +97,7 @@ export class EditActuatorEntityDialogComponent implements OnInit {
       .then(
         data => {
           this.spinnerService.hide();
-          this.dialogRef.close({
-            action: 'updated',
-
-            latitude : this.form.get('latitude').value
-          });
+          this.dialogRef.close('updated')
           console.log(actuator);
           console.log(data);
         },
