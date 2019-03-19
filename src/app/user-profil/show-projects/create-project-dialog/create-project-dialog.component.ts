@@ -29,10 +29,8 @@ export interface Domain {
 export class CreateProjectDialogComponent implements OnInit {
 
   domains: Domain[] = [
-    {value: 'domotic-0', viewValue: 'Domotic'},
-    {value: 'environment-1', viewValue: 'Environment'},
-    {value: 'transport-2', viewValue: 'Transport'}
-  ];
+    {value: 'domotic-0', viewValue: 'Domotic'}
+   ];
 
   public form: FormGroup;
   public matcher = new MyErrorStateMatcher();

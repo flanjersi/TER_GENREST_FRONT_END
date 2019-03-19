@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 
 
@@ -17,7 +17,7 @@ export class ProjectSpecComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
+
 
 }
