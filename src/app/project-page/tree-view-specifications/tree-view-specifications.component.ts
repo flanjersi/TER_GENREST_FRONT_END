@@ -107,28 +107,75 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
   showSpec(node) {
     if (node.type === 'building') {
-      console.log(node.type);
-      this.showEntity.emit(this.buildingService.getById(node.id));
+      this.buildingService.getById(node.id)
+        .subscribe(
+          data => {
+            this.showEntity.emit(data);
+          },
+          err => {},
+          () => {}
+        );
+
     }
+
     if (node.type === 'floor') {
-      console.log(node.type);
-      this.showEntity.emit(this.roomService.getById(node.id));
+      this.floorService.getById(node.id)
+        .subscribe(
+          data => {
+            this.showEntity.emit(data);
+          },
+          err => {},
+          () => {}
+        );
+    }
+    if (node.type === 'room') {
+      this.roomService.getById(node.id)
+        .subscribe(
+          data => {
+            this.showEntity.emit(data);
+          },
+          err => {},
+          () => {}
+        );
     }
     if (node.type === 'motherRoom') {
-      console.log(node.type);
-      this.showEntity.emit(this.motherRoomService.getById(node.id));
+      this.motherRoomService.getById(node.id)
+        .subscribe(
+          data => {
+            this.showEntity.emit(data);
+          },
+          err => {},
+          () => {}
+        );
     }
     if (node.type === 'corridor') {
-      console.log(node.type);
-      this.showEntity.emit(this.corridorService.getById(node.id));
+      this.corridorService.getById(node.id)
+        .subscribe(
+          data => {
+            this.showEntity.emit(data);
+          },
+          err => {},
+          () => {}
+        );
     }
     if (node.type === 'sensor') {
-      console.log(node.type);
-      this.showEntity.emit(this.sensorService.getById(node.id));
-    }
+      this.sensorService.getById(node.id)
+      .then(
+        data => {
+          this.showEntity.emit(data);
+        },
+        err => {}
+      );
+  }
     if (node.type === 'actuator') {
-      console.log(node.type);
-      this.showEntity.emit(this.actuatorService.getById(node.id));
+      this.actuatorService.getById(node.id)
+        .subscribe(
+          data => {
+            this.showEntity.emit(data);
+          },
+          err => {},
+          () => {}
+        );
     }
 
   }

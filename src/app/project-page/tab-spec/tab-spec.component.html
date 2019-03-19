@@ -1,7 +1,7 @@
 
-<mat-tab-group id="tab-group-project" animationDuration="0ms" class="h-100">
+<mat-tab-group (selectedTabChange)="selectedTabChange($event)" id="tab-group-project" animationDuration="0ms" class="h-100">
   <mat-tab label="Graphical visualization" class="h-100">
-    <app-graph-spec [project]="project"></app-graph-spec>
+    <app-graph-spec [refreshGraph]="refreshGraph" [project]="project"></app-graph-spec>
   </mat-tab>
   <mat-tab label="Project specification">
     <app-project-spec [datas]="specEntity"></app-project-spec>

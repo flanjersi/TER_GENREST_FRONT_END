@@ -13,13 +13,24 @@ export class TabSpecComponent implements OnInit, OnChanges {
   @Input()
   private specEntity: any;
 
+  private refreshGraph: boolean;
+
   constructor() {
   }
 
   ngOnInit() {
+
   }
 
-  ngOnChanges() {}
+  ngOnChanges() {
+
+  }
+
+  selectedTabChange(event){
+    if(event.index === 0){
+      this.refreshGraph = !this.refreshGraph;
+    }
+  }
 
 
 }
