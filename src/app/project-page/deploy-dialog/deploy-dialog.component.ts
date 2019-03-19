@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {ErrorStateMatcher, MatDialogRef} from '@angular/material';
+import {ErrorStateMatcher, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {LanguageService} from "../../shared/_services/language.service";
 import {Language} from "../../shared/_models/Language";
+import {DeployService} from "./services/deploy.service";
+import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -48,11 +50,14 @@ export class DeployDialogComponent implements OnInit {
   private indexLanguageSelected : number;
   private indexConfigurationSelected : number;
   private indexOperatingSystemSelected : number;
+  private idProject: number;
 
-
-  constructor(private dialogRef: MatDialogRef<DeployDialogComponent>,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+              private dialogRef: MatDialogRef<DeployDialogComponent>,
               private formBuilder: FormBuilder,
-              private languageService: LanguageService) {
+              private languageService: LanguageService,
+              private deployService: DeployService,
+              private spinnerService: Ng4LoadingSpinnerService) {
     this.form = this.formBuilder.group({
       typeLanguage: new FormControl('', [
         Validators.required
@@ -66,6 +71,8 @@ export class DeployDialogComponent implements OnInit {
     });
 
     this.isLoaded = false;
+
+    this.idProject = data.idProject;
 
     this.languageService.getAll()
       .subscribe(
@@ -149,10 +156,35 @@ export class DeployDialogComponent implements OnInit {
   }
 
   deploy() {
-    this.form.markAsTouched();
+    this.form.get('typeLanguage').markAsTouched;
+    this.form.get('typeConfiguration').markAsTouched;
+    this.form.get('typeSystem').markAsTouched;
+
+    if(!this.form.valid){
+      return;
+    }
+
+    let languageId = this.languages[this.indexLanguageSelected].id;
+    let configurationId = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].id;
+    let operatingSystemId = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].operatingsSystem[this.indexConfigurationSelected].id;
+
+    this.spinnerService.show();
+
+    this.deployService.getGeneratedAPI(this.idProject, languageId, configurationId, operatingSystemId)
+      .subscribe(
+        data => {
+          console.log(data);
+          this.spinnerService.hide();
+          this.dialogRef.close();
+        },
+        err => {
+          console.log(err);
+          this.dialogRef.close('error');
+        }
+      );
   }
 
   close() {
-    this.dialogRef.close('Close');
+    this.dialogRef.close('close');
   }
 }
