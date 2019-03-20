@@ -11,7 +11,7 @@ export class RoomService {
 
   getById(id: number): Observable<Room> {
     return new Observable<Room>((observer) => {
-      this.http.get<any>('api/Rooms/' + id)
+      this.http.get<any>('api/rooms/' + id)
         .subscribe(
           (room) => observer.next(new Room(room)),
           (error) => observer.error(error),
