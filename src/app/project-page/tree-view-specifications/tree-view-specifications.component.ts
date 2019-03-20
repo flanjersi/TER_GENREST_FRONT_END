@@ -109,6 +109,9 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   showSpec(node) {
+    if(node.type === 'interface')
+      return;
+
     if (node.type === 'building') {
       this.buildingService.getById(node.id).subscribe(
         data => {

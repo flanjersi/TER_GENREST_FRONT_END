@@ -1,5 +1,5 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+  <mat-tree-node (click)="showSpec(node)" *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
     <div class="tree-node row w-100">
       <div class="col-6 my-auto">
         <div *ngIf="node.type === 'interface'" class="my-auto d-inline-block mat-subheading-2">
@@ -27,17 +27,11 @@
             delete_outline
           </mat-icon>
         </button>
-
-        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="showSpec(node)">
-          <mat-icon class="mat-icon-rtl-mirror">
-            search
-          </mat-icon>
-        </button>
       </div>
     </div>
   </mat-tree-node>
 
-  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+  <mat-tree-node (click)="showSpec(node)" *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
     <div class="tree-node row w-100">
       <div class="col-6 my-auto">
         <div *ngIf="node.type === 'interface'" class="my-auto d-inline-block mat-subheading-2">
@@ -72,12 +66,6 @@
         <button mat-icon-button *ngIf="node.type != 'interface'" (click)="remove(node)">
           <mat-icon class="mat-icon-rtl-mirror">
             delete_outline
-          </mat-icon>
-        </button>
-
-        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="showSpec(node)">
-          <mat-icon class="mat-icon-rtl-mirror">
-            search
           </mat-icon>
         </button>
       </div>

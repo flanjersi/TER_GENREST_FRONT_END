@@ -1,5 +1,6 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Project} from '../../shared/_models/Project';
+import {MatTabGroup} from "@angular/material";
 
 @Component({
   selector: 'app-tab-spec',
@@ -7,6 +8,8 @@ import {Project} from '../../shared/_models/Project';
   styleUrls: ['./tab-spec.component.scss']
 })
 export class TabSpecComponent implements OnInit, OnChanges {
+
+  @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
 
   @Input()
   private project: Project;
@@ -22,8 +25,10 @@ export class TabSpecComponent implements OnInit, OnChanges {
 
   }
 
-  ngOnChanges() {
+  ngOnChanges() {}
 
+  selectedTabIndex(index){
+    this.tabGroup.selectedIndex = index;
   }
 
   selectedTabChange(event){
@@ -31,6 +36,7 @@ export class TabSpecComponent implements OnInit, OnChanges {
       this.refreshGraph = !this.refreshGraph;
     }
   }
+
 
 
 }
