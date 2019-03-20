@@ -94,18 +94,19 @@ export class CreateActuatorEntityDialogComponent implements OnInit {
     this.spinnerService.show();
 
     if(this.data.type === "corridor"){
-    this.actuatorService.createActuatorInCorridor(this.data.id, actuator)
-          .then(
-            data => {
-              this.spinnerService.hide();
-              this.dialogRef.close('added');
-            },
-            err => {
-              console.log(err);
-              this.dialogRef.close('error');
-            }
-          )
-  }else{
+      this.actuatorService.createActuatorInCorridor(this.data.id, actuator)
+            .then(
+              data => {
+                this.spinnerService.hide();
+                this.dialogRef.close('added');
+              },
+              err => {
+                console.log(err);
+                this.dialogRef.close('error');
+              }
+            )
+  }
+  else{
     this.actuatorService.createActuatorInRoom(this.data.id, actuator)
           .then(
             data => {

@@ -33,7 +33,10 @@ export class EditFloorEntityDialogComponent implements OnInit {
               private dialogRef: MatDialogRef<EditFloorEntityDialogComponent>,
               private spinnerService: Ng4LoadingSpinnerService,
               private formBuilder: FormBuilder
+
   ) {
+
+    this.idFloor = data.idFloor;
     console.log(data);
     this.form = this.formBuilder.group({
       floorNumber: new FormControl('', [
@@ -53,7 +56,7 @@ export class EditFloorEntityDialogComponent implements OnInit {
       }
     );
 
-    this.idFloor = data.idFloor;
+
   }
 
   ngOnInit() {

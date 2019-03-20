@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Add Floor</h2>
+<h2 mat-dialog-title>Edit Corridor</h2>
 
 <mat-dialog-content [formGroup]="form">
   <table>
@@ -14,7 +14,8 @@
             Please, give a corridor number with 50 number maximum
           </mat-error>
           <mat-error *ngIf="form.get('numberCorridor').hasError('incorrect')">
-            Value already exists
+              Value already exists
+
           </mat-error>
         </mat-form-field>
       </td>
