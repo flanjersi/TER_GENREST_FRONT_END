@@ -77,8 +77,7 @@ export class EditCorridorEntityDialogComponent implements OnInit {
         },
 
         err => {
-          console.log(err);
-          this.dialogRef.close('error');
+          this.form.get('floorNumber').setErrors({'incorrect': true});
         }
       );
   }

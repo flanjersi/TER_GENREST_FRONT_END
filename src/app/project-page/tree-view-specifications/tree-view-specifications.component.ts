@@ -109,6 +109,9 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   showSpec(node) {
+    if(node.type === 'interface')
+      return;
+
     if (node.type === 'building') {
       this.buildingService.getById(node.id).subscribe(
         data => {
@@ -163,6 +166,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       );
     }
     if (node.type === 'actuator') {
+      console.log('actuator');
       this.actuatorService.getById(node.id).subscribe(
         data => {
           this.showEntity.emit(data);
@@ -365,6 +369,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       const sensors = [];
       const instance = this;
       corridor.sensors.sort((s1, s2) => s1.id - s2.id).forEach(element => {
+        console.log(element);
         const room = instance.generateSensor(element);
         sensors.push(room);
       });
@@ -456,7 +461,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     actutorData.id = actuator.id;
     actutorData.name = 'Actuator ' + actuator.reference;
-    actutorData.type = 'Actuator';
+    actutorData.type = 'actuator';
 
     return actutorData;
   }
@@ -1035,7 +1040,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
 
-      case 'Actuator': {
+      case 'actuator': {
         if (parent.type === 'corridor') {
           this.actuatorService.deleteActuatorInCorridor(parent.id, node1.id )
             .then( data => {
@@ -1045,7 +1050,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
             );
         }
         if ( parent.type === 'room') {
-          this.sensorService.deleteSensorInRoom(parent.id, node1.id )
+          this.actuatorService.deleteActuatorInRoom(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
               },
