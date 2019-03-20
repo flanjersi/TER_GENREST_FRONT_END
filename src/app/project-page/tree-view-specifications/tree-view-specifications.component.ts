@@ -1058,6 +1058,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
     }
   }
+  expendAll(){
+    this.treeControl.expandAll();
+  }
+
 /*
   openDeleteConfirmDialog(): string {
     const dialogConfig = new MatDialogConfig();
