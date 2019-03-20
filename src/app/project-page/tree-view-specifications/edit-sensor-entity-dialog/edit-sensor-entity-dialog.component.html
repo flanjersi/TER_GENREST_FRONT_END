@@ -101,21 +101,20 @@
     <tr>
       <td>
         <mat-form-field class="input">
-          <input matInput placeholder="uniData of your sensor"
-                 [errorStateMatcher]="matcher" formControlName="uniData" name="uniData" required>
-          <mat-error *ngIf="form.get('uniData').hasError('required')">
-            uniData of your sensor is <strong>required</strong>
+          <input matInput placeholder="UnitData of your sensor"
+                 [errorStateMatcher]="matcher" formControlName="unitData" name="unitData" required>
+          <mat-error *ngIf="form.get('unitData').hasError('required')">
+            unitData of your sensor is <strong>required</strong>
           </mat-error>
-          <mat-error *ngIf="form.get('state').hasError('minlength')">
-            Please, give a state with 2 letters minimum
+          <mat-error *ngIf="form.get('unitData').hasError('minlength')">
+            Please, give a unitData with 2 letters minimum
           </mat-error>
-          <mat-error *ngIf="form.get('state').hasError('maxlength')">
-            Please, give a state with 50 letters maximum
+          <mat-error *ngIf="form.get('unitData').hasError('maxlength')">
+            Please, give a unitData with 50 letters maximum
           </mat-error>
         </mat-form-field>
       </td>
     </tr>
-    <tr>
   </table>
 </mat-dialog-content>
 

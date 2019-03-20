@@ -5,9 +5,9 @@
     <tr>
       <td>
         <mat-form-field class="input">
-          <input matInput placeholder="latitude of your actuator"
+          <input matInput type="number" placeholder="latitude of your actuator"
                  [errorStateMatcher]="matcher" formControlName="latitude" name="latitude" required>
-          <mat-error *ngIf="form.get('name').hasError('required')">
+          <mat-error *ngIf="form.get('latitude').hasError('required')">
             latitude of your actuator is <strong>required</strong>
           </mat-error>
           <mat-error *ngIf="form.get('latitude').hasError('minlength')">
@@ -22,7 +22,7 @@
     <tr>
       <td>
         <mat-form-field class="input">
-          <input matInput placeholder="longitude of your actuator"
+          <input matInput  type="number" placeholder="longitude of your actuator"
                  [errorStateMatcher]="matcher" formControlName="longitude" name="longitude" required>
           <mat-error *ngIf="form.get('longitude').hasError('required')">
             longitude of your actuator is <strong>required</strong>
@@ -73,7 +73,7 @@
     <tr>
       <td>
         <mat-form-field class="input">
-          <input matInput placeholder="reference of your actuator"
+          <input matInput  type="number" placeholder="reference of your actuator"
                  [errorStateMatcher]="matcher" formControlName="reference" name="reference" required>
           <mat-error *ngIf="form.get('reference').hasError('required')">
             reference of your actuator is <strong>required</strong>

@@ -14,6 +14,7 @@ export class  Sensor {
   public  state: string;
   public  unitData: string;
 
+
   constructor(data?: any){
 
     if(data) {

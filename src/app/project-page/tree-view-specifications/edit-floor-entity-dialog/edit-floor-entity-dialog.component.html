@@ -1,17 +1,20 @@
-<h2 mat-dialog-title>Add Floor</h2>
+<h2 mat-dialog-title>Edit Floor</h2>
 
 <mat-dialog-content [formGroup]="form">
   <table>
     <tr>
       <td>
         <mat-form-field class="input">
-          <input matInput placeholder="Number of your floor"
-                 [errorStateMatcher]="matcher" formControlName="name" name="name" required>
-          <mat-error *ngIf="form.get('name').hasError('required')">
+          <input matInput  type="number" placeholder="Number of your floor"
+                 [errorStateMatcher]="matcher" formControlName="floorNumber" name="floorNumber" required>
+          <mat-error *ngIf="form.get('floorNumber').hasError('required')">
             Number of your floor is <strong>required</strong>
           </mat-error>
-          <mat-error *ngIf="form.get('name').hasError('maxlength')">
-            Please, give a floor number with 50 number maximum
+          <mat-error *ngIf="form.get('floorNumber').hasError('maxlength')">
+            Please, give a floor number with 50 digits maximum
+          </mat-error>
+          <mat-error *ngIf="form.get('floorNumber').hasError('incorrect')">
+            Value already exists
           </mat-error>
         </mat-form-field>
       </td>

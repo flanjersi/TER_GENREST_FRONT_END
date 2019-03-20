@@ -11,6 +11,7 @@ export  class  Corridor {
   public  sensors: Sensor[];
   public  actuators: Actuator[];
 
+
   constructor(data?: any){
     if (data){
 

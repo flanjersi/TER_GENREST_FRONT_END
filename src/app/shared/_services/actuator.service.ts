@@ -36,7 +36,7 @@ export class ActuatorService {
 
   updateActuator(actuator: Actuator) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/actuators/' + actuator.id, JSON.stringify(actuator), {headers: {'Content-Type': 'application/json'}})
+      this.http.post('api/actuators/' + actuator.id, JSON.stringify(actuator.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Actuator(data));

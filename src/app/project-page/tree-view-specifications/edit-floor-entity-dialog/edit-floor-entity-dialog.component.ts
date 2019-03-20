@@ -25,6 +25,7 @@ export class EditFloorEntityDialogComponent implements OnInit {
 
   private idFloor: number;
 
+  public isLoaded: boolean;
   private form: FormGroup;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
@@ -35,11 +36,23 @@ export class EditFloorEntityDialogComponent implements OnInit {
               ) {
     console.log(data);
     this.form = this.formBuilder.group({
-      name: new FormControl('', [
+      floorNumber: new FormControl('', [
         Validators.required,
         Validators.maxLength(50)
       ]),
     });
+    this.isLoaded = false;
+
+    let floor = this.floorService.getById(this.idFloor).subscribe(
+      data => {
+        this.form.get('floorNumber').setValue(data.floorNumber);
+      },
+      err => {},
+      () => {
+        this.isLoaded = true;
+      }
+    );
+
     this.idFloor = data.idFloor;
   }
 
@@ -47,7 +60,7 @@ export class EditFloorEntityDialogComponent implements OnInit {
   }
 
   editFloor() {
-    this.form.get('name').markAsTouched;
+    this.form.get('floorNumber').markAsTouched;
 
     if (!this.form.valid) {
       return;
@@ -56,7 +69,7 @@ export class EditFloorEntityDialogComponent implements OnInit {
     const floor = new Floor();
     floor.id = this.idFloor;
 
-    floor.floorNumber = this.form.get('name').value;
+    floor.floorNumber = this.form.get('floorNumber').value;
 
 
     this.spinnerService.show();
@@ -65,10 +78,7 @@ export class EditFloorEntityDialogComponent implements OnInit {
       .then(
         data => {
           this.spinnerService.hide();
-          this.dialogRef.close({
-            action: 'updated',
-            floorNumber : this.form.get('name').value
-          });
+          this.dialogRef.close('updated');
           console.log(floor);
           console.log(data);
         },

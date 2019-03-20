@@ -22,6 +22,7 @@ export class EditActuatorEntityDialogComponent implements OnInit {
   public matcher = new MyErrorStateMatcher();
 
   public idActuator: number;
+  private isLoaded: boolean;
 
 
   constructor(private dialogRef: MatDialogRef<EditActuatorEntityDialogComponent>,
@@ -68,6 +69,21 @@ export class EditActuatorEntityDialogComponent implements OnInit {
         Validators.maxLength(50)
       ]),
     });
+    this.isLoaded = false;
+    let actuator = this.actuatorService.getById(this.idActuator).subscribe(
+      data => {
+        this.form.get('latitude').setValue(data.latitude);
+        this.form.get('longitude').setValue(data.longitude);
+        this.form.get('model').setValue(data.model);
+        this.form.get('brand').setValue(data.brand);
+        this.form.get('reference').setValue(data.reference);
+        this.form.get('state').setValue(data.state);
+      },
+      err => {},
+      () => {
+        this.isLoaded = true;
+      }
+    );
   }
 
   ngOnInit() {
@@ -97,7 +113,7 @@ export class EditActuatorEntityDialogComponent implements OnInit {
       .then(
         data => {
           this.spinnerService.hide();
-          this.dialogRef.close('updated')
+          this.dialogRef.close('updated');
           console.log(actuator);
           console.log(data);
         },
