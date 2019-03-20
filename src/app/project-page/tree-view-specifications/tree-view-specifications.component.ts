@@ -37,6 +37,7 @@ import { EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/
 import { EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
 import { Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {DeleteConfirmDialogComponent} from "./delete-confirm-dialog/delete-confirm-dialog.component";
+import {element} from "protractor";
 
 
 
@@ -75,6 +76,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   @Output() addedSpecification: EventEmitter<number>;
   @Output() showEntity: EventEmitter<any>;
   @Output() updated: EventEmitter<number>;
+
+  private valueOfSearchNodeInput: string;
 
   private building: Building;
 
@@ -973,13 +976,13 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'floor': {
-          this.floorService.deleteFloor(parent.id, node1.id )
-            .then( data => {
-                this.updated.emit(1);
-              },
-              err => {}
-            );
-          break;
+        this.floorService.deleteFloor(parent.id, node1.id )
+          .then( data => {
+              this.updated.emit(1);
+            },
+            err => {}
+          );
+        break;
       }
       case 'corridor': {
         if (parent.type === 'floor') {
@@ -1066,6 +1069,54 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   expendAll(){
     this.treeControl.expandAll();
   }
+
+  searchNode(){
+    this.treeControl.collapseAll();
+
+    if(!this.valueOfSearchNodeInput || this.valueOfSearchNodeInput.length === 0)
+      return;
+
+    const nodes = this.searchAllParentsOfNodesByName(this.valueOfSearchNodeInput);
+
+    nodes.forEach(element => {
+      this.treeControl.expand(element);
+    });
+
+  }
+
+
+  searchAllParentsOfNodesByName(name: string):  FlatTreeNode[] {
+    let nodes = [];
+
+    for (let i = this.treeControl.dataNodes.length - 1; i >= 0; i--){
+      let fileNode = this.treeControl.dataNodes[i];
+
+      if(fileNode.name.includes(name) && fileNode.type != 'interface'){
+        nodes.push(fileNode);
+        nodes = nodes.concat(this.searchAllParentsOfNodeByName(i));
+      }
+    }
+
+    return nodes;
+  }
+
+  searchAllParentsOfNodeByName(indexNode: number):  FlatTreeNode[] {
+    let currentLevel = this.treeControl.dataNodes[indexNode].level;
+
+    const nodes = [];
+
+    for (let i = indexNode; i >= 0; i--){
+      let fileNode = this.treeControl.dataNodes[i];
+
+      if(fileNode.level === currentLevel - 1) {
+        nodes.push(fileNode);
+        currentLevel = currentLevel - 1;
+      }
+    }
+
+    return nodes;
+  }
+
 
 /*
   openDeleteConfirmDialog(): string {
