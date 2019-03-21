@@ -281,7 +281,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     const motherRoomInterfaceData = {
       id: floor.id,
-      name: 'Spaces',
+      name: 'Zone',
       type: 'interface'
     } as any;
 
@@ -514,7 +514,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         this.openCreationCorridorDialog(node1, node1.level);
         break;
       }
-      case 'Spaces': {
+      case 'Zone': {
         this.openCreationMotherRoomDialog(node1);
         break;
       }
@@ -726,6 +726,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       }
     );
   }
+
 
   openCreationMotherRoomDialog(node: FileNode) {
     const dialogConfig = new MatDialogConfig();
