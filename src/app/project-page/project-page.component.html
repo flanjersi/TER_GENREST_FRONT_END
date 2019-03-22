@@ -13,10 +13,11 @@
         <div class="col-4 my-auto d-flex justify-content-end">
           <a  style="width: 150px" mdbBtn color="primary" mdbWavesEffect   (click)="openDeployDialog()">Deploy</a>
         </div>
+
       </div>
       <perfect-scrollbar id="scrollBar" style="max-height: 92%;">
-        <app-tree-view-specifications (showEntity)="updateEntitySpec($event)"  (addedSpecification)="refreshProject($event)" (updated)="refreshProject($event)" [project]="project"></app-tree-view-specifications>
-      </perfect-scrollbar>
+        <app-tree-view-specifications (showEntity)="updateEntitySpec($event)"  (addedSpecification)="refreshProject($event)"  [project]="project"></app-tree-view-specifications>
+      </perfect-scrollbar>(updated)="refreshProject($event
 
     </div>
     <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 h-100 pt-3 pb-5">

@@ -114,6 +114,7 @@ export class ProjectPageComponent implements OnInit {
 
   ngOnInit(){}
 
+
   refreshProject(){
     this.projectService.getById(this.project.id)
       .subscribe(
@@ -130,6 +131,8 @@ export class ProjectPageComponent implements OnInit {
     this.entitySpec = event;
     this.tabGroup.selectedTabIndex(1);
   }
+
+
 
 
   openDeployDialog() {
