@@ -1,8 +1,14 @@
 <div class="row">
-  <div class="col-12 my-auto d-flex justify-content-end">
+  <div class="col-6 ml-4">
+    <form>
+      <mat-form-field class="input">
+        <input matInput placeholder="Search node" [(ngModel)]="valueOfSearchNodeInput" (input)="searchNode()" name="searchNode">
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="col-5 my-auto d-flex justify-content-end">
     <a style="width: 150px" mdbBtn color="primary" mdbWavesEffect   (click)="expendAll()">Expend All</a>
-</div>
-
+  </div>
 </div>
 
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">

@@ -9,9 +9,8 @@ export class  Sensor {
   public  latitude: number;
   public  longitude: number;
   public  model: string;
-  public  brand: string;
-  public  reference: string;
-  public  state: string;
+  public  name: string;
+  public  quantityKind: string;
   public  unitData: string;
 
 
@@ -22,10 +21,9 @@ export class  Sensor {
       this.latitude = data.latitude;
       this.longitude = data.longitude;
       this.model = data.model;
-      this.brand = data.brand;
-      this.reference = data.reference;
-      this.state = data.state;
+      this.quantityKind = data.quantityKind;
       this.unitData = data.unitData;
+      this.name = data.name;
     }
   }
 
@@ -35,9 +33,8 @@ export class  Sensor {
       latitude: new Number(this.latitude),
       longitude: new Number(this.longitude),
       model: new String(this.model),
-      brand: new String(this.brand),
-      reference: new String(this.reference),
-      state: new String(this.state),
+      name: new String(this.name),
+      quantityKind: new String(this.quantityKind),
       unitData: new String(this.unitData)
     } 
   }
@@ -47,13 +44,12 @@ export class  Sensor {
         title: "Sensor"
       },
       {
-        brand: new String(this.brand),
+        name: new String(this.name),
         model: new String(this.model),
-        reference: new String(this.reference),
+        quantityKind: new String(this.quantityKind),
+        unitData: new String(this.unitData),
         latitude: new Number(this.latitude),
-        longitude: new Number(this.longitude),
-        state: new String(this.state),
-        unitData: new String(this.unitData)
+        longitude: new Number(this.longitude)
       }]
 
   }

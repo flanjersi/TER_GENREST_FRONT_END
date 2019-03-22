@@ -37,6 +37,7 @@ import { EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/
 import { EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
 import { Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {DeleteConfirmDialogComponent} from "./delete-confirm-dialog/delete-confirm-dialog.component";
+import {element} from "protractor";
 
 
 
@@ -75,6 +76,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   @Output() addedSpecification: EventEmitter<number>;
   @Output() showEntity: EventEmitter<any>;
   @Output() updated: EventEmitter<number>;
+
+  private valueOfSearchNodeInput: string;
 
   private building: Building;
 
@@ -166,7 +169,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       );
     }
     if (node.type === 'actuator') {
-      console.log('actuator');
       this.actuatorService.getById(node.id).subscribe(
         data => {
           this.showEntity.emit(data);
@@ -281,7 +283,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     const motherRoomInterfaceData = {
       id: floor.id,
-      name: 'Spaces',
+      name: 'Zone',
       type: 'interface'
     } as any;
 
@@ -369,7 +371,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       const sensors = [];
       const instance = this;
       corridor.sensors.sort((s1, s2) => s1.id - s2.id).forEach(element => {
-        console.log(element);
         const room = instance.generateSensor(element);
         sensors.push(room);
       });
@@ -403,7 +404,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const roomData = {} as any;
 
     roomData.id = room.id;
-    roomData.name = 'Room ' + room.numberRoom;
+    roomData.name = room.type + room.numberRoom;
     roomData.type = 'room';
 
     const sensorInterfaceData = {
@@ -450,7 +451,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const sensorData = {} as any;
 
     sensorData.id = sensor.id;
-    sensorData.name = 'Sensor ' + sensor.reference;
+    sensorData.name = sensor.name;
     sensorData.type = 'sensor';
 
     return sensorData;
@@ -460,14 +461,13 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const actutorData = {} as any;
 
     actutorData.id = actuator.id;
-    actutorData.name = 'Actuator ' + actuator.reference;
+    actutorData.name = actuator.name;
     actutorData.type = 'actuator';
 
     return actutorData;
   }
 
   update(node1) {
-    console.log(node1);
     switch (node1.type) {
       case 'building': {
         this.openUpdateBuildingDialog(node1);
@@ -489,7 +489,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         this.openUpdateRoomDialog(node1);
         break;
       }
-      case'Actuator' : {
+      case'actuator' : {
         this.openUpdateActuatorDialog(node1);
         break;
       }
@@ -514,7 +514,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         this.openCreationCorridorDialog(node1, node1.level);
         break;
       }
-      case 'Spaces': {
+      case 'Zone': {
         this.openCreationMotherRoomDialog(node1);
         break;
       }
@@ -605,8 +605,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     for (let i = startIndex; i >= 0; i--) {
       const currentNode = this.treeControl.dataNodes[i];
       const currentLevel = currentNode.level;
-
-      console.log(currentNode);
 
       if (currentLevel === level ) {
         return currentNode;
@@ -726,6 +724,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       }
     );
   }
+
 
   openCreationMotherRoomDialog(node: FileNode) {
     const dialogConfig = new MatDialogConfig();
@@ -973,13 +972,13 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'floor': {
-          this.floorService.deleteFloor(parent.id, node1.id )
-            .then( data => {
-                this.updated.emit(1);
-              },
-              err => {}
-            );
-          break;
+        this.floorService.deleteFloor(parent.id, node1.id )
+          .then( data => {
+              this.updated.emit(1);
+            },
+            err => {}
+          );
+        break;
       }
       case 'corridor': {
         if (parent.type === 'floor') {
@@ -1066,6 +1065,54 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   expendAll(){
     this.treeControl.expandAll();
   }
+
+  searchNode(){
+    this.treeControl.collapseAll();
+
+    if(!this.valueOfSearchNodeInput || this.valueOfSearchNodeInput.length === 0)
+      return;
+
+    const nodes = this.searchAllParentsOfNodesByName(this.valueOfSearchNodeInput);
+
+    nodes.forEach(element => {
+      this.treeControl.expand(element);
+    });
+
+  }
+
+
+  searchAllParentsOfNodesByName(name: string):  FlatTreeNode[] {
+    let nodes = [];
+
+    for (let i = this.treeControl.dataNodes.length - 1; i >= 0; i--){
+      let fileNode = this.treeControl.dataNodes[i];
+
+      if(fileNode.name.includes(name) && fileNode.type != 'interface'){
+        nodes.push(fileNode);
+        nodes = nodes.concat(this.searchAllParentsOfNodeByName(i));
+      }
+    }
+
+    return nodes;
+  }
+
+  searchAllParentsOfNodeByName(indexNode: number):  FlatTreeNode[] {
+    let currentLevel = this.treeControl.dataNodes[indexNode].level;
+
+    const nodes = [];
+
+    for (let i = indexNode; i >= 0; i--){
+      let fileNode = this.treeControl.dataNodes[i];
+
+      if(fileNode.level === currentLevel - 1) {
+        nodes.push(fileNode);
+        currentLevel = currentLevel - 1;
+      }
+    }
+
+    return nodes;
+  }
+
 
 /*
   openDeleteConfirmDialog(): string {

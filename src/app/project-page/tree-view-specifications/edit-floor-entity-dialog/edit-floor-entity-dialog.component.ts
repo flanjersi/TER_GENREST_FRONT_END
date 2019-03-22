@@ -33,9 +33,10 @@ export class EditFloorEntityDialogComponent implements OnInit {
               private dialogRef: MatDialogRef<EditFloorEntityDialogComponent>,
               private spinnerService: Ng4LoadingSpinnerService,
               private formBuilder: FormBuilder
-              ) {
+  ) {
+
     this.idFloor = data.idFloor;
-    console.log(data);
+
     this.form = this.formBuilder.group({
       floorNumber: new FormControl('', [
         Validators.required,
@@ -44,11 +45,12 @@ export class EditFloorEntityDialogComponent implements OnInit {
     });
     this.isLoaded = false;
 
-    let floor = this.floorService.getById(this.idFloor).subscribe(
+    const floor = this.floorService.getById(this.idFloor).subscribe(
       data => {
         this.form.get('floorNumber').setValue(data.floorNumber);
       },
-      err => {},
+      err => {
+      },
       () => {
         this.isLoaded = true;
       }
@@ -85,7 +87,7 @@ export class EditFloorEntityDialogComponent implements OnInit {
         },
 
         err => {
-          this.form.get('floorNumber').setErrors({'incorrect': true});
+          this.form.get('floorNumber').setErrors({incorrect: true});
         }
       );
   }
