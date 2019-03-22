@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectService} from "../shared/_services/project.service";
 import {Project} from "../shared/_models/Project";
@@ -11,9 +11,10 @@ import {Sensor} from "../shared/_models/Sensor";
 import {MotherRoom} from "../shared/_models/MotherRoom";
 import {Room} from "../shared/_models/Room";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
-import {MatDialog, MatDialogConfig} from "@angular/material";
+import {MatDialog, MatDialogConfig, MatTabGroup} from "@angular/material";
 import {CreateProjectDialogComponent} from "../user-profil/show-projects/create-project-dialog/create-project-dialog.component";
 import {DeployDialogComponent} from "./deploy-dialog/deploy-dialog.component";
+import {TabSpecComponent} from "./tab-spec/tab-spec.component";
 
 @Component({
   selector: 'app-project-page',
@@ -22,6 +23,9 @@ import {DeployDialogComponent} from "./deploy-dialog/deploy-dialog.component";
   encapsulation: ViewEncapsulation.None
 })
 export class ProjectPageComponent implements OnInit {
+
+  @ViewChild(TabSpecComponent) tabGroup: TabSpecComponent;
+
 
   private project: Project;
   private isLoaded: boolean;
@@ -86,7 +90,7 @@ export class ProjectPageComponent implements OnInit {
 
     let actuator = new Actuator();
     actuator.id = 1;
-    actuator.brand = "test";
+    actuator.name = "test";
 
     corridor.actuators.push(actuator);
 
@@ -94,7 +98,7 @@ export class ProjectPageComponent implements OnInit {
 
     let sensor = new Sensor();
     sensor.id = 1;
-    sensor.brand = "test";
+    sensor.name = "test";
 
     corridor.sensors.push(sensor);
 
@@ -110,6 +114,7 @@ export class ProjectPageComponent implements OnInit {
 
   ngOnInit(){}
 
+
   refreshProject(){
     this.projectService.getById(this.project.id)
       .subscribe(
@@ -124,7 +129,10 @@ export class ProjectPageComponent implements OnInit {
 
   updateEntitySpec(event){
     this.entitySpec = event;
+    this.tabGroup.selectedTabIndex(1);
   }
+
+
 
 
   openDeployDialog() {

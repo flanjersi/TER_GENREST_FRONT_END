@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {CookieService} from "ngx-cookie-service";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-menu-project',
@@ -8,13 +9,18 @@ import {CookieService} from "ngx-cookie-service";
 })
 export class MenuProjectComponent implements OnInit {
 
-  constructor(private cookieService: CookieService) { }
+  constructor(private cookieService: CookieService,
+              private router: Router) { }
 
   ngOnInit() {
   }
 
   isLogged() {
     return this.cookieService.get('user') != null;
+  }
+  logout(){
+    this.cookieService.delete('user');
+    this.router.navigateByUrl('/');
   }
 
 }

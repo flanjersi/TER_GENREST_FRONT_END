@@ -25,6 +25,7 @@ export class EditFloorEntityDialogComponent implements OnInit {
 
   private idFloor: number;
 
+  public isLoaded: boolean;
   private form: FormGroup;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
@@ -32,22 +33,37 @@ export class EditFloorEntityDialogComponent implements OnInit {
               private dialogRef: MatDialogRef<EditFloorEntityDialogComponent>,
               private spinnerService: Ng4LoadingSpinnerService,
               private formBuilder: FormBuilder
-              ) {
-    console.log(data);
+  ) {
+
+    this.idFloor = data.idFloor;
+
     this.form = this.formBuilder.group({
-      name: new FormControl('', [
+      floorNumber: new FormControl('', [
         Validators.required,
         Validators.maxLength(50)
       ]),
     });
-    this.idFloor = data.idFloor;
+    this.isLoaded = false;
+
+    const floor = this.floorService.getById(this.idFloor).subscribe(
+      data => {
+        this.form.get('floorNumber').setValue(data.floorNumber);
+      },
+      err => {
+      },
+      () => {
+        this.isLoaded = true;
+      }
+    );
+
+
   }
 
   ngOnInit() {
   }
 
   editFloor() {
-    this.form.get('name').markAsTouched;
+    this.form.get('floorNumber').markAsTouched;
 
     if (!this.form.valid) {
       return;
@@ -56,7 +72,7 @@ export class EditFloorEntityDialogComponent implements OnInit {
     const floor = new Floor();
     floor.id = this.idFloor;
 
-    floor.floorNumber = this.form.get('name').value;
+    floor.floorNumber = this.form.get('floorNumber').value;
 
 
     this.spinnerService.show();
@@ -65,17 +81,13 @@ export class EditFloorEntityDialogComponent implements OnInit {
       .then(
         data => {
           this.spinnerService.hide();
-          this.dialogRef.close({
-            action: 'updated',
-            floorNumber : this.form.get('name').value
-          });
+          this.dialogRef.close('updated');
           console.log(floor);
           console.log(data);
         },
 
         err => {
-          console.log(err);
-          this.dialogRef.close('error');
+          this.form.get('floorNumber').setErrors({incorrect: true});
         }
       );
   }

@@ -5,33 +5,16 @@
     <tr>
       <td>
         <mat-form-field class="input">
-          <input matInput placeholder="latitude of your actuator"
-                 [errorStateMatcher]="matcher" formControlName="latitude" name="latitude" required>
+          <input matInput placeholder="Define a custom name for your actuator"
+                 [errorStateMatcher]="matcher" formControlName="name" name="name" required>
           <mat-error *ngIf="form.get('name').hasError('required')">
-            latitude of your actuator is <strong>required</strong>
+            reference of your actuator is <strong>required</strong>
           </mat-error>
-          <mat-error *ngIf="form.get('latitude').hasError('minlength')">
-            Please, give a latitude with 2 letters minimum
+          <mat-error *ngIf="form.get('name').hasError('minlength')">
+            Please, give a reference with 2 letters minimum
           </mat-error>
-          <mat-error *ngIf="form.get('latitude').hasError('maxlength')">
-            Please, give a latitude with 50 letters maximum
-          </mat-error>
-        </mat-form-field>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <mat-form-field class="input">
-          <input matInput placeholder="longitude of your actuator"
-                 [errorStateMatcher]="matcher" formControlName="longitude" name="longitude" required>
-          <mat-error *ngIf="form.get('longitude').hasError('required')">
-            longitude of your actuator is <strong>required</strong>
-          </mat-error>
-          <mat-error *ngIf="form.get('longitude').hasError('minlength')">
-            Please, give a longitude with 2 letters minimum
-          </mat-error>
-          <mat-error *ngIf="form.get('longitude').hasError('maxlength')">
-            Please, give a longitude with 50 letters maximum
+          <mat-error *ngIf="form.get('name').hasError('maxlength')">
+            Please, give a reference with 50 letters maximum
           </mat-error>
         </mat-form-field>
       </td>
@@ -53,19 +36,20 @@
         </mat-form-field>
       </td>
     </tr>
+
     <tr>
       <td>
         <mat-form-field class="input">
-          <input matInput placeholder="brand of your actuator"
-                 [errorStateMatcher]="matcher" formControlName="brand" name="brand" required>
-          <mat-error *ngIf="form.get('brand').hasError('required')">
-            brand of your actuator is <strong>required</strong>
+          <input matInput type="number" placeholder="latitude of your actuator"
+                 [errorStateMatcher]="matcher" formControlName="latitude" name="latitude" required>
+          <mat-error *ngIf="form.get('latitude').hasError('required')">
+            latitude of your actuator is <strong>required</strong>
           </mat-error>
-          <mat-error *ngIf="form.get('brand').hasError('minlength')">
-            Please, give a brand with 2 letters minimum
+          <mat-error *ngIf="form.get('latitude').hasError('minlength')">
+            Please, give a latitude with 2 letters minimum
           </mat-error>
-          <mat-error *ngIf="form.get('brand').hasError('maxlength')">
-            Please, give a brand with 50 letters maximum
+          <mat-error *ngIf="form.get('latitude').hasError('maxlength')">
+            Please, give a latitude with 50 letters maximum
           </mat-error>
         </mat-form-field>
       </td>
@@ -73,33 +57,16 @@
     <tr>
       <td>
         <mat-form-field class="input">
-          <input matInput placeholder="reference of your actuator"
-                 [errorStateMatcher]="matcher" formControlName="reference" name="reference" required>
-          <mat-error *ngIf="form.get('reference').hasError('required')">
-            reference of your actuator is <strong>required</strong>
+          <input matInput  type="number" placeholder="longitude of your actuator"
+                 [errorStateMatcher]="matcher" formControlName="longitude" name="longitude" required>
+          <mat-error *ngIf="form.get('longitude').hasError('required')">
+            longitude of your actuator is <strong>required</strong>
           </mat-error>
-          <mat-error *ngIf="form.get('reference').hasError('minlength')">
-            Please, give a reference with 2 letters minimum
+          <mat-error *ngIf="form.get('longitude').hasError('minlength')">
+            Please, give a longitude with 2 letters minimum
           </mat-error>
-          <mat-error *ngIf="form.get('reference').hasError('maxlength')">
-            Please, give a reference with 50 letters maximum
-          </mat-error>
-        </mat-form-field>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <mat-form-field class="input">
-          <input matInput placeholder="state of your actuator"
-                 [errorStateMatcher]="matcher" formControlName="state" name="state" required>
-          <mat-error *ngIf="form.get('state').hasError('required')">
-            state of your actuator is <strong>required</strong>
-          </mat-error>
-          <mat-error *ngIf="form.get('state').hasError('minlength')">
-            Please, give a state with 2 letters minimum
-          </mat-error>
-          <mat-error *ngIf="form.get('state').hasError('maxlength')">
-            Please, give a state with 50 letters maximum
+          <mat-error *ngIf="form.get('longitude').hasError('maxlength')">
+            Please, give a longitude with 50 letters maximum
           </mat-error>
         </mat-form-field>
       </td>

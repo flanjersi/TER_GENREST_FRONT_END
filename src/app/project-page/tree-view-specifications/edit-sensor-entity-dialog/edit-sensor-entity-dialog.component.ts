@@ -2,10 +2,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MyErrorStateMatcher} from '../edit-building-entity-dialog/edit-building-entity-dialog.component';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {ActuatorService} from '../../../shared/_services/actuator.service';
 import {Ng4LoadingSpinnerService} from 'ng4-loading-spinner';
 import {CookieService} from 'ngx-cookie-service';
-import {Actuator} from '../../../shared/_models/Actuator';
 import {SensorService} from '../../../shared/_services/sensor.service';
 import {Sensor} from '../../../shared/_models/Sensor';
 
@@ -21,6 +19,7 @@ export class EditSensorEntityDialogComponent implements OnInit {
   public matcher = new MyErrorStateMatcher();
 
   public idSensor: number;
+  private isLoaded: boolean;
 
 
   constructor(private dialogRef: MatDialogRef<EditSensorEntityDialogComponent>,
@@ -51,27 +50,39 @@ export class EditSensorEntityDialogComponent implements OnInit {
         Validators.minLength(2),
         Validators.maxLength(50)
       ]),
-      brand: new FormControl('', [
+      name: new FormControl('', [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50)
       ]),
-      reference: new FormControl('', [
+      quantityKind: new FormControl('', [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50)
       ]),
-      state: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(50)
-      ]),
-      uniData: new FormControl('', [
+
+      unitData: new FormControl('', [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50)
       ]),
     });
+    this.isLoaded = false;
+    this.sensorService.getById(this.idSensor).then
+      ( data => {
+        this.form.get('latitude').setValue(data.latitude);
+        this.form.get('longitude').setValue(data.longitude);
+        this.form.get('model').setValue(data.model);
+        this.form.get('unitData').setValue(data.unitData);
+        this.form.get('name').setValue(data.name);
+        this.form.get('quantityKind').setValue(data.quantityKind);
+
+        },
+
+      () => {
+        this.isLoaded = true;
+      }
+    );
   }
 
   ngOnInit() {
@@ -90,10 +101,9 @@ export class EditSensorEntityDialogComponent implements OnInit {
     sensor.latitude = this.form.get('latitude').value;
     sensor.longitude = this.form.get('longitude').value;
     sensor.model = this.form.get('model').value;
-    sensor.brand = this.form.get('brand').value;
-    sensor.reference = this.form.get('reference').value;
-    sensor.state = this.form.get('state').value;
-    sensor.unitData = this.form.get('uniData').value;
+    sensor.quantityKind = this.form.get('quantityKind').value;
+    sensor.name = this.form.get('name').value;
+    sensor.unitData = this.form.get('unitData').value;
 
 
     this.spinnerService.show();
@@ -102,11 +112,7 @@ export class EditSensorEntityDialogComponent implements OnInit {
       .then(
         data => {
           this.spinnerService.hide();
-          this.dialogRef.close({
-            action: 'updated',
-
-            latitude : this.form.get('latitude').value
-          });
+          this.dialogRef.close('updated');
           console.log(sensor);
           console.log(data);
         },

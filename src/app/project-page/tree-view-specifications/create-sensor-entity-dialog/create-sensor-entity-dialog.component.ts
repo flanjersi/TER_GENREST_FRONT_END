@@ -29,61 +29,55 @@ export class CreateSensorEntityDialogComponent implements OnInit {
               private sensorService: SensorService,
               private dialogRef: MatDialogRef<CreateSensorEntityDialogComponent>,
               private spinnerService: Ng4LoadingSpinnerService,
-              private formBuilder: FormBuilder) { 
-                this.form = this.formBuilder.group({
-                  latitude: new FormControl('', [
-                    Validators.required,
-                    Validators.maxLength(50)
-                  ]),
-                  longitude: new FormControl('', [
-                    Validators.required,
-                    Validators.maxLength(50)
-                  ]),
-                  model: new FormControl('', [
-                    Validators.required,
-                    Validators.minLength(2),
-                    Validators.maxLength(50)
-                  ]),
-                  brand: new FormControl('', [
-                    Validators.required,
-                    Validators.minLength(2),
-                    Validators.maxLength(50)
-                  ]),
-                  reference: new FormControl('', [
-                    Validators.required,
-                    Validators.minLength(2),
-                    Validators.maxLength(50)
-                  ]),
-                  state: new FormControl('', [
-                    Validators.required,
-                    Validators.minLength(2),
-                    Validators.maxLength(50)
-                  ]),
-                  unitData: new FormControl('', [
-                    Validators.required,
-                    Validators.minLength(2),
-                    Validators.maxLength(50)
-                  ]),
+              private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group({
+      latitude: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(50)
+      ]),
+      longitude: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(50)
+      ]),
+      model: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50)
+      ]),
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50)
+      ]),
+      quantityKind: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50)
+      ]),
+      unitData: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50)
+      ]),
 
-                });
-            
-              }
+    });
+
+  }
 
   ngOnInit() {
   }
 
-  
+
   save(){
 
     this.form.get('latitude').markAsTouched;
     this.form.get('longitude').markAsTouched;
     this.form.get('model').markAsTouched;
-    this.form.get('brand').markAsTouched;
-    this.form.get('reference').markAsTouched;
-    this.form.get('state').markAsTouched;
+    this.form.get('name').markAsTouched;
+    this.form.get('quantityKind').markAsTouched;
     this.form.get('unitData').markAsTouched;
-    
-    
+
+
     if(!this.form.valid){
       return;
     }
@@ -92,40 +86,37 @@ export class CreateSensorEntityDialogComponent implements OnInit {
     sensor.latitude = this.form.get('latitude').value;
     sensor.longitude = this.form.get('longitude').value;
     sensor.model = this.form.get('model').value;
-    sensor.reference = this.form.get('reference').value;
-    sensor.brand = this.form.get('brand').value;
-    sensor.state = this.form.get('state').value;
+    sensor.quantityKind = this.form.get('quantityKind').value;
     sensor.unitData = this.form.get('unitData').value;
-  
+    sensor.name = this.form.get('name').value;
+
     this.spinnerService.show();
-
-    if(this.data.level === 6){
-    this.sensorService.createSensorInCorridor(this.data.id, sensor)
-          .then(
-            data => {
-              this.spinnerService.hide();
-              this.dialogRef.close('added');
-            },
-            err => {
-              console.log(err);
-              this.dialogRef.close('error');
-            }
-          )
-  }
-
-  if(this.data.level === 8){
-    this.sensorService.createSensorInRoom(this.data.id, sensor)
-          .then(
-            data => {
-              this.spinnerService.hide();
-              this.dialogRef.close('added');
-            },
-            err => {
-              console.log(err);
-              this.dialogRef.close('error');
-            }
-          )
-  }
+    console.log(this.data);
+    if(this.data.type === "corridor"){
+      this.sensorService.createSensorInCorridor(this.data.id, sensor)
+        .then(
+          data => {
+            this.spinnerService.hide();
+            this.dialogRef.close('added');
+          },
+          err => {
+            console.log(err);
+            this.dialogRef.close('error');
+          }
+        )
+    }else{
+      this.sensorService.createSensorInRoom(this.data.id, sensor)
+        .then(
+          data => {
+            this.spinnerService.hide();
+            this.dialogRef.close('added');
+          },
+          err => {
+            console.log(err);
+            this.dialogRef.close('error');
+          }
+        )
+    }
 
   }
 

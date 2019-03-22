@@ -30,6 +30,8 @@ export class EditBuildingEntityDialogComponent implements OnInit {
   public idBuilding: number;
   public idProject: number;
 
+  public isLoaded: boolean;
+
   constructor(private dialogRef: MatDialogRef<EditBuildingEntityDialogComponent>,
               private formBuilder: FormBuilder,
               private buildingService: BuildingService,
@@ -41,9 +43,8 @@ export class EditBuildingEntityDialogComponent implements OnInit {
     this.idBuilding = data.idBuilding;
     this.idProject = data.idProjet;
 
-
     this.form = this.formBuilder.group({
-      name: new FormControl('', [
+      type: new FormControl('', [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50)
@@ -64,6 +65,25 @@ export class EditBuildingEntityDialogComponent implements OnInit {
         Validators.maxLength(50)
       ]),
     });
+
+
+    this.isLoaded = false;
+
+    let building = this.buildingService.getById(this.idBuilding).subscribe(
+      data => {
+        this.form.get('type').setValue(data.type);
+        this.form.get('city').setValue(data.address.city);
+        this.form.get('country').setValue(data.address.country);
+        this.form.get('street').setValue(data.address.street);
+      },
+      err => {},
+      () => {
+        this.isLoaded = true;
+      }
+    );
+
+
+
   }
 
   ngOnInit() {
@@ -79,7 +99,7 @@ export class EditBuildingEntityDialogComponent implements OnInit {
     const building = new Building();
     building.id = this.idBuilding;
 
-    building.type = this.form.get('name').value;
+    building.type = this.form.get('type').value;
 
     const address = new Address();
     address.city = this.form.get('city').value;
@@ -93,11 +113,7 @@ export class EditBuildingEntityDialogComponent implements OnInit {
       .then(
         data => {
           this.spinnerService.hide();
-          this.dialogRef.close({
-            action: 'updated',
-
-            type : this.form.get('name').value
-          });
+          this.dialogRef.close('updated');
           console.log(building);
           console.log(data);
         },

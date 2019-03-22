@@ -19,6 +19,7 @@ export class EditMotherRoomEntityDialogComponent implements OnInit {
   private idMotherRoom: number;
 
   private form: FormGroup;
+  private isLoaded: boolean;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private motherRoomService: MotherRoomService,
@@ -26,6 +27,7 @@ export class EditMotherRoomEntityDialogComponent implements OnInit {
               private spinnerService: Ng4LoadingSpinnerService,
               private formBuilder: FormBuilder
   ) {
+    this.idMotherRoom = data.idMotherRoom;
     console.log(data);
     this.form = this.formBuilder.group({
       type: new FormControl('', [
@@ -37,14 +39,26 @@ export class EditMotherRoomEntityDialogComponent implements OnInit {
         Validators.maxLength(50)
       ]),
     });
-    this.idMotherRoom = data.idMotherRoom;
+    this.isLoaded = false;
+    let motherRoom = this.motherRoomService.getById(this.idMotherRoom).subscribe(
+      data => {
+        this.form.get('type').setValue(data.type);
+        this.form.get('numberMotherRoom').setValue(data.numberMotherRoom);
+      },
+      err => {},
+      () => {
+        this.isLoaded = true;
+      }
+    );
+
+
   }
 
   ngOnInit() {
   }
 
   editMotherRoom() {
-    this.form.get('name').markAsTouched;
+    this.form.get('type').markAsTouched;
     this.form.get('numberMotherRoom').markAsTouched;
 
     if (!this.form.valid) {
@@ -64,10 +78,7 @@ export class EditMotherRoomEntityDialogComponent implements OnInit {
       .then(
         data => {
           this.spinnerService.hide();
-          this.dialogRef.close({
-            action: 'updated',
-            type : this.form.get('type').value
-          });
+          this.dialogRef.close('updated');
           console.log(motherRoom);
           console.log(data);
         },

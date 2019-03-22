@@ -43,6 +43,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
 
+// @ts-ignore
 @NgModule({
   declarations: [
     ProjectPageComponent,
@@ -91,20 +92,20 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HttpClientModule,
   ],
   entryComponents: [
-    CreateBuildingEntityDialogComponent,
     EditBuildingEntityDialogComponent,
     EditFloorEntityDialogComponent,
     EditMotherRoomEntityDialogComponent,
     EditCorridorEntityDialogComponent,
     EditRoomEntityDialogComponent,
+    EditActuatorEntityDialogComponent,
+    EditSensorEntityDialogComponent,
+    CreateBuildingEntityDialogComponent,
     CreateFloorEntityDialogComponent,
     CreateCorridorEntityDialogComponent,
     CreateMotherRoomEntityDialogComponent,
     CreateRoomEntityDialogComponent,
     CreateSensorEntityDialogComponent,
     CreateActuatorEntityDialogComponent,
-    EditActuatorEntityDialogComponent,
-    EditSensorEntityDialogComponent,
     DeployDialogComponent
 
   ],
@@ -117,4 +118,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DeployService
   ]
 })
-export class ProjectPageModule { } 
+export class ProjectPageModule { }
+
+

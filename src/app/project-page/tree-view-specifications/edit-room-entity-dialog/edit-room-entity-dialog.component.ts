@@ -19,13 +19,16 @@ export class EditRoomEntityDialogComponent implements OnInit {
 
   private form: FormGroup;
 
+  private isLoaded: boolean;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private roomService: RoomService,
               private dialogRef: MatDialogRef<EditRoomEntityDialogComponent>,
               private spinnerService: Ng4LoadingSpinnerService,
               private formBuilder: FormBuilder
   ) {
-    console.log(data);
+    this.idRoom = data.idRoom;
+
     this.form = this.formBuilder.group({
       type: new FormControl('', [
         Validators.required,
@@ -36,7 +39,20 @@ export class EditRoomEntityDialogComponent implements OnInit {
         Validators.maxLength(50)
       ]),
     });
-    this.idRoom = data.idRoom;
+    this.isLoaded = false;
+
+    let room = this.roomService.getById(this.idRoom).subscribe(
+      data => {
+        this.form.get('type').setValue(data.type);
+        this.form.get('numberRoom').setValue(data.numberRoom);
+      },
+      err => {},
+      () => {
+        this.isLoaded = true;
+      }
+    );
+
+
   }
 
   ngOnInit() {
@@ -59,14 +75,11 @@ export class EditRoomEntityDialogComponent implements OnInit {
 
     this.spinnerService.show();
 
-    this.roomService.updateRoom(this.idMotherRoom, room)
+    this.roomService.updateRoom(room)
       .then(
         data => {
           this.spinnerService.hide();
-          this.dialogRef.close({
-            action: 'updated',
-            type : this.form.get('type').value
-          });
+          this.dialogRef.close('updated');
           console.log(room);
           console.log(data);
         },

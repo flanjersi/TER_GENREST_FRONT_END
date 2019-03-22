@@ -25,7 +25,7 @@ export class SensorService {
 
   updateSensor(sensor: Sensor) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/sensors/' + sensor.id, JSON.stringify(sensor), {headers: {'Content-Type': 'application/json'}})
+      this.http.post('api/sensors/' + sensor.id, JSON.stringify(sensor.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Sensor(data));

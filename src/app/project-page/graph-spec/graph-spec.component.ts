@@ -154,7 +154,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Sensor' + sensor.id , label: sensor.brand + ' ' + sensor.model, color: '#6593F5'});
+    nodes.push({id: 'Sensor' + sensor.id , label: sensor.name + ' ' + sensor.model, color: '#6593F5'});
     links.push({source: 'Corridor' + idCorridor , target: 'Sensor' + sensor.id  , label: ''});
 
     return [nodes, links];
@@ -163,7 +163,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Actuator' + actuator.id , label:  actuator.brand + ' ' + actuator.model, color: '#008ECC'});
+    nodes.push({id: 'Actuator' + actuator.id , label:  actuator.name + ' ' + actuator.model, color: '#008ECC'});
     links.push({source: 'Corridor' + idCorridor , target: 'Actuator' + actuator.id  , label: ''});
 
     return [nodes, links];
@@ -241,7 +241,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Actuator' + actuator.id, label: actuator.model + ' ' + actuator.brand, color: '#008ECC'});
+    nodes.push({id: 'Actuator' + actuator.id, label: actuator.model + ' ' + actuator.name, color: '#008ECC'});
     links.push({source: 'Room' + idRoom, target: 'Actuator' + actuator.id , label: ''});
 
     return [nodes, links];
@@ -251,7 +251,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Sensor' + sensor.id, label: sensor.model + ' ' + sensor.brand, color: '#6593F5'});
+    nodes.push({id: 'Sensor' + sensor.id, label: sensor.model + ' ' + sensor.name, color: '#6593F5'});
     links.push({source: 'Room' + idRoom, target: 'Sensor' + sensor.id, label: ''});
 
     return [nodes, links];

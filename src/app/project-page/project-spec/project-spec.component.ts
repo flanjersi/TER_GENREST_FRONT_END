@@ -1,5 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-
+import {Component, Input, OnInit} from '@angular/core';
 
 
 @Component({
@@ -13,9 +12,7 @@ export class ProjectSpecComponent implements OnInit {
   @Input()
   public datas: any;
 
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit() {}
 

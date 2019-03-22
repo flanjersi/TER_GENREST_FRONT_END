@@ -7,9 +7,7 @@ export  class  Actuator {
   public  latitude: number;
   public  longitude: number;
   public  model: string;
-  public  brand: string;
-  public  reference: string;
-  public  state: string;
+  public  name: string;
 
   constructor(data?: any){
 
@@ -18,22 +16,18 @@ export  class  Actuator {
       this.latitude = data.latitude;
       this.longitude = data.longitude;
       this.model = data.model;
-      this.brand = data.brand;
-      this.reference = data.reference;
-      this.state = data.state;
+      this.name = data.name;
     }
   }
 
   toJson()  {
     return {
       id: new Number(this.id),
-      latitude: new Number(this.latitude),
-      longitude: new Number(this.longitude),
+      name: new String(this.name),
       model: new String(this.model),
-      brand: new String(this.brand),
-      reference: new String(this.reference),
-      state: new String(this.state)
-    } 
+      latitude: new Number(this.latitude),
+      longitude: new Number(this.longitude)
+    }
   }
 
   toJsonShowed() : any{
@@ -42,12 +36,10 @@ export  class  Actuator {
         title: "Actuator"
       },
       {
-      brand: new String(this.brand),
-      model: new String(this.model),
-      reference: new String(this.reference),
-      latitude: new Number(this.latitude),
-      longitude: new Number(this.longitude),
-      state: new String(this.state)
+        name: new String(this.name),
+        model: new String(this.model),
+        latitude: new Number(this.latitude),
+        longitude: new Number(this.longitude)
     }]
   }
 

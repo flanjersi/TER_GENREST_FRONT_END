@@ -23,7 +23,7 @@ import { CreateActuatorEntityDialogComponent } from './create-actuator-entity-di
 import { RoomService} from '../../shared/_services/room.service';
 import { HttpClient} from '@angular/common/http';
 import { BuildingService} from '../../shared/_services/building.service';
-import { FloorService} from "../../shared/_services/floor.service";
+import { FloorService} from '../../shared/_services/floor.service';
 import { MotherRoomService} from '../../shared/_services/mother-room.service';
 import { CorridorService} from '../../shared/_services/corridor.service';
 import { ActuatorService} from '../../shared/_services/actuator.service';
@@ -36,6 +36,10 @@ import { EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-roo
 import { EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
 import { EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
 import { Ng4LoadingSpinnerService} from "ng4-loading-spinner";
+import {DeleteConfirmDialogComponent} from "./delete-confirm-dialog/delete-confirm-dialog.component";
+import {element} from "protractor";
+
+
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -73,6 +77,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   @Output() showEntity: EventEmitter<any>;
   @Output() updated: EventEmitter<number>;
 
+  private valueOfSearchNodeInput: string;
+
   private building: Building;
 
   private httpClient: HttpClient;
@@ -90,8 +96,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
               private buildingService: BuildingService, private motherRoomService: MotherRoomService,
               private actuatorService: ActuatorService, private corridorService: CorridorService,
               private  sensorService: SensorService,  private spinnerService: Ng4LoadingSpinnerService,
-              private floorService: FloorService
-  ) {
+              private floorService: FloorService ) {
+
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
@@ -106,79 +112,73 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   showSpec(node) {
+    if(node.type === 'interface')
+      return;
+
     if (node.type === 'building') {
-      this.buildingService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
-
+      this.buildingService.getById(node.id).subscribe(
+        data => {
+          this.showEntity.emit(data);
+        },
+        err => {},
+        () => {}
+      );
     }
-
     if (node.type === 'floor') {
-      this.floorService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
+      this.floorService.getById(node.id).subscribe(
+        data => {
+          this.showEntity.emit(data);
+        },
+        err => {},
+        () => {}
+      );
     }
     if (node.type === 'room') {
-      this.roomService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
+      this.roomService.getById(node.id).subscribe(
+        data => {
+          this.showEntity.emit(data);
+        },
+        err => {},
+        () => {}
+      );
     }
     if (node.type === 'motherRoom') {
-      this.motherRoomService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
+      this.motherRoomService.getById(node.id).subscribe(
+        data => {
+          this.showEntity.emit(data);
+        },
+        err => {},
+        () => {}
+      );
     }
     if (node.type === 'corridor') {
-      this.corridorService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
+      this.corridorService.getById(node.id).subscribe(
+        data => {
+          this.showEntity.emit(data);
+        },
+        err => {},
+        () => {}
+      );
     }
     if (node.type === 'sensor') {
-      this.sensorService.getById(node.id)
-      .then(
+      this.sensorService.getById(node.id).then(
         data => {
           this.showEntity.emit(data);
         },
         err => {}
       );
-  }
-    if (node.type === 'actuator') {
-      this.actuatorService.getById(node.id)
-        .subscribe(
-          data => {
-            this.showEntity.emit(data);
-          },
-          err => {},
-          () => {}
-        );
     }
-
+    if (node.type === 'actuator') {
+      this.actuatorService.getById(node.id).subscribe(
+        data => {
+          this.showEntity.emit(data);
+        },
+        err => {},
+        () => {}
+      );
+    }
   }
+
   ngOnInit() {
     this.dataSource.data = this.generateData(this.project);
   }
@@ -227,8 +227,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     return data;
   }
-
-
 
   generateBuilding(building: Building): any {
     const buildingData = {} as any;
@@ -285,7 +283,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     const motherRoomInterfaceData = {
       id: floor.id,
-      name: 'Spaces',
+      name: 'Zone',
       type: 'interface'
     } as any;
 
@@ -391,8 +389,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       const actuators = [];
       const instance = this;
       corridor.actuators.sort((s1, s2) => s1.id - s2.id).forEach(element => {
-         const actuator = instance.generateActuator(element);
-         actuators.push(actuator);
+        const actuator = instance.generateActuator(element);
+        actuators.push(actuator);
       });
 
       actuatorInterfaceData.children = actuators;
@@ -406,7 +404,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const roomData = {} as any;
 
     roomData.id = room.id;
-    roomData.name = 'Room ' + room.numberRoom;
+    roomData.name = room.type + room.numberRoom;
     roomData.type = 'room';
 
     const sensorInterfaceData = {
@@ -431,6 +429,18 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       type: 'interface'
     } as any;
 
+    if (room.actuators && room.actuators.length > 0) {
+      const actuators = [];
+
+      room.actuators.sort((s1, s2) => s1.id - s2.id).forEach(element => {
+        const sensor = this.generateActuator(element);
+        actuators.push(sensor);
+      });
+
+      actuatorInterfaceData.children = actuators;
+    }
+
+
     roomData.children = [sensorInterfaceData, actuatorInterfaceData];
 
     return roomData;
@@ -441,24 +451,23 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const sensorData = {} as any;
 
     sensorData.id = sensor.id;
-    sensorData.name = 'Sensor ' + sensor.reference;
+    sensorData.name = sensor.name;
     sensorData.type = 'sensor';
 
     return sensorData;
   }
 
-   generateActuator(actuator: Actuator): any {
+  generateActuator(actuator: Actuator): any {
     const actutorData = {} as any;
 
     actutorData.id = actuator.id;
-    actutorData.name = 'Actuator ' + actuator.reference;
-    actutorData.type = 'Actuator';
+    actutorData.name = actuator.name;
+    actutorData.type = 'actuator';
 
     return actutorData;
   }
 
   update(node1) {
-    console.log(node1);
     switch (node1.type) {
       case 'building': {
         this.openUpdateBuildingDialog(node1);
@@ -492,8 +501,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   add(node1) {
-    console.log("99999999999999999999999999999");
-    console.log(node1);
     switch (node1.name) {
       case 'Buildings': {
         this.openCreationBuildingDialog(node1);
@@ -504,29 +511,31 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Corridors': {
-        this.openCreationCorridorDialog(node1,node1.level);
-            break;
+        this.openCreationCorridorDialog(node1, node1.level);
+        break;
       }
-      case 'Spaces': {
+      case 'Zone': {
         this.openCreationMotherRoomDialog(node1);
         break;
       }
       case 'Rooms': {
-       this.openCreationRoomDialog(node1);
+        this.openCreationRoomDialog(node1);
         break;
       }
       case 'Sensors': {
-        this.openCreationSensorDialog(node1,node1.level);
-            break;    
+
+        this.openCreationSensorDialog(node1, this.searchParent(node1).type);
+        break;
       }
       case 'Actuators': {
-        this.openCreationActuatorDialog(node1,node1.level);
-            break;       
+        this.openCreationActuatorDialog(node1, this.searchParent(node1).type);
+        break;
+
       }
       default: break;
     }
-    
-    let nodeFinded = this.searchRoot(node1);
+
+    const nodeFinded = this.searchRoot(node1);
 
     const expandablesNodes = this.getAllExpandableNodes();
 
@@ -586,8 +595,9 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   searchParent(node: any): FlatTreeNode {
-    let level = node.level-1;
-    if (level < 1) {
+
+    const level = node.level - 1;
+    if (level < 0) {
       return null;
     }
     const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
@@ -595,14 +605,15 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     for (let i = startIndex; i >= 0; i--) {
       const currentNode = this.treeControl.dataNodes[i];
       const currentLevel = currentNode.level;
-      console.log(currentNode);
-      if (currentLevel === (level - 1) ){
-        console.log('LA');
+
+      if (currentLevel === level ) {
         return currentNode;
       }
       if (this.getLevel(currentNode) === 0) {
-        break; }
+        break;
+      }
     }
+    return null;
   }
 
   /**
@@ -651,7 +662,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     return observableOf(node.children);
   }
 
-  openCreationBuildingDialog(node: FileNode){
+  openCreationBuildingDialog(node: FileNode) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -692,7 +703,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     );
   }
 
-  openCreationCorridorDialog(node: FileNode,levelFlatTreeNode){
+  openCreationCorridorDialog(node: FileNode, levelFlatTreeNode) {
 
     const dialogConfig = new MatDialogConfig();
 
@@ -714,7 +725,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     );
   }
 
-  openCreationMotherRoomDialog(node: FileNode){
+
+  openCreationMotherRoomDialog(node: FileNode) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -722,19 +734,19 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     dialogConfig.data = {
       id: node.id,
     };
-  
-  const dialogRef = this.dialog.open(CreateMotherRoomEntityDialogComponent, dialogConfig);
+
+    const dialogRef = this.dialog.open(CreateMotherRoomEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
-        if(data === 'added'){
+        if (data === 'added') {
           this.addedSpecification.emit(1);
         }
       }
     );
   }
 
-  openCreationRoomDialog(node: FileNode){
+  openCreationRoomDialog(node: FileNode) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -742,53 +754,54 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     dialogConfig.data = {
       id: node.id,
     };
-  
-  const dialogRef = this.dialog.open(CreateRoomEntityDialogComponent, dialogConfig);
+
+    const dialogRef = this.dialog.open(CreateRoomEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
-        if(data === 'added'){
-          this.addedSpecification.emit(1);
-        }
-      }
-    );
-  }
-  openCreationSensorDialog(node: FileNode,levelFlatTreeNode){
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      id: node.id,
-      level: levelFlatTreeNode,
-    };
-
-  const dialogRef = this.dialog.open(CreateSensorEntityDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(
-      data => {
-        if(data === 'added'){
+        if (data === 'added') {
           this.addedSpecification.emit(1);
         }
       }
     );
   }
 
-  openCreationActuatorDialog(node: FileNode,levelFlatTreeNode){
+  openCreationSensorDialog(node: FileNode, typeFlatTreeNode) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       id: node.id,
-      level: levelFlatTreeNode,
+      type: typeFlatTreeNode,
     };
 
-  const dialogRef = this.dialog.open(CreateActuatorEntityDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(CreateSensorEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
-        if(data === 'added'){
+        if (data === 'added') {
+          this.addedSpecification.emit(1);
+        }
+      }
+    );
+  }
+
+  openCreationActuatorDialog(node: FileNode, typeFlatTreeNode) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: node.id,
+      type: typeFlatTreeNode,
+    };
+
+    const dialogRef = this.dialog.open(CreateActuatorEntityDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'added') {
           this.addedSpecification.emit(1);
         }
       }
@@ -800,11 +813,19 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     const dialogConfig = new MatDialogConfig();
 
+    /*  let building = this.buildingService.getById(node.id).subscribe(
+      (data) => building.next(new Building(data)),
+      err => {
+
+      },
+      () => {}
+    ); */
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       idProject: this.project.id,
       idBuilding: node.id
+      // type: this.building.type
     };
 
     const dialogRef = this.dialog.open(EditBuildingEntityDialogComponent, dialogConfig);
@@ -937,8 +958,9 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
 
   remove(node1) {
-    console.log(node1);
-    const parent = this.searchParent(node1);
+    // get parent of parent not to take into account about interface
+    const parent = this.searchParent(this.searchParent(node1));
+
     switch (node1.type) {
       case 'building': {
         this.buildingService.deleteBuilding(this.project.id, node1.id )
@@ -956,12 +978,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
             },
             err => {}
           );
-
         break;
       }
       case 'corridor': {
-        if(parent.type === 'floor')
-        {
+        if (parent.type === 'floor') {
           this.corridorService.deleteCorridorInFloor(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
@@ -969,18 +989,19 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
               err => {}
             );
         }
-        if(parent.type === 'space')
-        {
-          this.corridorService.deleteCorridorInMotherRoom(parent.id, node1.id )
-            .then( data => {
+
+        if (parent.type !== 'motherRoom') {
+          this.corridorService.deleteCorridorInMotherRoom(parent.id, node1.id)
+            .then(data => {
                 this.updated.emit(1);
               },
-              err => {}
+              err => {
+              }
             );
         }
         break;
       }
-      case 'space': {
+      case 'motherRoom': {
         this.motherRoomService.deleteMotherRoom(parent.id, node1.id )
           .then( data => {
               this.updated.emit(1);
@@ -999,7 +1020,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'sensor': {
-        if(parent.type === 'corridor') {
+        if (parent.type === 'corridor') {
           this.sensorService.deleteSensorInCorridor(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
@@ -1007,7 +1028,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
               err => {}
             );
         }
-        if(parent.type === 'room') {
+        if (parent.type === 'room') {
           this.sensorService.deleteSensorInRoom(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
@@ -1017,9 +1038,9 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         }
         break;
       }
-      case 'Actuators': {
-        if(parent.type === 'corridor')
-        {
+
+      case 'actuator': {
+        if (parent.type === 'corridor') {
           this.actuatorService.deleteActuatorInCorridor(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
@@ -1027,8 +1048,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
               err => {}
             );
         }
-        if(parent.type === 'room') {
-          this.sensorService.deleteSensorInRoom(parent.id, node1.id )
+        if ( parent.type === 'room') {
+          this.actuatorService.deleteActuatorInRoom(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
               },
@@ -1040,6 +1061,82 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       default:
         break;
     }
+  }
+  expendAll(){
+    this.treeControl.expandAll();
+  }
+
+  searchNode(){
+    this.treeControl.collapseAll();
+
+    if(!this.valueOfSearchNodeInput || this.valueOfSearchNodeInput.length === 0)
+      return;
+
+    const nodes = this.searchAllParentsOfNodesByName(this.valueOfSearchNodeInput);
+
+    nodes.forEach(element => {
+      this.treeControl.expand(element);
+    });
 
   }
+
+
+  searchAllParentsOfNodesByName(name: string):  FlatTreeNode[] {
+    let nodes = [];
+
+    for (let i = this.treeControl.dataNodes.length - 1; i >= 0; i--){
+      let fileNode = this.treeControl.dataNodes[i];
+
+      if(fileNode.name.includes(name) && fileNode.type != 'interface'){
+        nodes.push(fileNode);
+        nodes = nodes.concat(this.searchAllParentsOfNodeByName(i));
+      }
+    }
+
+    return nodes;
+  }
+
+  searchAllParentsOfNodeByName(indexNode: number):  FlatTreeNode[] {
+    let currentLevel = this.treeControl.dataNodes[indexNode].level;
+
+    const nodes = [];
+
+    for (let i = indexNode; i >= 0; i--){
+      let fileNode = this.treeControl.dataNodes[i];
+
+      if(fileNode.level === currentLevel - 1) {
+        nodes.push(fileNode);
+        currentLevel = currentLevel - 1;
+      }
+    }
+
+    return nodes;
+  }
+
+
+/*
+  openDeleteConfirmDialog(): string {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    this.store.dispatch(new RemoveHeroConfirmDialogOpen({
+      delete: new RemoveHeroAction({ hero: hero }),
+      text: `Are you sure you want to remove the hero <em>${hero.name}</em> from the tour of heros?`,
+      title: "Remove Hero"
+    }));
+
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data === 'deleted') {
+          //this.addedSpecification.emit(1);
+          return 'deleted';
+        }
+      }
+    );
+    return 'cancel';
+  }
+  */
 }

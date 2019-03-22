@@ -11,7 +11,7 @@ export class RoomService {
 
   getById(id: number): Observable<Room> {
     return new Observable<Room>((observer) => {
-      this.http.get<any>('api/Rooms/' + id)
+      this.http.get<any>('api/rooms/' + id)
         .subscribe(
           (room) => observer.next(new Room(room)),
           (error) => observer.error(error),
@@ -33,9 +33,9 @@ export class RoomService {
     });
   }
 
-  updateRoom(idMotherRoom: number, room: Room) {
+  updateRoom(room: Room) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/motherRooms/' + idMotherRoom + '/rooms/' + room.id, JSON.stringify(room), {headers: {'Content-Type': 'application/json'}})
+      this.http.post('api/rooms/' + room.id, JSON.stringify(room), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
             resolve(new Room(data));
