@@ -92,20 +92,20 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HttpClientModule,
   ],
   entryComponents: [
-    CreateBuildingEntityDialogComponent,
     EditBuildingEntityDialogComponent,
     EditFloorEntityDialogComponent,
     EditMotherRoomEntityDialogComponent,
     EditCorridorEntityDialogComponent,
     EditRoomEntityDialogComponent,
+    EditActuatorEntityDialogComponent,
+    EditSensorEntityDialogComponent,
+    CreateBuildingEntityDialogComponent,
     CreateFloorEntityDialogComponent,
     CreateCorridorEntityDialogComponent,
     CreateMotherRoomEntityDialogComponent,
     CreateRoomEntityDialogComponent,
     CreateSensorEntityDialogComponent,
     CreateActuatorEntityDialogComponent,
-    EditActuatorEntityDialogComponent,
-    EditSensorEntityDialogComponent,
     DeployDialogComponent
 
   ],

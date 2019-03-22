@@ -90,7 +90,7 @@ export class ProjectPageComponent implements OnInit {
 
     let actuator = new Actuator();
     actuator.id = 1;
-    actuator.brand = "test";
+    actuator.name = "test";
 
     corridor.actuators.push(actuator);
 
@@ -98,7 +98,7 @@ export class ProjectPageComponent implements OnInit {
 
     let sensor = new Sensor();
     sensor.id = 1;
-    sensor.brand = "test";
+    sensor.name = "test";
 
     corridor.sensors.push(sensor);
 

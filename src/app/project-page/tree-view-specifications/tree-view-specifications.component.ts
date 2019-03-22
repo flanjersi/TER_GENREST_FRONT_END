@@ -169,7 +169,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       );
     }
     if (node.type === 'actuator') {
-      console.log('actuator');
       this.actuatorService.getById(node.id).subscribe(
         data => {
           this.showEntity.emit(data);
@@ -372,7 +371,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       const sensors = [];
       const instance = this;
       corridor.sensors.sort((s1, s2) => s1.id - s2.id).forEach(element => {
-        console.log(element);
         const room = instance.generateSensor(element);
         sensors.push(room);
       });
@@ -453,7 +451,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const sensorData = {} as any;
 
     sensorData.id = sensor.id;
-    sensorData.name = 'Sensor ' + sensor.reference;
+    sensorData.name = sensor.name;
     sensorData.type = 'sensor';
 
     return sensorData;
@@ -463,14 +461,13 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const actutorData = {} as any;
 
     actutorData.id = actuator.id;
-    actutorData.name = 'Actuator ' + actuator.reference;
+    actutorData.name = actuator.name;
     actutorData.type = 'actuator';
 
     return actutorData;
   }
 
   update(node1) {
-    console.log(node1);
     switch (node1.type) {
       case 'building': {
         this.openUpdateBuildingDialog(node1);
@@ -492,7 +489,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         this.openUpdateRoomDialog(node1);
         break;
       }
-      case'Actuator' : {
+      case'actuator' : {
         this.openUpdateActuatorDialog(node1);
         break;
       }
@@ -608,8 +605,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     for (let i = startIndex; i >= 0; i--) {
       const currentNode = this.treeControl.dataNodes[i];
       const currentLevel = currentNode.level;
-
-      console.log(currentNode);
 
       if (currentLevel === level ) {
         return currentNode;

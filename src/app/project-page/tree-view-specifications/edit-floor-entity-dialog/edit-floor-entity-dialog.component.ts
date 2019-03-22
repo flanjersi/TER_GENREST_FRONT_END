@@ -37,7 +37,7 @@ export class EditFloorEntityDialogComponent implements OnInit {
   ) {
 
     this.idFloor = data.idFloor;
-    console.log(data);
+
     this.form = this.formBuilder.group({
       floorNumber: new FormControl('', [
         Validators.required,
@@ -91,9 +91,11 @@ export class EditFloorEntityDialogComponent implements OnInit {
         }
       );
   }
+
+  close() {
+    this.dialogRef.close('cancel');
+  }
+
 }
 
-close(); {
-  this.dialogRef.close('cancel');
-}
 
