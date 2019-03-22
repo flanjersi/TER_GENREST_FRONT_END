@@ -1,0 +1,6 @@
+<div *ngIf="datas" class="pre-scrollable" >
+  <div class="mat-title" style="margin-top: 20px">{{datas.toJsonShowed()[0].title}}</div>
+  <mat-list *ngFor="let data of datas.toJsonShowed()[1] | keyvalue ">
+    <mat-list-item > <b>{{data.key.toString().charAt(0).toUpperCase()}}{{data.key.toString().slice(1)}}</b>  : {{data.value}} </mat-list-item>
+  </mat-list>
+</div>

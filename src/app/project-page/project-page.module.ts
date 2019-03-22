@@ -34,6 +34,7 @@ import {EditActuatorEntityDialogComponent} from './tree-view-specifications/edit
 import { DeployDialogComponent } from './deploy-dialog/deploy-dialog.component';
 import {DeployService} from "./deploy-dialog/services/deploy.service";
 import {ProjectSpecComponent} from "./project-spec/project-spec.component";
+import { JsonProjetComponent } from './json-projet/json-projet.component';
 
 const routes: Routes = [
   { path: '', component: ProjectPageComponent},
@@ -73,7 +74,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     EditSensorEntityDialogComponent,
     EditActuatorEntityDialogComponent,
     DeployDialogComponent,
-    ProjectSpecComponent
+    ProjectSpecComponent,
+    JsonProjetComponent
   ],
   imports: [
     SharedModule.forRoot(),
