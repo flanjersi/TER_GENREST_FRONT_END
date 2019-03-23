@@ -126,7 +126,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Corridor' + corridor.id , label: 'Corridor ' + corridor.numberCorridor, color:'#0080FF'});
+    nodes.push({id: 'Corridor' + corridor.id , label: corridor.name, color:'#0080FF'});
     links.push({source: 'Floor' + idFloor , target: 'Corridor' + corridor.id , label: ''});
 
     if (!corridor.sensors) return [nodes, links];
@@ -155,7 +155,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Sensor' + sensor.id , label: sensor.name + ' ' + sensor.model, color: '#6593F5'});
+    nodes.push({id: 'Sensor' + sensor.id , label: sensor.name, color: '#6593F5'});
     links.push({source: 'Corridor' + idCorridor , target: 'Sensor' + sensor.id  , label: ''});
 
     return [nodes, links];
@@ -164,7 +164,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Actuator' + actuator.id , label:  actuator.name + ' ' + actuator.model, color: '#008ECC'});
+    nodes.push({id: 'Actuator' + actuator.id , label:  actuator.name, color: '#008ECC'});
     links.push({source: 'Corridor' + idCorridor , target: 'Actuator' + actuator.id  , label: ''});
 
     return [nodes, links];
@@ -174,7 +174,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Zone' + zone.id , label: zone.type, color: '#0F52BA'});
+    nodes.push({id: 'Zone' + zone.id , label: zone.type + ' ' + zone.name, color: '#0F52BA'});
     links.push({source: 'Floor' + idFloor , target: 'Zone' + zone.id  , label: ''});
 
     if (!zone.rooms) return [nodes, links];
@@ -203,7 +203,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Corridor' + corridor.id , label: 'Corridor ' + corridor.numberCorridor, color:'#0080FF'});
+    nodes.push({id: 'Corridor' + corridor.id , label: corridor.name, color:'#0080FF'});
     links.push({source: 'Zone' + idZone , target: 'Corridor' + corridor.id  , label: ''});
 
     return [nodes, links];
@@ -213,7 +213,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Room' + room.id , label: room.type, color: '#0E4D92'});
+    nodes.push({id: 'Room' + room.id , label: room.type + ' ' + room.name, color: '#0E4D92'});
     links.push({source: 'Zone' + idZone , target: 'Room' + room.id  , label: ''});
 
     if (!room.actuators) return [nodes, links];
@@ -242,7 +242,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Actuator' + actuator.id, label: actuator.model + ' ' + actuator.name, color: '#008ECC'});
+    nodes.push({id: 'Actuator' + actuator.id, label: actuator.name, color: '#008ECC'});
     links.push({source: 'Room' + idRoom, target: 'Actuator' + actuator.id , label: ''});
 
     return [nodes, links];
@@ -252,7 +252,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'Sensor' + sensor.id, label: sensor.model + ' ' + sensor.name, color: '#6593F5'});
+    nodes.push({id: 'Sensor' + sensor.id, label: sensor.name, color: '#6593F5'});
     links.push({source: 'Room' + idRoom, target: 'Sensor' + sensor.id, label: ''});
 
     return [nodes, links];

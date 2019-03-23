@@ -36,6 +36,7 @@ export class CreateCorridorEntityDialogComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: new FormControl('', [
         Validators.required,
+        Validators.minLength(2),
         Validators.maxLength(50)
       ]),
     });
@@ -53,7 +54,7 @@ export class CreateCorridorEntityDialogComponent implements OnInit {
     }
 
     let corridor = new Corridor();
-    corridor.numberCorridor = this.form.get('name').value;
+    corridor.name = this.form.get('name').value;
 
     this.spinnerService.show();
 
