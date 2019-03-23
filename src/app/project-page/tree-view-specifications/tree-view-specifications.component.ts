@@ -1,45 +1,39 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { of as observableOf, generate } from 'rxjs';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { DataSource } from '@angular/cdk/table';
-import { Project } from 'src/app/shared/_models/Project';
-import { Building } from 'src/app/shared/_models/Building';
-import { Floor } from 'src/app/shared/_models/Floor';
-import { Corridor } from 'src/app/shared/_models/Corridor';
-import { MotherRoom } from 'src/app/shared/_models/MotherRoom';
-import { Room } from 'src/app/shared/_models/Room';
-import { Sensor } from 'src/app/shared/_models/Sensor';
-import { Actuator } from 'src/app/shared/_models/Actuator';
-import { MatDialogConfig, MatDialog } from '@angular/material';
-import { CreateBuildingEntityDialogComponent } from './create-building-entity-dialog/create-building-entity-dialog.component';
-import { CreateFloorEntityDialogComponent } from './create-floor-entity-dialog/create-floor-entity-dialog.component';
-import { CreateCorridorEntityDialogComponent } from './create-corridor-entity-dialog/create-corridor-entity-dialog.component';
-import { CreateMotherRoomEntityDialogComponent } from './create-mother-room-entity-dialog/create-mother-room-entity-dialog.component';
-import { CreateRoomEntityDialogComponent } from './create-room-entity-dialog/create-room-entity-dialog.component';
-import { CreateSensorEntityDialogComponent} from './create-sensor-entity-dialog/create-sensor-entity-dialog.component';
-import { CreateActuatorEntityDialogComponent } from './create-actuator-entity-dialog/create-actuator-entity-dialog.component';
-import { RoomService} from '../../shared/_services/room.service';
-import { HttpClient} from '@angular/common/http';
-import { BuildingService} from '../../shared/_services/building.service';
-import { FloorService} from '../../shared/_services/floor.service';
-import { MotherRoomService} from '../../shared/_services/mother-room.service';
-import { CorridorService} from '../../shared/_services/corridor.service';
-import { ActuatorService} from '../../shared/_services/actuator.service';
-import { SensorService} from '../../shared/_services/sensor.service';
-import { EditBuildingEntityDialogComponent} from './edit-building-entity-dialog/edit-building-entity-dialog.component';
-import { EditFloorEntityDialogComponent} from './edit-floor-entity-dialog/edit-floor-entity-dialog.component';
-import { EditCorridorEntityDialogComponent} from './edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
-import { EditMotherRoomEntityDialogComponent} from './edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
-import { EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room-entity-dialog.component';
-import { EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
-import { EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
-import { Ng4LoadingSpinnerService} from "ng4-loading-spinner";
-import {DeleteConfirmDialogComponent} from "./delete-confirm-dialog/delete-confirm-dialog.component";
-import {element} from "protractor";
-import {el} from "@angular/platform-browser/testing/src/browser_util";
-
+import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import {of as observableOf} from 'rxjs';
+import {FlatTreeControl} from '@angular/cdk/tree';
+import {Project} from 'src/app/shared/_models/Project';
+import {Building} from 'src/app/shared/_models/Building';
+import {Floor} from 'src/app/shared/_models/Floor';
+import {Corridor} from 'src/app/shared/_models/Corridor';
+import {Zone} from 'src/app/shared/_models/Zone';
+import {Room} from 'src/app/shared/_models/Room';
+import {Sensor} from 'src/app/shared/_models/Sensor';
+import {Actuator} from 'src/app/shared/_models/Actuator';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {CreateBuildingEntityDialogComponent} from './create-building-entity-dialog/create-building-entity-dialog.component';
+import {CreateFloorEntityDialogComponent} from './create-floor-entity-dialog/create-floor-entity-dialog.component';
+import {CreateCorridorEntityDialogComponent} from './create-corridor-entity-dialog/create-corridor-entity-dialog.component';
+import {CreateZoneEntityDialogComponent} from './create-zone-entity-dialog/create-zone-entity-dialog.component';
+import {CreateRoomEntityDialogComponent} from './create-room-entity-dialog/create-room-entity-dialog.component';
+import {CreateSensorEntityDialogComponent} from './create-sensor-entity-dialog/create-sensor-entity-dialog.component';
+import {CreateActuatorEntityDialogComponent} from './create-actuator-entity-dialog/create-actuator-entity-dialog.component';
+import {RoomService} from '../../shared/_services/room.service';
+import {BuildingService} from '../../shared/_services/building.service';
+import {FloorService} from '../../shared/_services/floor.service';
+import {ZoneService} from '../../shared/_services/zone.service';
+import {CorridorService} from '../../shared/_services/corridor.service';
+import {ActuatorService} from '../../shared/_services/actuator.service';
+import {SensorService} from '../../shared/_services/sensor.service';
+import {EditBuildingEntityDialogComponent} from './edit-building-entity-dialog/edit-building-entity-dialog.component';
+import {EditFloorEntityDialogComponent} from './edit-floor-entity-dialog/edit-floor-entity-dialog.component';
+import {EditCorridorEntityDialogComponent} from './edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
+import {EditZoneEntityDialogComponent} from './edit-zone-entity-dialog/edit-zone-entity-dialog.component';
+import {EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room-entity-dialog.component';
+import {EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
+import {EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
+import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 
 
 /** File node data with possible child nodes. */
@@ -91,7 +85,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
   constructor(private dialog: MatDialog, private roomService: RoomService,
-              private buildingService: BuildingService, private motherRoomService: MotherRoomService,
+              private buildingService: BuildingService, private zoneService: ZoneService,
               private actuatorService: ActuatorService, private corridorService: CorridorService,
               private  sensorService: SensorService,  private spinnerService: Ng4LoadingSpinnerService,
               private floorService: FloorService ) {
@@ -140,8 +134,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         () => {}
       );
     }
-    if (node.type === 'motherRoom') {
-      this.motherRoomService.getById(node.id).subscribe(
+    if (node.type === 'zone') {
+      this.zoneService.getById(node.id).subscribe(
         data => {
           this.showEntity.emit(data);
         },
@@ -279,48 +273,48 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       corridorInterfaceData.children = corridors;
     }
 
-    const motherRoomInterfaceData = {
+    const zoneInterfaceData = {
       id: floor.id,
       name: 'Zone',
       type: 'interface'
     } as any;
 
 
-    if (floor.motherRooms && floor.motherRooms.length > 0) {
-      const motherRooms = [];
+    if (floor.zones && floor.zones.length > 0) {
+      const zones = [];
       const instance = this;
-      floor.motherRooms.sort((mr1, mr2) => mr1.type.localeCompare(mr2.type)).forEach(element => {
-        const motherRoom = instance.generateMotherRoom(element);
-        motherRooms.push(motherRoom);
+      floor.zones.sort((mr1, mr2) => mr1.type.localeCompare(mr2.type)).forEach(element => {
+        const zone = instance.generateZone(element);
+        zones.push(zone);
       });
 
-      motherRoomInterfaceData.children = motherRooms;
+      zoneInterfaceData.children = zones;
     }
 
-    floorData.children = [corridorInterfaceData, motherRoomInterfaceData];
+    floorData.children = [corridorInterfaceData, zoneInterfaceData];
 
     return floorData;
 
   }
 
-  generateMotherRoom(motherRoom: MotherRoom): any {
+  generateZone(zone: Zone): any {
 
-    const motherRoomsData = {} as any;
+    const zoneData = {} as any;
 
-    motherRoomsData.id = motherRoom.id;
-    motherRoomsData.name = motherRoom.type;
-    motherRoomsData.type = 'motherRoom';
+    zoneData.id = zone.id;
+    zoneData.name = zone.type + ' ' + zone.name;
+    zoneData.type = 'zone';
 
     const corridorInterfaceData = {
-      id: motherRoom.id,
+      id: zone.id,
       name: 'Corridors',
       type: 'interface'
     } as any;
 
-    if (motherRoom.corridors && motherRoom.corridors.length > 0) {
+    if (zone.corridors && zone.corridors.length > 0) {
       const corridors = [];
       const instance = this;
-      motherRoom.corridors.sort((c1, c2) => c1.numberCorridor - c2.numberCorridor).forEach(element => {
+      zone.corridors.sort((c1, c2) => c1.numberCorridor - c2.numberCorridor).forEach(element => {
         const corridor = instance.generateCorridor(element);
         corridors.push(corridor);
       });
@@ -329,16 +323,16 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     }
 
     const roomsInterfaceData = {
-      id: motherRoom.id,
+      id: zone.id,
       name: 'Rooms',
       type: 'interface'
     } as any;
 
-    if (motherRoom.rooms && motherRoom.rooms.length > 0) {
+    if (zone.rooms && zone.rooms.length > 0) {
 
       const roomsTab = [];
       const instance = this;
-      motherRoom.rooms.sort((r1, r2) => r1.type.localeCompare(r2.type)).forEach(element => {
+      zone.rooms.sort((r1, r2) => r1.type.localeCompare(r2.type)).forEach(element => {
         const room = instance.generateRoom(element);
         roomsTab.push(room);
       });
@@ -346,9 +340,9 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       roomsInterfaceData.children = roomsTab;
     }
 
-    motherRoomsData.children = [corridorInterfaceData, roomsInterfaceData];
+    zoneData.children = [corridorInterfaceData, roomsInterfaceData];
 
-    return motherRoomsData;
+    return zoneData;
   }
 
   generateCorridor(corridor: Corridor): any {
@@ -479,8 +473,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         this.openUpdateCorridorDialog(node1);
         break;
       }
-      case'motherRoom': {
-        this.openUpdateMotherRoomDialog(node1);
+      case'zone': {
+        this.openUpdateZoneDialog(node1);
         break;
       }
       case'room': {
@@ -513,7 +507,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'Zone': {
-        this.openCreationMotherRoomDialog(node1);
+        this.openCreationZoneDialog(node1);
         break;
       }
       case 'Rooms': {
@@ -737,7 +731,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
 
-  openCreationMotherRoomDialog(node: FileNode) {
+  openCreationZoneDialog(node: FileNode) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -746,7 +740,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       id: node.id,
     };
 
-    const dialogRef = this.dialog.open(CreateMotherRoomEntityDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(CreateZoneEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
@@ -888,16 +882,16 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       });
   }
 
-  openUpdateMotherRoomDialog(node) {
+  openUpdateZoneDialog(node) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      idMotherRoom: node.id
+      idZone: node.id
     };
 
-    const dialogRef = this.dialog.open(EditMotherRoomEntityDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(EditZoneEntityDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
       data => {
@@ -1001,8 +995,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
             );
         }
 
-        if (parent.type !== 'motherRoom') {
-          this.corridorService.deleteCorridorInMotherRoom(parent.id, node1.id)
+        if (parent.type !== 'zone') {
+          this.corridorService.deleteCorridorInZone(parent.id, node1.id)
             .then(data => {
                 this.updated.emit(1);
               },
@@ -1012,8 +1006,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         }
         break;
       }
-      case 'motherRoom': {
-        this.motherRoomService.deleteMotherRoom(parent.id, node1.id )
+      case 'zone': {
+        this.zoneService.deleteZone(parent.id, node1.id )
           .then( data => {
               this.updated.emit(1);
             },

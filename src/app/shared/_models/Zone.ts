@@ -1,10 +1,10 @@
 import {Corridor} from "./Corridor";
 import {Room} from "./Room";
 
-export  class MotherRoom {
+export  class Zone {
   public id: number;
   public type: string;
-  public numberMotherRoom: number;
+  public name: string;
 
   public rooms: Room[];
   public corridors: Corridor[];
@@ -12,7 +12,7 @@ export  class MotherRoom {
   constructor(data?: any) {
     if (data) {
       this.id = data.id;
-      this.numberMotherRoom = data.numberMotherRoom;
+      this.name = data.name;
       this.type = data.type;
 
 
@@ -38,7 +38,7 @@ export  class MotherRoom {
     return {
       id: new Number(this.id),
       type: new String(this.type),
-      numberMotherRoom: new Number(this.numberMotherRoom),
+      name: new String(this.name),
       rooms: this.corridorsToJson(),
       corridors: this.corridorsToJson()
     } 
@@ -75,7 +75,7 @@ export  class MotherRoom {
     },
     {
       type: this.type,
-      number: this.numberMotherRoom
+      name: this.name
     }]
   }
 }

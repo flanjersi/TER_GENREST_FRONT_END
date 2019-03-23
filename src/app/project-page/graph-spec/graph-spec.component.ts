@@ -4,7 +4,7 @@ import {Project} from '../../shared/_models/Project';
 import {Building} from '../../shared/_models/Building';
 import {Floor} from '../../shared/_models/Floor';
 import {Corridor} from '../../shared/_models/Corridor';
-import {MotherRoom} from '../../shared/_models/MotherRoom';
+import {Zone} from '../../shared/_models/Zone';
 import {Sensor} from '../../shared/_models/Sensor';
 import {Actuator} from '../../shared/_models/Actuator';
 import {Room} from '../../shared/_models/Room';
@@ -110,10 +110,11 @@ export class GraphSpecComponent implements OnInit, OnChanges {
       nodes = nodes.concat(tuple[0]);
       links = links.concat(tuple[1]);
     }
-    if (!floor.motherRooms) return [nodes, links];
-    for (const index in floor.motherRooms) {
-      const motherRoom = floor.motherRooms[index];
-      const tuple = this.generateMotherRoomNodeAndLinks(motherRoom, floor.id);
+    if (!floor.zones) return [nodes, links];
+
+    for (const index in floor.zones) {
+      const zone = floor.zones[index];
+      const tuple = this.generateZoneNodeAndLinks(zone, floor.id);
 
       nodes = nodes.concat(tuple[0]);
       links = links.concat(tuple[1]);
@@ -169,28 +170,28 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     return [nodes, links];
   }
 
-  generateMotherRoomNodeAndLinks(motherRoom: MotherRoom, idFloor: number): [any, any] {
+  generateZoneNodeAndLinks(zone: Zone, idFloor: number): [any, any] {
     let nodes = [];
     let links = [];
 
-    nodes.push({id: 'MotherRoom' + motherRoom.id , label: motherRoom.type, color: '#0F52BA'});
-    links.push({source: 'Floor' + idFloor , target: 'MotherRoom' + motherRoom.id  , label: ''});
+    nodes.push({id: 'Zone' + zone.id , label: zone.type, color: '#0F52BA'});
+    links.push({source: 'Floor' + idFloor , target: 'Zone' + zone.id  , label: ''});
 
-    if (!motherRoom.rooms) return [nodes, links];
+    if (!zone.rooms) return [nodes, links];
 
-    for (const index in motherRoom.rooms) {
-      const room = motherRoom.rooms[index];
-      const tuple = this.generateRoomNodeAndLinks(room, motherRoom.id);
+    for (const index in zone.rooms) {
+      const room = zone.rooms[index];
+      const tuple = this.generateRoomNodeAndLinks(room, zone.id);
 
       nodes = nodes.concat(tuple[0]);
       links = links.concat(tuple[1]);
     }
 
-    if (!motherRoom.corridors) return [nodes, links];
+    if (!zone.corridors) return [nodes, links];
 
-    for (const index in motherRoom.corridors) {
-      const corridor = motherRoom.corridors[index];
-      const tuple = this.generateCorridorMotherRoomNodeAndLinks(corridor, motherRoom.id);
+    for (const index in zone.corridors) {
+      const corridor = zone.corridors[index];
+      const tuple = this.generateCorridorZoneNodeAndLinks(corridor, zone.id);
 
       nodes = nodes.concat(tuple[0]);
       links = links.concat(tuple[1]);
@@ -198,22 +199,22 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     return [nodes, links];
   }
 
-  generateCorridorMotherRoomNodeAndLinks(corridor: Corridor, idMotherRoom: number): [any, any] {
+  generateCorridorZoneNodeAndLinks(corridor: Corridor, idZone: number): [any, any] {
     let nodes = [];
     let links = [];
 
     nodes.push({id: 'Corridor' + corridor.id , label: 'Corridor ' + corridor.numberCorridor, color:'#0080FF'});
-    links.push({source: 'MotherRoom' + idMotherRoom , target: 'Corridor' + corridor.id  , label: ''});
+    links.push({source: 'Zone' + idZone , target: 'Corridor' + corridor.id  , label: ''});
 
     return [nodes, links];
   }
 
-  generateRoomNodeAndLinks(room: Room, idMotherRoom: number): [any, any] {
+  generateRoomNodeAndLinks(room: Room, idZone: number): [any, any] {
     let nodes = [];
     let links = [];
 
     nodes.push({id: 'Room' + room.id , label: room.type, color: '#0E4D92'});
-    links.push({source: 'MotherRoom' + idMotherRoom , target: 'Room' + room.id  , label: ''});
+    links.push({source: 'Zone' + idZone , target: 'Room' + room.id  , label: ''});
 
     if (!room.actuators) return [nodes, links];
 
