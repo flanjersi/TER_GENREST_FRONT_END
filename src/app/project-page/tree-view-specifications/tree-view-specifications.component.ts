@@ -1,3 +1,4 @@
+
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
@@ -34,6 +35,10 @@ import {EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-room
 import {EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
 import {EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
+import {ProjectService} from "../../shared/_services/project.service";
+import {formatDate} from "@angular/common";
+import {locale} from "moment";
+
 
 
 /** File node data with possible child nodes. */
@@ -87,8 +92,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   constructor(private dialog: MatDialog, private roomService: RoomService,
               private buildingService: BuildingService, private zoneService: ZoneService,
               private actuatorService: ActuatorService, private corridorService: CorridorService,
-              private  sensorService: SensorService,  private spinnerService: Ng4LoadingSpinnerService,
-              private floorService: FloorService ) {
+              private  sensorService: SensorService, private spinnerService: Ng4LoadingSpinnerService,
+              private floorService: FloorService, private projectService: ProjectService) {
 
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
@@ -104,7 +109,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
   showSpec(node) {
-    if(node.type === 'interface')
+    if (node.type === 'interface')
       return;
 
     if (node.type === 'building') {
@@ -112,8 +117,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         data => {
           this.showEntity.emit(data);
         },
-        err => {},
-        () => {}
+        err => {
+        },
+        () => {
+        }
       );
     }
     if (node.type === 'floor') {
@@ -121,8 +128,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         data => {
           this.showEntity.emit(data);
         },
-        err => {},
-        () => {}
+        err => {
+        },
+        () => {
+        }
       );
     }
     if (node.type === 'room') {
@@ -130,8 +139,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         data => {
           this.showEntity.emit(data);
         },
-        err => {},
-        () => {}
+        err => {
+        },
+        () => {
+        }
       );
     }
     if (node.type === 'zone') {
@@ -139,8 +150,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         data => {
           this.showEntity.emit(data);
         },
-        err => {},
-        () => {}
+        err => {
+        },
+        () => {
+        }
       );
     }
     if (node.type === 'corridor') {
@@ -148,8 +161,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         data => {
           this.showEntity.emit(data);
         },
-        err => {},
-        () => {}
+        err => {
+        },
+        () => {
+        }
       );
     }
     if (node.type === 'sensor') {
@@ -157,7 +172,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         data => {
           this.showEntity.emit(data);
         },
-        err => {}
+        err => {
+        }
       );
     }
     if (node.type === 'actuator') {
@@ -165,8 +181,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         data => {
           this.showEntity.emit(data);
         },
-        err => {},
-        () => {}
+        err => {
+        },
+        () => {
+        }
       );
     }
   }
@@ -181,7 +199,30 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     this.dataSource.data = this.generateData(this.project);
 
     this.openOlderExpandableNodes(expandablesNodes);
+
   }
+
+  updateProject() {
+    let project = new Project();
+
+    project.id = this.project.id;
+    project.projectName = this.project.projectName;
+    project.domaine = this.project.domaine;
+    project.creationDate = this.project.creationDate;
+    project.changeDate = formatDate(Date.now()
+      , 'yyyy-MM-dd\'T\'HH:mm:ss', locale());
+
+    this.projectService.updateProject(project)
+      .then(
+        data => {
+          console.log(project);
+          console.log(data);
+        },
+        msg => {
+        }
+      )
+  }
+
 
   /** Transform the data to something the tree can read. */
   transformer(node: FileNode, level: number) {
@@ -524,7 +565,8 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
 
       }
-      default: break;
+      default:
+        break;
     }
 
     const expandablesNodes = this.getAllExpandableNodes();
@@ -537,10 +579,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
   }
 
-  getFlatTreeNodeByNode(node: FileNode) : FlatTreeNode{
+  getFlatTreeNodeByNode(node: FileNode): FlatTreeNode {
 
     this.treeControl.dataNodes.forEach(element => {
-      if(element.type === node.type && element.id === node.id && element.name === node.name){
+      if (element.type === node.type && element.id === node.id && element.name === node.name) {
         return element;
       }
     });
@@ -611,7 +653,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       const currentNode = this.treeControl.dataNodes[i];
       const currentLevel = currentNode.level;
 
-      if (currentLevel === level ) {
+      if (currentLevel === level) {
         return currentNode;
       }
       if (this.getLevel(currentNode) === 0) {
@@ -644,7 +686,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     return null;
   }
-
 
 
   /** Get the level of the node */
@@ -682,6 +723,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -703,6 +745,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -725,6 +768,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -746,6 +790,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -766,6 +811,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -787,6 +833,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -808,6 +855,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -839,6 +887,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -859,6 +908,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -878,6 +928,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -897,6 +948,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -917,6 +969,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -937,6 +990,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -957,6 +1011,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -968,30 +1023,35 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     switch (node1.type) {
       case 'building': {
-        this.buildingService.deleteBuilding(this.project.id, node1.id )
-          .then( data => {
+        this.buildingService.deleteBuilding(this.project.id, node1.id)
+          .then(data => {
               this.updated.emit(1);
+              this.updateProject();
             },
             err => {
             });
         break;
       }
       case 'floor': {
-        this.floorService.deleteFloor(parent.id, node1.id )
-          .then( data => {
+        this.floorService.deleteFloor(parent.id, node1.id)
+          .then(data => {
               this.updated.emit(1);
+              this.updateProject();
             },
-            err => {}
+            err => {
+            }
           );
         break;
       }
       case 'corridor': {
         if (parent.type === 'floor') {
-          this.corridorService.deleteCorridorInFloor(parent.id, node1.id )
-            .then( data => {
+          this.corridorService.deleteCorridorInFloor(parent.id, node1.id)
+            .then(data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
-              err => {}
+              err => {
+              }
             );
         }
 
@@ -999,6 +1059,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
           this.corridorService.deleteCorridorInZone(parent.id, node1.id)
             .then(data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
               err => {
               }
@@ -1007,38 +1068,46 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
       }
       case 'zone': {
-        this.zoneService.deleteZone(parent.id, node1.id )
-          .then( data => {
+        this.zoneService.deleteZone(parent.id, node1.id)
+          .then(data => {
               this.updated.emit(1);
+              this.updateProject();
             },
-            err => {}
+            err => {
+            }
           );
         break;
       }
       case 'room': {
-        this.roomService.deleteRoom(parent.id, node1.id )
-          .then( data => {
+        this.roomService.deleteRoom(parent.id, node1.id)
+          .then(data => {
               this.updated.emit(1);
+              this.updateProject();
             },
-            err => {}
+            err => {
+            }
           );
         break;
       }
       case 'sensor': {
         if (parent.type === 'corridor') {
-          this.sensorService.deleteSensorInCorridor(parent.id, node1.id )
-            .then( data => {
+          this.sensorService.deleteSensorInCorridor(parent.id, node1.id)
+            .then(data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
-              err => {}
+              err => {
+              }
             );
         }
         if (parent.type === 'room') {
-          this.sensorService.deleteSensorInRoom(parent.id, node1.id )
-            .then( data => {
+          this.sensorService.deleteSensorInRoom(parent.id, node1.id)
+            .then(data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
-              err => {}
+              err => {
+              }
             );
         }
         break;
@@ -1046,19 +1115,23 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
       case 'actuator': {
         if (parent.type === 'corridor') {
-          this.actuatorService.deleteActuatorInCorridor(parent.id, node1.id )
-            .then( data => {
+          this.actuatorService.deleteActuatorInCorridor(parent.id, node1.id)
+            .then(data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
-              err => {}
+              err => {
+              }
             );
         }
-        if ( parent.type === 'room') {
-          this.actuatorService.deleteActuatorInRoom(parent.id, node1.id )
-            .then( data => {
+        if (parent.type === 'room') {
+          this.actuatorService.deleteActuatorInRoom(parent.id, node1.id)
+            .then(data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
-              err => {}
+              err => {
+              }
             );
         }
         break;
@@ -1067,16 +1140,16 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
     }
   }
-  expendAll(){
+
+  expendAll() {
     this.treeControl.expandAll();
   }
 
-  searchNode(){
+  searchNode() {
     this.treeControl.collapseAll();
 
-    if(!this.valueOfSearchNodeInput || this.valueOfSearchNodeInput.length === 0)
+    if (!this.valueOfSearchNodeInput || this.valueOfSearchNodeInput.length === 0)
       return;
-
 
 
     const nodes = this.searchAllParentsOfNodesByName(this.valueOfSearchNodeInput);
@@ -1111,13 +1184,13 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
 
-  searchAllParentsOfNodesByName(name: string):  FlatTreeNode[] {
+  searchAllParentsOfNodesByName(name: string): FlatTreeNode[] {
     let nodes = [];
 
-    for (let i = this.treeControl.dataNodes.length - 1; i >= 0; i--){
+    for (let i = this.treeControl.dataNodes.length - 1; i >= 0; i--) {
       let fileNode = this.treeControl.dataNodes[i];
 
-      if(fileNode.name.includes(name) && fileNode.type != 'interface'){
+      if (fileNode.name.includes(name) && fileNode.type != 'interface') {
         nodes.push(fileNode);
         nodes = nodes.concat(this.searchAllParentsOfNodeByName(i));
       }
@@ -1126,15 +1199,15 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     return nodes;
   }
 
-  searchAllParentsOfNodeByName(indexNode: number):  FlatTreeNode[] {
+  searchAllParentsOfNodeByName(indexNode: number): FlatTreeNode[] {
     let currentLevel = this.treeControl.dataNodes[indexNode].level;
 
     const nodes = [];
 
-    for (let i = indexNode; i >= 0; i--){
+    for (let i = indexNode; i >= 0; i--) {
       let fileNode = this.treeControl.dataNodes[i];
 
-      if(fileNode.level === currentLevel - 1) {
+      if (fileNode.level === currentLevel - 1) {
         nodes.push(fileNode);
         currentLevel = currentLevel - 1;
       }
@@ -1144,29 +1217,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
 
-/*
-  openDeleteConfirmDialog(): string {
-    const dialogConfig = new MatDialogConfig();
+  /*
+    openDeleteConfirmDialog(): string {
+      const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    this.store.dispatch(new RemoveHeroConfirmDialogOpen({
-      delete: new RemoveHeroAction({ hero: hero }),
-      text: `Are you sure you want to remove the hero <em>${hero.name}</em> from the tour of heros?`,
-      title: "Remove Hero"
-    }));
-
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(
-      data => {
-        if (data === 'deleted') {
-          //this.addedSpecification.emit(1);
-          return 'deleted';
-        }
-      }
-    );
-    return 'cancel';
   }
   */
 }
