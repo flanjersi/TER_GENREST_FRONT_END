@@ -3,7 +3,7 @@ import {Actuator} from "./Actuator";
 
 export  class  Room {
   public id: number;
-  public numberRoom: number;
+  public name: string;
   public type: string;
 
   public sensors: Sensor[];
@@ -13,7 +13,7 @@ export  class  Room {
   constructor(data?: any) {
     if (data) {
       this.id = data.id;
-      this.numberRoom = data.numberRoom;
+      this.name = data.name;
       this.type = data.type;
       this.sensors = [];
       if (data.sensors) {
@@ -37,7 +37,7 @@ export  class  Room {
     return {
       id: new Number(this.id),
       type: new String(this.type),
-      numberRoom: new Number(this.numberRoom),
+      name: new String(this.name),
       sensors: this.sensorsToJson(),
       actuators: this.actuatorstoJson()
     } 
@@ -73,7 +73,7 @@ export  class  Room {
     },
       {
         type: this.type,
-        number: this.numberRoom
+        name: this.name
       }]
 
   }

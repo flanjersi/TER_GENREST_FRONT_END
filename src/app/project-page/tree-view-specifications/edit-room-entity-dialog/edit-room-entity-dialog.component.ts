@@ -34,7 +34,7 @@ export class EditRoomEntityDialogComponent implements OnInit {
         Validators.required,
         Validators.maxLength(50)
       ]),
-      numberRoom : new FormControl('', [
+      name : new FormControl('', [
         Validators.required,
         Validators.maxLength(50)
       ]),
@@ -44,7 +44,7 @@ export class EditRoomEntityDialogComponent implements OnInit {
     let room = this.roomService.getById(this.idRoom).subscribe(
       data => {
         this.form.get('type').setValue(data.type);
-        this.form.get('numberRoom').setValue(data.numberRoom);
+        this.form.get('name').setValue(data.name);
       },
       err => {},
       () => {
@@ -60,7 +60,7 @@ export class EditRoomEntityDialogComponent implements OnInit {
 
   editRoom() {
     this.form.get('type').markAsTouched;
-    this.form.get('numberRoom').markAsTouched;
+    this.form.get('name').markAsTouched;
 
     if (!this.form.valid) {
       return;
@@ -69,7 +69,7 @@ export class EditRoomEntityDialogComponent implements OnInit {
     const room = new Room();
     room.id = this.idRoom;
 
-    room.numberRoom = this.form.get('numberRoom').value;
+    room.name = this.form.get('name').value;
     room.type = this.form.get('type').value;
 
 
@@ -80,10 +80,7 @@ export class EditRoomEntityDialogComponent implements OnInit {
         data => {
           this.spinnerService.hide();
           this.dialogRef.close('updated');
-          console.log(room);
-          console.log(data);
         },
-
         err => {
           console.log(err);
           this.dialogRef.close('error');

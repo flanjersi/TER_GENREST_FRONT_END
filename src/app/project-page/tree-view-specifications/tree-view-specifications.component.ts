@@ -396,7 +396,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const roomData = {} as any;
 
     roomData.id = room.id;
-    roomData.name = room.type + room.numberRoom;
+    roomData.name = room.type + room.name;
     roomData.type = 'room';
 
     const sensorInterfaceData = {
