@@ -38,6 +38,7 @@ import { EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit
 import { Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {DeleteConfirmDialogComponent} from "./delete-confirm-dialog/delete-confirm-dialog.component";
 import {element} from "protractor";
+import {el} from "@angular/platform-browser/testing/src/browser_util";
 
 
 
@@ -59,6 +60,7 @@ export interface FlatTreeNode {
   name: string;
   type: string;
   level: number;
+  color?: string;
   expandable: boolean;
 }
 
@@ -78,10 +80,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   @Output() updated: EventEmitter<number>;
 
   private valueOfSearchNodeInput: string;
-
-  private building: Building;
-
-  private httpClient: HttpClient;
 
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
   treeControl: FlatTreeControl<FlatTreeNode>;
@@ -535,13 +533,25 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       default: break;
     }
 
-    const nodeFinded = this.searchRoot(node1);
-
     const expandablesNodes = this.getAllExpandableNodes();
 
     this.dataSource.data = this.generateData(this.project);
 
     this.openOlderExpandableNodes(expandablesNodes);
+    console.log("test " + this.getFlatTreeNodeByNode(node1));
+    this.treeControl.expand(this.getFlatTreeNodeByNode(node1));
+
+  }
+
+  getFlatTreeNodeByNode(node: FileNode) : FlatTreeNode{
+
+    this.treeControl.dataNodes.forEach(element => {
+      if(element.type === node.type && element.id === node.id && element.name === node.name){
+        return element;
+      }
+    });
+
+    return null;
   }
 
   getAllExpandableNodes(): FlatTreeNode[] {
@@ -563,6 +573,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
 
     return nodesExpanded;
   }
+
   openOlderExpandableNodes(expandablesNodes: FlatTreeNode[]) {
     expandablesNodes.forEach(element => {
       const oldNode = element;
@@ -1072,12 +1083,37 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     if(!this.valueOfSearchNodeInput || this.valueOfSearchNodeInput.length === 0)
       return;
 
+
+
     const nodes = this.searchAllParentsOfNodesByName(this.valueOfSearchNodeInput);
+
+
+    this.treeControl.dataNodes.forEach(element => {
+      element.color = null;
+    });
+
+    this.searchAllOfNodeByName(this.valueOfSearchNodeInput).forEach(element => {
+      element.color = '#87CEFA';
+    });
 
     nodes.forEach(element => {
       this.treeControl.expand(element);
     });
+  }
 
+
+  searchAllOfNodeByName(name: string): FlatTreeNode[] {
+    let nodes = [];
+
+    for (let i = this.treeControl.dataNodes.length - 1; i >= 0; i--) {
+      let fileNode = this.treeControl.dataNodes[i];
+
+      if (fileNode.name.includes(name) && fileNode.type != 'interface') {
+        nodes.push(fileNode);
+      }
+    }
+
+    return nodes;
   }
 
 
