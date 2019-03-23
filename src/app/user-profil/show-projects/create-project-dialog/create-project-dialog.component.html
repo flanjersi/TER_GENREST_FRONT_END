@@ -19,13 +19,13 @@
     <tr>
       <td>
         <mat-form-field class="input">
-          <mat-select placeholder="Choice your domain" [errorStateMatcher]="matcher" formControlName="typeProject" list="domains" name="typeProject" required>
+          <mat-select placeholder="Choice your domain" [errorStateMatcher]="matcher" formControlName="domain" list="domains" name="domain" required>
             <mat-option *ngFor="let domain of domains" [value]="domain.value">
               {{domain.viewValue}}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="form.get('typeProject').hasError('required')">
-            The type of the project is <strong>required</strong>
+          <mat-error *ngIf="form.get('domain').hasError('required')">
+            The domain of the project is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </td>

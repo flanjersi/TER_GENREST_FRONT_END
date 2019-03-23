@@ -8,7 +8,7 @@ import {Floor} from "../shared/_models/Floor";
 import {Corridor} from "../shared/_models/Corridor";
 import {Actuator} from "../shared/_models/Actuator";
 import {Sensor} from "../shared/_models/Sensor";
-import {MotherRoom} from "../shared/_models/MotherRoom";
+import {Zone} from "../shared/_models/Zone";
 import {Room} from "../shared/_models/Room";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {MatDialog, MatDialogConfig, MatTabGroup} from "@angular/material";
@@ -84,13 +84,13 @@ export class ProjectPageComponent implements OnInit {
     let corridor = new Corridor();
 
     corridor.id = 1;
-    corridor.numberCorridor = 1;
+    corridor.name = 1;
 
     corridor.actuators = [];
 
     let actuator = new Actuator();
     actuator.id = 1;
-    actuator.brand = "test";
+    actuator.name = "test";
 
     corridor.actuators.push(actuator);
 
@@ -98,15 +98,15 @@ export class ProjectPageComponent implements OnInit {
 
     let sensor = new Sensor();
     sensor.id = 1;
-    sensor.brand = "test";
+    sensor.name = "test";
 
     corridor.sensors.push(sensor);
 
     floor.corridors.push(corridor);
 
-    floor.motherRooms = [];
+    floor.zones = [];
 
-    let motherRoom = new MotherRoom();
+    let motherRoom = new Zone();
 
     motherRoom.id = 1;
     motherRoom.type = "motherRoom";
@@ -120,6 +120,7 @@ export class ProjectPageComponent implements OnInit {
       .subscribe(
         data => {
           this.project = data;
+          console.log(this.project);
         },
         err => {},
         () => {

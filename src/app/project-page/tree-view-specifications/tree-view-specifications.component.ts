@@ -1,3 +1,4 @@
+
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
@@ -1222,6 +1223,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   /*
     openDeleteConfirmDialog(): string {
       const dialogConfig = new MatDialogConfig();
+<<<<<<< HEAD
+=======
+
+>>>>>>> e9b3e4629a773464ac9ceb2085f891d9036ad500
   }
   */
 }

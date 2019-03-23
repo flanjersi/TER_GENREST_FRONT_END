@@ -6,7 +6,7 @@ import { BuildingService } from './_services/building.service';
 import { FloorService } from './_services/floor.service';
 import { RoomService } from './_services/room.service';
 import { CorridorService } from './_services/corridor.service';
-import { MotherRoomService } from './_services/mother-room.service';
+import { ZoneService } from './_services/zone.service';
 import { SensorService } from './_services/sensor.service';
 import { ActuatorService } from './_services/actuator.service';
 import {LanguageService} from "./_services/language.service";
@@ -27,7 +27,7 @@ export class SharedModule {
         FloorService,
         RoomService,
         CorridorService,
-        MotherRoomService,
+        ZoneService,
         SensorService,
         ActuatorService,
         LanguageService

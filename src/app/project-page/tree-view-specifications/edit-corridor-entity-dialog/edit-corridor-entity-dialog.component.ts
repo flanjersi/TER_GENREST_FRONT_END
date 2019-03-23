@@ -28,11 +28,11 @@ export class EditCorridorEntityDialogComponent implements OnInit {
               private spinnerService: Ng4LoadingSpinnerService,
               private formBuilder: FormBuilder
   ) {
-    console.log(data);
     this.form = this.formBuilder.group({
-      numberCorridor: new FormControl('', [
+      name: new FormControl('', [
         Validators.required,
-        Validators.maxLength(50)
+        Validators.maxLength(50),
+        Validators.minLength(2)
       ]),
     });
     this.idCorridor = data.idCorridor;
@@ -40,7 +40,7 @@ export class EditCorridorEntityDialogComponent implements OnInit {
 
     const corridor = this.corridorService.getById(this.idCorridor).subscribe(
       data => {
-        this.form.get('numberCorridor').setValue(data.numberCorridor);
+        this.form.get('name').setValue(data.name);
       },
       err => {},
       () => {
@@ -53,7 +53,7 @@ export class EditCorridorEntityDialogComponent implements OnInit {
   }
 
   editCorridor() {
-    this.form.get('numberCorridor').markAsTouched;
+    this.form.get('name').markAsTouched;
 
     if (!this.form.valid) {
       return;
@@ -62,7 +62,7 @@ export class EditCorridorEntityDialogComponent implements OnInit {
     const corridor = new Corridor();
     corridor.id = this.idCorridor;
 
-    corridor.numberCorridor = this.form.get('numberCorridor').value;
+    corridor.name = this.form.get('name').value;
 
 
     this.spinnerService.show();
@@ -77,7 +77,7 @@ export class EditCorridorEntityDialogComponent implements OnInit {
         },
 
         err => {
-          this.form.get('floorNumber').setErrors({'incorrect': true});
+          this.form.get('name').setErrors({'incorrect': true});
         }
       );
   }

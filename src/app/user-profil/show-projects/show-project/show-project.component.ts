@@ -45,8 +45,13 @@ export class ShowProjectComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       idProject: this.project.id,
-      projectName: this.project.projectName
+      projectName: this.project.projectName,
+      domain: this.project.domaine,
+      creationDate: this.project.creationDate,
+      changeDate: this.project.changeDate
     };
+
+    console.log(this.project);
 
     const dialogRef = this.dialog.open(EditProjectComponent, dialogConfig);
 

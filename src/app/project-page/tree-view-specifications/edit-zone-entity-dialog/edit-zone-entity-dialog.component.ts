@@ -2,48 +2,47 @@ import {Component, Inject, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Ng4LoadingSpinnerService} from 'ng4-loading-spinner';
-import {MotherRoomService} from '../../../shared/_services/mother-room.service';
-import {Corridor} from '../../../shared/_models/Corridor';
-import {MotherRoom} from '../../../shared/_models/MotherRoom';
+import {ZoneService} from '../../../shared/_services/zone.service';
+import {Zone} from '../../../shared/_models/Zone';
 
 @Component({
   selector: 'app-edit-mother-room-entity-dialog',
-  templateUrl: './edit-mother-room-entity-dialog.component.html',
-  styleUrls: ['./edit-mother-room-entity-dialog.component.scss']
+  templateUrl: './edit-zone-entity-dialog.component.html',
+  styleUrls: ['./edit-zone-entity-dialog.component.scss']
 })
-export class EditMotherRoomEntityDialogComponent implements OnInit {
+export class EditZoneEntityDialogComponent implements OnInit {
 
   @Input()
   private idFloor: number;
 
-  private idMotherRoom: number;
+  private idZone: number;
 
-  private form: FormGroup;
-  private isLoaded: boolean;
+  public form: FormGroup;
+  public isLoaded: boolean;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              private motherRoomService: MotherRoomService,
-              private dialogRef: MatDialogRef<EditMotherRoomEntityDialogComponent>,
+              private zoneService: ZoneService,
+              private dialogRef: MatDialogRef<EditZoneEntityDialogComponent>,
               private spinnerService: Ng4LoadingSpinnerService,
               private formBuilder: FormBuilder
   ) {
-    this.idMotherRoom = data.idMotherRoom;
-    console.log(data);
+    this.idZone = data.idZone;
     this.form = this.formBuilder.group({
       type: new FormControl('', [
         Validators.required,
         Validators.maxLength(50)
       ]),
-      numberMotherRoom : new FormControl('', [
+      name : new FormControl('', [
         Validators.required,
         Validators.maxLength(50)
       ]),
     });
     this.isLoaded = false;
-    let motherRoom = this.motherRoomService.getById(this.idMotherRoom).subscribe(
+
+    this.zoneService.getById(this.idZone).subscribe(
       data => {
         this.form.get('type').setValue(data.type);
-        this.form.get('numberMotherRoom').setValue(data.numberMotherRoom);
+        this.form.get('name').setValue(data.name);
       },
       err => {},
       () => {
@@ -59,27 +58,27 @@ export class EditMotherRoomEntityDialogComponent implements OnInit {
 
   editMotherRoom() {
     this.form.get('type').markAsTouched;
-    this.form.get('numberMotherRoom').markAsTouched;
+    this.form.get('name').markAsTouched;
 
     if (!this.form.valid) {
       return;
     }
 
-    const motherRoom = new MotherRoom();
-    motherRoom.id = this.idMotherRoom;
+    const zone = new Zone();
+    zone.id = this.idZone;
 
-    motherRoom.numberMotherRoom = this.form.get('numberMotherRoom').value;
-    motherRoom.type = this.form.get('type').value;
+    zone.name = this.form.get('name').value;
+    zone.type = this.form.get('type').value;
 
 
     this.spinnerService.show();
 
-    this.motherRoomService.updateMotherRoom(motherRoom)
+    this.zoneService.updateZone(zone)
       .then(
         data => {
           this.spinnerService.hide();
           this.dialogRef.close('updated');
-          console.log(motherRoom);
+          console.log(zone);
           console.log(data);
         },
 

@@ -36,7 +36,7 @@ export class EditFloorEntityDialogComponent implements OnInit {
   ) {
 
     this.idFloor = data.idFloor;
-    console.log(data);
+
     this.form = this.formBuilder.group({
       floorNumber: new FormControl('', [
         Validators.required,
