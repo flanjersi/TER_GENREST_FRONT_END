@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Add zone</h2>
+
+<mat-dialog-content [formGroup]="form">
+    <table>
+      <tr>
+        <td>
+          <mat-form-field class="input">
+            <input matInput placeholder="Type of your zone"
+                   [errorStateMatcher]="matcher" formControlName="type" name="type" required>
+            <mat-error *ngIf="form.get('type').hasError('required')">
+              Type of your space is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="form.get('type').hasError('minlength')">
+              Please, give a type with 2 letters minimum
+            </mat-error>
+            <mat-error *ngIf="form.get('type').hasError('maxlength')">
+              Please, give a type with 50 letters maximum
+            </mat-error>
+          </mat-form-field>
+        </td>
+      </tr>
+        <tr>
+            <td>
+              <mat-form-field class="input">
+                <input matInput placeholder="Name of your zone"
+                       [errorStateMatcher]="matcher" formControlName="name" name="name" required>
+                <mat-error *ngIf="form.get('name').hasError('required')">
+                  Name of your zone is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="form.get('name').hasError('maxlength')">
+                  Please, give a name with 50 digits maximum
+                </mat-error>
+                <mat-error *ngIf="form.get('name').hasError('incorrect')">
+                  Value already exists
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr> 
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button mat-primary" (click)="save()">Add</button>
+  <button class="mat-raised-button" (click)="close()">Cancel</button>
+</mat-dialog-actions>

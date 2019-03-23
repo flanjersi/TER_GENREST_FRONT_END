@@ -11,11 +11,12 @@
           <h4>Building topology</h4>
         </div>
         <div class="col-4 my-auto d-flex justify-content-end">
-          <a  mdbBtn color="primary" mdbWavesEffect   (click)="openDeployDialog()">Deploy</a>
+          <a  style="width: 150px" mdbBtn color="primary" mdbWavesEffect   (click)="openDeployDialog()">Deploy</a>
         </div>
+
       </div>
       <perfect-scrollbar id="scrollBar" style="max-height: 92%;">
-        <app-tree-view-specifications (showEntity)="updateEntitySpec($event)"  (addedSpecification)="refreshProject($event)" (updated)="refreshProject($event)" [project]="project"></app-tree-view-specifications>
+        <app-tree-view-specifications (updated)="refreshProject($event)" (showEntity)="updateEntitySpec($event)"  (addedSpecification)="refreshProject($event)"  [project]="project"></app-tree-view-specifications>
       </perfect-scrollbar>
 
     </div>

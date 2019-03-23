@@ -46,22 +46,11 @@ export class CreateActuatorEntityDialogComponent implements OnInit {
                     Validators.minLength(2),
                     Validators.maxLength(50)
                   ]),
-                  brand: new FormControl('', [
+                  name: new FormControl('', [
                     Validators.required,
                     Validators.minLength(2),
-                    Validators.maxLength(50)
-                  ]),
-                  reference: new FormControl('', [
-                    Validators.required,
-                    Validators.minLength(2),
-                    Validators.maxLength(50)
-                  ]),
-                  state: new FormControl('', [
-                    Validators.required,
-                    Validators.minLength(2),
-                    Validators.maxLength(50)
-                  ]),
-
+                    Validators.maxLength(200)
+                  ])
                 });
             
               }
@@ -75,10 +64,8 @@ export class CreateActuatorEntityDialogComponent implements OnInit {
     this.form.get('latitude').markAsTouched;
     this.form.get('longitude').markAsTouched;
     this.form.get('model').markAsTouched;
-    this.form.get('brand').markAsTouched;
-    this.form.get('reference').markAsTouched;
-    this.form.get('state').markAsTouched;    
-    
+    this.form.get('name').markAsTouched;
+
     if(!this.form.valid){
       return;
     }
@@ -87,25 +74,24 @@ export class CreateActuatorEntityDialogComponent implements OnInit {
     actuator.latitude = this.form.get('latitude').value;
     actuator.longitude = this.form.get('longitude').value;
     actuator.model = this.form.get('model').value;
-    actuator.reference = this.form.get('reference').value;
-    actuator.brand = this.form.get('brand').value;
-    actuator.state = this.form.get('state').value;
-  
+    actuator.name = this.form.get('name').value;
+
     this.spinnerService.show();
 
     if(this.data.type === "corridor"){
-    this.actuatorService.createActuatorInCorridor(this.data.id, actuator)
-          .then(
-            data => {
-              this.spinnerService.hide();
-              this.dialogRef.close('added');
-            },
-            err => {
-              console.log(err);
-              this.dialogRef.close('error');
-            }
-          )
-  }else{
+      this.actuatorService.createActuatorInCorridor(this.data.id, actuator)
+            .then(
+              data => {
+                this.spinnerService.hide();
+                this.dialogRef.close('added');
+              },
+              err => {
+                console.log(err);
+                this.dialogRef.close('error');
+              }
+            )
+  }
+  else{
     this.actuatorService.createActuatorInRoom(this.data.id, actuator)
           .then(
             data => {

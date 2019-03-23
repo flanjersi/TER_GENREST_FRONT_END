@@ -28,7 +28,6 @@ export class EditCorridorEntityDialogComponent implements OnInit {
               private spinnerService: Ng4LoadingSpinnerService,
               private formBuilder: FormBuilder
   ) {
-    console.log(data);
     this.form = this.formBuilder.group({
       numberCorridor: new FormControl('', [
         Validators.required,

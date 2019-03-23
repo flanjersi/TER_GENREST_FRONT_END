@@ -71,7 +71,7 @@ export class CreateCorridorEntityDialogComponent implements OnInit {
     }
     
     if(this.data.level === 6){
-      this.corridorService.createCorridorInMotherRoom(this.data.id, corridor)
+      this.corridorService.createCorridorInZone(this.data.id, corridor)
       .then(
         data => {
           this.spinnerService.hide();

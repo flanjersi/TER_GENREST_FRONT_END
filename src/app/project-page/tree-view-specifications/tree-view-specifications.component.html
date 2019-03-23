@@ -1,13 +1,26 @@
+<div class="row">
+  <div class="col-6 ml-4">
+    <form>
+      <mat-form-field class="input">
+        <input matInput placeholder="Search node" [(ngModel)]="valueOfSearchNodeInput" (input)="searchNode()" name="searchNode">
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="col-5 my-auto d-flex justify-content-end">
+    <a style="width: 150px" mdbBtn color="primary" mdbWavesEffect   (click)="expendAll()">Expend All</a>
+  </div>
+</div>
+
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
-    <div class="tree-node row w-100">
+    <div class="tree-node row w-100" [ngStyle]="{'background-color': (node.color && node.type != 'interface') ? node.color : 'white'}">
       <div class="col-6 my-auto">
         <div *ngIf="node.type === 'interface'" class="my-auto d-inline-block mat-subheading-2">
           <b><u>{{node.name}}</u></b>
         </div>
 
         <div *ngIf="node.type != 'interface'" class="my-auto d-inline-block mat-subheading-1">
-          {{node.name}}
+          <a (click)="showSpec(node)">{{node.name}}</a>
         </div>
       </div>
       <div class="col-6 my-auto d-flex justify-content-end">
@@ -27,26 +40,19 @@
             delete_outline
           </mat-icon>
         </button>
-
-        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="showSpec(node)">
-          <mat-icon class="mat-icon-rtl-mirror">
-            search
-          </mat-icon>
-        </button>
       </div>
     </div>
   </mat-tree-node>
 
   <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-    <div class="tree-node row w-100">
+    <div class="tree-node row w-100" [ngStyle]="{'background-color': (node.color && node.type != 'interface') ? node.color : 'white'}">
       <div class="col-6 my-auto">
         <div *ngIf="node.type === 'interface'" class="my-auto d-inline-block mat-subheading-2">
           <b><u>{{node.name}}</u></b>
         </div>
 
         <div *ngIf="node.type != 'interface'" class="my-auto d-inline-block mat-subheading-1">
-          {{node.name}}
-
+          <a (click)="showSpec(node)">{{node.name}}</a>
         </div>
 
         <button mat-icon-button matTreeNodeToggle
@@ -72,12 +78,6 @@
         <button mat-icon-button *ngIf="node.type != 'interface'" (click)="remove(node)">
           <mat-icon class="mat-icon-rtl-mirror">
             delete_outline
-          </mat-icon>
-        </button>
-
-        <button mat-icon-button *ngIf="node.type != 'interface'" (click)="showSpec(node)">
-          <mat-icon class="mat-icon-rtl-mirror">
-            search
           </mat-icon>
         </button>
       </div>

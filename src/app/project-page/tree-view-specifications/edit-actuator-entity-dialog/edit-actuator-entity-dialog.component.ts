@@ -1,11 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {BuildingService} from '../../../shared/_services/building.service';
 import {Ng4LoadingSpinnerService} from 'ng4-loading-spinner';
 import {CookieService} from 'ngx-cookie-service';
-import {Building} from '../../../shared/_models/Building';
-import {Address} from '../../../shared/_models/Address';
 import {MyErrorStateMatcher} from '../edit-building-entity-dialog/edit-building-entity-dialog.component';
 import {ActuatorService} from '../../../shared/_services/actuator.service';
 import {Actuator} from '../../../shared/_models/Actuator';
@@ -53,31 +50,21 @@ export class EditActuatorEntityDialogComponent implements OnInit {
         Validators.minLength(2),
         Validators.maxLength(50)
       ]),
-      brand: new FormControl('', [
+      name: new FormControl('', [
         Validators.required,
         Validators.minLength(2),
-        Validators.maxLength(50)
+        Validators.maxLength(200)
       ]),
-      reference: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(50)
-      ]),
-      state: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(50)
-      ]),
+
     });
     this.isLoaded = false;
-    let actuator = this.actuatorService.getById(this.idActuator).subscribe(
+
+    this.actuatorService.getById(this.idActuator).subscribe(
       data => {
         this.form.get('latitude').setValue(data.latitude);
         this.form.get('longitude').setValue(data.longitude);
         this.form.get('model').setValue(data.model);
-        this.form.get('brand').setValue(data.brand);
-        this.form.get('reference').setValue(data.reference);
-        this.form.get('state').setValue(data.state);
+        this.form.get('name').setValue(data.name);
       },
       err => {},
       () => {
@@ -102,9 +89,7 @@ export class EditActuatorEntityDialogComponent implements OnInit {
     actuator.latitude = this.form.get('latitude').value;
     actuator.longitude = this.form.get('longitude').value;
     actuator.model = this.form.get('model').value;
-    actuator.brand = this.form.get('brand').value;
-    actuator.reference = this.form.get('reference').value;
-    actuator.state = this.form.get('state').value;
+    actuator.name = this.form.get('name').value;
 
 
     this.spinnerService.show();

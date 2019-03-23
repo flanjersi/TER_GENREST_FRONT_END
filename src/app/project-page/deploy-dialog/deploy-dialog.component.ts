@@ -174,6 +174,11 @@ export class DeployDialogComponent implements OnInit {
     let configurationId = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].id;
     let operatingSystemId = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].operatingsSystem[this.indexConfigurationSelected].id;
 
+    var languageName = this.languages[this.indexLanguageSelected].name;
+    var configurationName = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].name;
+    var operatingSystemName = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].operatingsSystem[this.indexConfigurationSelected].name;
+
+
     this.spinnerService.show();
 
     this.deployService.getGeneratedAPI(this.idProject, languageId, configurationId, operatingSystemId)
@@ -195,7 +200,11 @@ export class DeployDialogComponent implements OnInit {
             var link = document.createElement('a');
 
             link.href = fileUrl;
-            link.download = "GENREST APP N°" + this.idProject + " - " + this.projectName + '.zip';
+            link.download = "GENREST APP N°" + this.idProject
+              + " - " + languageName
+              + " - " + configurationName
+              + " - " + operatingSystemName
+              + " - " + this.projectName + '.zip';
             link.click();
           }
 
