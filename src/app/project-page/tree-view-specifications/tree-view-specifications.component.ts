@@ -36,8 +36,9 @@ import { EditRoomEntityDialogComponent} from './edit-room-entity-dialog/edit-roo
 import { EditActuatorEntityDialogComponent} from './edit-actuator-entity-dialog/edit-actuator-entity-dialog.component';
 import { EditSensorEntityDialogComponent} from './edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
 import { Ng4LoadingSpinnerService} from "ng4-loading-spinner";
-import {DeleteConfirmDialogComponent} from "./delete-confirm-dialog/delete-confirm-dialog.component";
-
+import {formatDate} from "@angular/common";
+import {locale} from "moment";
+import {ProjectService} from "../../shared/_services/project.service";
 
 
 /** File node data with possible child nodes. */
@@ -93,7 +94,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
               private buildingService: BuildingService, private motherRoomService: MotherRoomService,
               private actuatorService: ActuatorService, private corridorService: CorridorService,
               private  sensorService: SensorService,  private spinnerService: Ng4LoadingSpinnerService,
-              private floorService: FloorService ) {
+              private floorService: FloorService, private projectService: ProjectService) {
 
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
@@ -184,7 +185,30 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     this.dataSource.data = this.generateData(this.project);
 
     this.openOlderExpandableNodes(expandablesNodes);
+
   }
+
+  updateProject() {
+    let project = new Project();
+
+    project.id = this.project.id;
+    project.projectName = this.project.projectName;
+    project.domaine =  this.project.domaine;
+    project.creationDate =  this.project.creationDate;
+    project.changeDate = formatDate(Date.now()
+      , 'yyyy-MM-dd\'T\'HH:mm:ss', locale());
+
+    this.projectService.updateProject(project)
+      .then(
+        data => {
+          console.log(project);
+          console.log(data);
+        },
+        msg => {
+        }
+      )
+  }
+
 
   /** Transform the data to something the tree can read. */
   transformer(node: FileNode, level: number) {
@@ -676,6 +700,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -697,6 +722,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -719,6 +745,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -739,6 +766,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -759,6 +787,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -780,6 +809,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -801,6 +831,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'added') {
           this.addedSpecification.emit(1);
+          this.updateProject();
         }
       }
     );
@@ -832,6 +863,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -852,6 +884,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -871,6 +904,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -890,6 +924,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -910,6 +945,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -930,6 +966,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -950,6 +987,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
       data => {
         if (data === 'updated') {
           this.updated.emit(1);
+          this.updateProject();
         }
       });
   }
@@ -964,6 +1002,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         this.buildingService.deleteBuilding(this.project.id, node1.id )
           .then( data => {
               this.updated.emit(1);
+              this.updateProject();
             },
             err => {
             });
@@ -973,6 +1012,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
           this.floorService.deleteFloor(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
               err => {}
             );
@@ -983,6 +1023,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
           this.corridorService.deleteCorridorInFloor(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
               err => {}
             );
@@ -992,6 +1033,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
           this.corridorService.deleteCorridorInMotherRoom(parent.id, node1.id)
             .then(data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
               err => {
               }
@@ -1003,6 +1045,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         this.motherRoomService.deleteMotherRoom(parent.id, node1.id )
           .then( data => {
               this.updated.emit(1);
+              this.updateProject();
             },
             err => {}
           );
@@ -1012,6 +1055,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         this.roomService.deleteRoom(parent.id, node1.id )
           .then( data => {
               this.updated.emit(1);
+              this.updateProject();
             },
             err => {}
           );
@@ -1022,6 +1066,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
           this.sensorService.deleteSensorInCorridor(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
               err => {}
             );
@@ -1030,6 +1075,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
           this.sensorService.deleteSensorInRoom(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
               err => {}
             );
@@ -1042,6 +1088,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
           this.actuatorService.deleteActuatorInCorridor(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
               err => {}
             );
@@ -1050,6 +1097,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
           this.actuatorService.deleteActuatorInRoom(parent.id, node1.id )
             .then( data => {
                 this.updated.emit(1);
+                this.updateProject();
               },
               err => {}
             );
@@ -1060,29 +1108,5 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         break;
     }
   }
-/*
-  openDeleteConfirmDialog(): string {
-    const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    this.store.dispatch(new RemoveHeroConfirmDialogOpen({
-      delete: new RemoveHeroAction({ hero: hero }),
-      text: `Are you sure you want to remove the hero <em>${hero.name}</em> from the tour of heros?`,
-      title: "Remove Hero"
-    }));
-
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(
-      data => {
-        if (data === 'deleted') {
-          //this.addedSpecification.emit(1);
-          return 'deleted';
-        }
-      }
-    );
-    return 'cancel';
-  }
-  */
 }
