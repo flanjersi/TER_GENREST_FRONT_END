@@ -31,7 +31,7 @@ export class CreateBuildingEntityDialogComponent implements OnInit {
               private buildingService: BuildingService,
               private dialogRef: MatDialogRef<CreateBuildingEntityDialogComponent>,
               private spinnerService: Ng4LoadingSpinnerService,
-              private formBuilder: FormBuilder) { 
+              private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
       name: new FormControl('', [
         Validators.required,
@@ -65,14 +65,14 @@ export class CreateBuildingEntityDialogComponent implements OnInit {
     this.form.get('country').markAsTouched;
     this.form.get('city').markAsTouched;
     this.form.get('street').markAsTouched;
-    
+
     if(!this.form.valid){
       return;
     }
 
     let building = new Building();
     building.type = this.form.get('name').value;
-    
+
     let address = new Address();
     address.city = this.form.get('city').value;
     address.country = this.form.get('country').value;
@@ -82,16 +82,16 @@ export class CreateBuildingEntityDialogComponent implements OnInit {
     this.spinnerService.show();
 
     this.buildingService.createBuilding(this.data.id, building)
-          .then(
-            data => {
-              this.spinnerService.hide();
-              this.dialogRef.close('added');
-            },
-            err => {
-              console.log(err);
-              this.dialogRef.close('error');
-            }
-          )
+      .then(
+        data => {
+          this.spinnerService.hide();
+          this.dialogRef.close('added');
+        },
+        err => {
+          console.log(err);
+          this.dialogRef.close('error');
+        }
+      )
   }
 
   close(){
