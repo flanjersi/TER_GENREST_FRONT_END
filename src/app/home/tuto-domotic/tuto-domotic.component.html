@@ -1,5 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<header>
+<header xmlns="http://www.w3.org/1999/html">
   <app-menu></app-menu>
 </header>
 <div class="container-fluid">
@@ -22,98 +22,156 @@
   </div>
 
   <!-- Domotic -->
+  <div class="row "  style="height: 10px;background-color: white "></div>
+  <div class="row "  >
 
-  <div class="row" style="height: 300px">
-    <div class="col-xl-2 col-lg-2 col-md-1 col-1"></div>
-    <div class="col-xl-3 col-lg-4 col-md-5 d-none d-md-block my-auto">
+    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-4 col-1"></div>
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4  d-none d-md-block">
       <img src="assets/img/domotique.jpg" width="250px">
     </div>
-    <div class="col-xl-5 col-lg-4 col-md-5 col-sm-8 col-10 my-auto">
-      <div class="row mat-headline">
-        <h4><b>Tutorial to create a domotic project:</b></h4>
-      </div>
-      <div class="row mat-subheading-2">
-        This tutorial will show you:
-        <div class="container">
+    <div class="col-xl-4 col-lg-8 col-md-8 col-sm-6 col-11 my-auto">
+        <h5><b>Tutorial to create a domotic project:</b></h5>
           <ul class="list-group list-group-flush" style="color: blue">
             <li  class="list-group-item"  ><a [routerLink] = "['/tuto']"  fragment="userAcount"> How to create a new user account</a></li>
             <li  class="list-group-item" ><a [routerLink] = "['/tuto']"  fragment="userProject">How to create a new project</a></li>
             <li  class="list-group-item" ><a [routerLink] = "['/tuto']"  fragment="treeView"> How to handle the tree-view</a></li>
             <li  class="list-group-item" ><a [routerLink] = "['/tuto']"  fragment="tabView">How to handle the tab-view</a></li>
           </ul>
-
-        </div>
-      </div>
     </div>
+    <div class="col-xl-1 col-lg-4 col-md-4 col-sm-4 col-1"></div>
   </div>
+  <div class="row "  style="height: 10px;background-color: white "></div>
+  <!-- tuto1 -->
+</div>
+ <div class="container" style="size: ">
+  <div class="row " style=" background-color: #6f74dd;
+">
+    <div class="col-xl-2 col-lg-2 col-md-1 col-1"   ></div>
 
-  <!-- Environment -->
-
-  <div class="row" style="height: 300px;border: 1px solid">
-    <div class="col-xl-2 col-lg-2 col-md-1 col-1" ></div>
-    <div class="col-xl-5 col-lg-4 col-md-5 col-sm-8 col-10 my-auto">
-      <div class="row mat-headline">
-        <a id="userAcount">  How to create a new user account</a>
+    <div style="margin: 5px">
+      <div  id="title" class="row mat-headline " >
+        <u><a id="userAcount">How to create a new user account</a></u>
       </div>
+
       <div class="row mat-subheading-2">
-        The first time you connect to the web, you have to create an user account, to do this please go to the top,
-        and on the right side you have to click the  button named "SignIn", this action will make appear a pop-up named "Authentification".
-        As you don't have an user account you have to click on the button named "SignUp", this action will make appear a pop-up named "SignUp"
+
+        The first time you connect to the application, you have to create an user account, to do this please go to the top,
+        and on the right side you have to click on:<strong>"SignIn"</strong>
+        This action will make appear a pop-up named:<strong>"Authentification"</strong>.
+        As you don't have an user account you have to click on :<strong>"SignUp"</strong>, this action will make appear a pop-up named: <strong>"SignUp"</strong>
         also, to make an account you have to fill out the form.
-        Then you can click on "SignIn" to connect.
+        Then you can click on: <strong>"SignIn"</strong>to connect.
+
       </div>
     </div>
   </div>
 
-  <div class="row" style="height: 300px;border: 1px solid">
-    <div class="col-xl-2 col-lg-2 col-md-1 col-1" ></div>
-    <div class="col-xl-5 col-lg-4 col-md-5 col-sm-8 col-10 my-auto">
-      <div class="row mat-headline">
-       <a id="userProject">How to create a new project</a>
+  <div class="row
+">
+    <div class="col-xl-2 col-lg-2 col-md-1 col-1"  ></div>
+    <div style="margin: 5px">
+      <div class="row mat-headline" id ="title"  >
+       <u><a id="userProject">How to create a new project</a></u>
       </div>
       <div class="row mat-subheading-2">
-       To create a new project yo have to connect first; then a new page will appear, and the right you can add a new project by clicking on the button IMAGE HERE
-        , the button IMAGE HERE help you to edit and to modify you project's informations, the button IMAGE HERE will delete your project.
-        you can have many projects as you want.
+        <p>
+       To create a new project yo have to connect first, then a new page will appear, and on the right you can add a new project by clicking on the button <mat-icon class="mat-icon-rtl-mirror">add</mat-icon>
+        , the button  <mat-icon class="mat-icon-rtl-mirror">edit</mat-icon> help you to edit and to modify you project's informations, the button <mat-icon class="mat-icon-rtl-mirror">delete</mat-icon> will delete your project;
+        you can have many projects as you want.</p>
+        <p>
         To create your domotic specifications you have to click on the project you create first, then a new  page will appear, this page contains on the right
         side a tree-view and on the left side a tab-view.
-
+        </p>
       </div>
     </div>
   </div>
 
-  <div class="row" style="height: 300px;border: 1px solid">
+  <div class="row " style=" background-color: #6f74dd
+">
     <div class="col-xl-2 col-lg-2 col-md-1 col-1" ></div>
 
-    <div class="col-xl-5 col-lg-4 col-md-5 col-sm-8 col-10 my-auto">
-      <div class="row mat-headline">
-        <a id="treeView"></a> How to handle the tree-view
+    <div  style="margin: 5px" >
+      <div class="row mat-headline" id ="title" >
+        <u><a id="treeView">How to handle the tree-view</a></u>
       </div>
       <div class="row mat-subheading-2">
+      The tree-view is the place where you will do all the specifications of your domotic project, it appears after you click on your project.
+        <br/>
+      You have to follow some steps to full fill your domotic project:
+        <br/>
+        <br/>
+        <ul >
+          <li>Create a new building: </li>
+          The first step is to create a building, to do this you have to click on the button <mat-icon class="mat-icon-rtl-mirror">add</mat-icon> next the field called "Building", after that you have to specify some informations asked in the pop-up, you can after modify
+          the informations specified by clicking on the button <mat-icon class="mat-icon-rtl-mirror">edit</mat-icon>
+          <p></p>
+          <li>Create a new floor: </li>
+          After the building, you have to specify a floor, a building can have one or many floor.<br/>
+            To create, or modify the floor you have to follow the same
+            instructions like as the creation of building but on clicking on the button named "Floor".
+          <p></p>
+          <li>Create a new zone: </li>
+           After the creation of the floor, you have to specify the zone; a floor contains one or many zone, or corridor.<br/> To create, or modify the zone you have to follow the same
+            instructions like as the creation of building but on clicking on the button named "Zone".
+          <p></p>
+          <li>Create a new room: </li>
+          After the creation of the zone, you have to specify the room, a room  contains none, one  or many actuator and sensor.<br/>
+          To create, or modify the room you have to follow the same
+            instructions like as the creation of building but on clicking on the button named "Room".
+          <p></p>
+          <li>Create a new corridor:</li>
+          After the creation of the zone, you have to specify the corridor, a corridor  contains none, one  or many actuator and sensor.<br/>To create, or modify the corridor you have to follow the same
+            instructions like as the creation of building but on clicking on the button named "Corridor".
+          <p></p>
+          <li>Create a new actuator: </li>
+          After the creation of the room or corridor, you have to specify the actuator.<br/>
+            To create, or modify an actuator you have to follow the same
+            instructions like as the creation of building but on clicking on the button named "Actuator".
+          <p></p>
+          <li>Create a new sensor: </li>
+          After the creation of the room or corridor, you have to specify the sensor.<br/>
+            To create, or modify a sensor you have to follow the same
+            instructions like as the creation of building but on clicking on the button named "Sensor".
 
+        </ul>
+        ADD_IMAGE_TREE_VIEW_HERE
+        <br/>
+        Like you see the tree-view shows an tree structure of your project,
+        starting with the building to actuators and sensors, the tab-view on the left-side will show you the hierachy of your project, and the
+        specifications you made.
+      </div>
+    </div>
+  </div>
+  <div class="row
+">
+    <div class="col-xl-2 col-lg-2 col-md-1 col-1"   ></div>
+    <div style="margin: 5px">
+      <div class="row mat-headline" id ="title">
+       <u> <a id="tabView">How to handle the tab-view</a></u>
+      </div>
+      <div class="row mat-subheading-2">
+        The tab-view is here to show the specifications of your building, it will offer a visualization of your project:
+        <p> First, you have the tab named <strong>"Project specification"</strong>,  when you click on it, it allows you to visualize a specification of the component of your building,
+        to do that you have just to click in the tree-view on the component you want to visualize such as a building, floor, corridor, room...
+       </p>
+        <p>
+        Second, you have the tab named <strong>"Graph specification"</strong>, when you click on it, it allows you to visualize an hierarchical view of your project specification,
+        starting with the building to sensor and actuator, all the modifications you make in the tree-view are seen at real-time in this graph.
+        </p>
+        ADD_IMAGE_TAB_VIEW_HERE
       </div>
     </div>
   </div>
 
-  <div class="row" style="height: 300px;border: 1px solid">
-    <div class="col-xl-2 col-lg-2 col-md-1 col-1" ></div>
-
-    <div class="col-xl-5 col-lg-4 col-md-5 col-sm-8 col-10 my-auto">
-      <div class="row mat-headline">
-       <a id="tabView"></a> How to handle the tab-view
-      </div>
-      <div class="row mat-subheading-2">
-
-      </div>
-    </div>
-  </div>
-
+ </div>
 
 
   <!-- Get started -->
 
 
-</div>
+
+
+
 <footer class="my-auto text-center align-middle white-text" style="height: 50px; background-color: #00227a">
   AMU 2018-2019
 </footer>
