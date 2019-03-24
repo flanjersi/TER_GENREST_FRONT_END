@@ -22,13 +22,13 @@
     <tr>
       <td>
         <mat-form-field class="input">
-          <input matInput  type="number" placeholder="Number of your Room"
-                 [errorStateMatcher]="matcher" formControlName="numberRoom" name="numberRoom" required>
-          <mat-error *ngIf="form.get('numberRoom').hasError('required')">
-            Number of your Room is <strong>required</strong>
+          <input matInput placeholder="Name of your Room"
+                 [errorStateMatcher]="matcher" formControlName="name" name="name" required>
+          <mat-error *ngIf="form.get('name').hasError('required')">
+            Name of your Room is <strong>required</strong>
           </mat-error>
-          <mat-error *ngIf="form.get('numberRoom').hasError('maxlength')">
-            Please, give a Room number with 50 number maximum
+          <mat-error *ngIf="form.get('name').hasError('maxlength')">
+            Please, give a Room name with 50 letters maximum
           </mat-error>
         </mat-form-field>
       </td>

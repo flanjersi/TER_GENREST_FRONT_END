@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MotherRoomService } from './mother-room.service';
+import { ZoneService } from './zone.service';
 
-describe('MotherRoomService', () => {
+describe('ZoneService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: MotherRoomService = TestBed.get(MotherRoomService);
+    const service: ZoneService = TestBed.get(ZoneService);
     expect(service).toBeTruthy();
   });
 });

@@ -7,6 +7,11 @@ import {User} from "../../../shared/_models/User";
 import {Project} from "../../../shared/_models/Project";
 import {CookieService} from "ngx-cookie-service";
 import {ProjectService} from "../../../shared/_services/project.service";
+import {formatDate } from '@angular/common';
+import {locale} from "moment";
+import {Observable} from "rxjs";
+import {Actuator} from "../../../shared/_models/Actuator";
+
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -29,7 +34,9 @@ export interface Domain {
 export class CreateProjectDialogComponent implements OnInit {
 
   domains: Domain[] = [
-    {value: 'domotic-0', viewValue: 'Domotic'}
+    {value: 'domotic', viewValue: 'Domotic'},
+    {value: 'environnement', viewValue: 'Environnement'},
+    {value: 'transport', viewValue: 'Transport'}
    ];
 
   public form: FormGroup;
@@ -44,7 +51,7 @@ export class CreateProjectDialogComponent implements OnInit {
       projectName: new FormControl('', [
         Validators.required
       ]),
-      typeProject: new FormControl('', [
+      domain: new FormControl('', [
         Validators.required
       ])
     });
@@ -56,7 +63,7 @@ export class CreateProjectDialogComponent implements OnInit {
   addProject() {
     this.form.markAsTouched();
 
-    this.form.get('typeProject').markAsTouched();
+    this.form.get('domain').markAsTouched();
 
     if(!this.form.valid){
       return;
@@ -64,6 +71,14 @@ export class CreateProjectDialogComponent implements OnInit {
 
     let project = new Project();
     project.projectName = this.form.get('projectName').value;
+    project.domaine = this.form.get('domain').value;
+    project.creationDate = formatDate(Date.now()
+      , 'yyyy-MM-dd\'T\'HH:mm:ss', locale());
+
+    project.changeDate = formatDate(Date.now()
+      , 'yyyy-MM-dd\'T\'HH:mm:ss', locale());
+
+    console.log(project);
 
     this.spinnerService.show();
 

@@ -1,14 +1,14 @@
-<h2 mat-dialog-title>Edit MotherRoom</h2>
+<h2 mat-dialog-title>Edit Zone</h2>
 
 <mat-dialog-content *ngIf="isLoaded" [formGroup]="form">
   <table>
     <tr>
       <td>
         <mat-form-field class="input">
-          <input matInput placeholder="Type of your MotherRoom"
+          <input matInput placeholder="Type of your Zone"
                  [errorStateMatcher]="matcher" formControlName="type" name="type" required>
           <mat-error *ngIf="form.get('type').hasError('required')">
-            Type od your MotherRoom is <strong>required</strong>
+            Type of your Zone is <strong>required</strong>
           </mat-error>
           <mat-error *ngIf="form.get('type').hasError('minlength')">
             Please, give a type with 2 letters minimum
@@ -22,13 +22,13 @@
     <tr>
       <td>
         <mat-form-field class="input">
-          <input matInput  type="number" placeholder="Number of your MotherRoom"
-                 [errorStateMatcher]="matcher" formControlName="numberMotherRoom" name="numberMotherRoom" required>
-          <mat-error *ngIf="form.get('numberMotherRoom').hasError('required')">
-            Number of your MotherRoom is <strong>required</strong>
+          <input matInput placeholder="Name of your Zone"
+                 [errorStateMatcher]="matcher" formControlName="name" name="name" required>
+          <mat-error *ngIf="form.get('name').hasError('required')">
+            Name of your Zone is <strong>required</strong>
           </mat-error>
-          <mat-error *ngIf="form.get('numberMotherRoom').hasError('maxlength')">
-            Please, give a MotherRoom number with 50 number maximum
+          <mat-error *ngIf="form.get('name').hasError('maxlength')">
+            Please, give a name with 50 number maximum
           </mat-error>
         </mat-form-field>
       </td>

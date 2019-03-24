@@ -1,14 +1,14 @@
 /**
  * Model of an Floor
  */
-import {MotherRoom} from "./MotherRoom";
+import {Zone} from "./Zone";
 import {Corridor} from "./Corridor";
 
 export  class  Floor {
   public  id: number;
   public  floorNumber: number;
 
-  public motherRooms: MotherRoom[];
+  public zones: Zone[];
   public  corridors:  Corridor[];
 
   constructor(data?: any){
@@ -16,11 +16,11 @@ export  class  Floor {
       this.id = data.id;
       this.floorNumber = data.floorNumber;
 
-      this.motherRooms = [];
+      this.zones = [];
 
-      if(data.motherRooms){
-        data.motherRooms.forEach(motherRoom => {
-          this.motherRooms.push(new MotherRoom(motherRoom));
+      if(data.zones){
+        data.zones.forEach(motherRoom => {
+          this.zones.push(new Zone(motherRoom));
         });
       }
 
@@ -58,10 +58,10 @@ export  class  Floor {
     motherRoomstoJson() {
       const motherRoomsJson = [];
 
-      if(!this.motherRooms) motherRoomsJson;
+      if(!this.zones) motherRoomsJson;
   
-      for(let index in this.motherRooms){
-        motherRoomsJson.push(this.motherRooms[index]);
+      for(let index in this.zones){
+        motherRoomsJson.push(this.zones[index]);
       }
 
       return motherRoomsJson;
