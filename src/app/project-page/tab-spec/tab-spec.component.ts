@@ -13,6 +13,7 @@ export class TabSpecComponent implements OnInit, OnChanges {
 
   @Input()
   private project: Project;
+  
   @Input()
   private specEntity: any;
 
@@ -22,7 +23,7 @@ export class TabSpecComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-
+  
   }
 
   ngOnChanges() {}

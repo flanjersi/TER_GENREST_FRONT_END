@@ -111,7 +111,6 @@ export class DeployDialogComponent implements OnInit {
   ngOnInit() {}
 
   selectionLanguageChanged(event){
-    console.log(event);
 
     this.indexLanguageSelected = parseInt(event.value);
 

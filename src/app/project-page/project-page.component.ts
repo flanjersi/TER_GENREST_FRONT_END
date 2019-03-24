@@ -63,55 +63,6 @@ export class ProjectPageComponent implements OnInit {
       });
   }
 
-  simulateProject(){
-    this.project = new Project();
-    this.project.projectName = "Mon projet";
-    this.project.id = 1;
-
-    this.project.buildings = [];
-
-    // CREATION BAT 1
-    let building = new Building();
-    building.id = 1;
-    building.type = "Batiment 1";
-    building.floors = [];
-
-    let floor = new Floor();
-    floor.id = 1;
-    floor.floorNumber = 1;
-    floor.corridors = [];
-
-    let corridor = new Corridor();
-
-    corridor.id = 1;
-    corridor.numberCorridor = 1;
-
-    corridor.actuators = [];
-
-    let actuator = new Actuator();
-    actuator.id = 1;
-    actuator.name = "test";
-
-    corridor.actuators.push(actuator);
-
-    corridor.sensors = [];
-
-    let sensor = new Sensor();
-    sensor.id = 1;
-    sensor.name = "test";
-
-    corridor.sensors.push(sensor);
-
-    floor.corridors.push(corridor);
-
-    floor.motherRooms = [];
-
-    let motherRoom = new MotherRoom();
-
-    motherRoom.id = 1;
-    motherRoom.type = "motherRoom";
-  }
-
   ngOnInit(){}
 
 
@@ -131,9 +82,6 @@ export class ProjectPageComponent implements OnInit {
     this.entitySpec = event;
     this.tabGroup.selectedTabIndex(1);
   }
-
-
-
 
   openDeployDialog() {
     const dialogConfig = new MatDialogConfig();

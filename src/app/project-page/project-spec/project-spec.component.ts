@@ -16,5 +16,4 @@ export class ProjectSpecComponent implements OnInit {
 
   ngOnInit() {}
 
-
 }

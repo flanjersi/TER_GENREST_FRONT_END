@@ -35,6 +35,8 @@ import { DeployDialogComponent } from './deploy-dialog/deploy-dialog.component';
 import {DeployService} from "./deploy-dialog/services/deploy.service";
 import {ProjectSpecComponent} from "./project-spec/project-spec.component";
 import { JsonProjetComponent } from './json-projet/json-projet.component';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { AceEditorModule } from 'ng2-ace-editor';
 
 const routes: Routes = [
   { path: '', component: ProjectPageComponent},
@@ -92,6 +94,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ReactiveFormsModule,
     Ng4LoadingSpinnerModule.forRoot(),
     HttpClientModule,
+    NgxJsonViewerModule,
+    AceEditorModule
   ],
   entryComponents: [
     EditBuildingEntityDialogComponent,
