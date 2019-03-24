@@ -437,7 +437,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const roomData = {} as any;
 
     roomData.id = room.id;
-    roomData.name = room.type + room.name;
+    roomData.name = room.name;
     roomData.type = 'room';
 
     const sensorInterfaceData = {
@@ -1151,8 +1151,13 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   searchNode() {
     this.treeControl.collapseAll();
 
-    if (!this.valueOfSearchNodeInput || this.valueOfSearchNodeInput.length === 0)
+    if (!this.valueOfSearchNodeInput || this.valueOfSearchNodeInput.length === 0){
+      this.treeControl.dataNodes.forEach(element => {
+        element.color = null;
+      });
+
       return;
+    }
 
 
     const nodes = this.searchAllParentsOfNodesByName(this.valueOfSearchNodeInput);
