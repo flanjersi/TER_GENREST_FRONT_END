@@ -306,7 +306,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     if (floor.corridors && floor.corridors.length > 0) {
       const corridors = [];
       const instance = this;
-      floor.corridors.sort((c1, c2) => c1.numberCorridor - c2.numberCorridor).forEach(element => {
+      floor.corridors.sort((c1, c2) => c1.name - c2.name).forEach(element => {
         const corridor = instance.generateCorridor(element);
         corridors.push(corridor);
       });
@@ -355,7 +355,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     if (zone.corridors && zone.corridors.length > 0) {
       const corridors = [];
       const instance = this;
-      zone.corridors.sort((c1, c2) => c1.numberCorridor - c2.numberCorridor).forEach(element => {
+      zone.corridors.sort((c1, c2) => c1.name - c2.name).forEach(element => {
         const corridor = instance.generateCorridor(element);
         corridors.push(corridor);
       });
@@ -390,7 +390,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const corridorData = {} as any;
 
     corridorData.id = corridor.id;
-    corridorData.name = 'Corridor ' + corridor.numberCorridor;
+    corridorData.name = 'Corridor ' + corridor.name;
     corridorData.type = 'corridor';
 
     const sensorInterfaceData = {
@@ -437,7 +437,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const roomData = {} as any;
 
     roomData.id = room.id;
-    roomData.name = room.type + room.numberRoom;
+    roomData.name = room.type + room.name;
     roomData.type = 'room';
 
     const sensorInterfaceData = {
@@ -869,7 +869,6 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     /*  let building = this.buildingService.getById(node.id).subscribe(
       (data) => building.next(new Building(data)),
       err => {
-
       },
       () => {}
     ); */
@@ -1141,8 +1140,12 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     }
   }
 
-  expendAll() {
+  expandAll() {
     this.treeControl.expandAll();
+  }
+
+  collapseAll(){
+    this.treeControl.collapseAll();
   }
 
   searchNode() {
@@ -1220,7 +1223,10 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   /*
     openDeleteConfirmDialog(): string {
       const dialogConfig = new MatDialogConfig();
+<<<<<<< HEAD
+=======
 
+>>>>>>> e9b3e4629a773464ac9ceb2085f891d9036ad500
   }
   */
 }

@@ -6,14 +6,14 @@
         <td>
           <mat-form-field class="input">
             <input matInput placeholder="Type of your room"
-                   [errorStateMatcher]="matcher" formControlName="name" name="name" required>
-            <mat-error *ngIf="form.get('name').hasError('required')">
+                   [errorStateMatcher]="matcher" formControlName="type" name="type" required>
+            <mat-error *ngIf="form.get('type').hasError('required')">
               Type of your room is <strong>required</strong>
             </mat-error>
-            <mat-error *ngIf="form.get('name').hasError('minlength')">
+            <mat-error *ngIf="form.get('type').hasError('minlength')">
               Please, give a type with 2 letters minimum
             </mat-error>
-            <mat-error *ngIf="form.get('name').hasError('maxlength')">
+            <mat-error *ngIf="form.get('type').hasError('maxlength')">
               Please, give a type with 50 letters maximum
             </mat-error>
           </mat-form-field>
@@ -22,15 +22,15 @@
         <tr>
             <td>
               <mat-form-field class="input">
-                <input matInput type="number" placeholder="Number of your room"
-                       [errorStateMatcher]="matcher" formControlName="city" name="city" required>
-                <mat-error *ngIf="form.get('city').hasError('required')">
-                  Number of your room is <strong>required</strong>
+                <input matInput placeholder="Name of your room"
+                       [errorStateMatcher]="matcher" formControlName="name" name="name" required>
+                <mat-error *ngIf="form.get('name').hasError('required')">
+                  Name of your room is <strong>required</strong>
                 </mat-error>
-                <mat-error *ngIf="form.get('city').hasError('maxlength')">
-                  Please, give a room with 50 digits maximum
+                <mat-error *ngIf="form.get('name').hasError('maxlength')">
+                  Please, give a name with 50 letters maximum
                 </mat-error>
-                <mat-error *ngIf="form.get('city').hasError('incorrect')">
+                <mat-error *ngIf="form.get('name').hasError('incorrect')">
                   Value already exists
                 </mat-error>
               </mat-form-field>

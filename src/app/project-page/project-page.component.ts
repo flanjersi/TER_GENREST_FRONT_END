@@ -84,7 +84,7 @@ export class ProjectPageComponent implements OnInit {
     let corridor = new Corridor();
 
     corridor.id = 1;
-    corridor.numberCorridor = 1;
+    corridor.name = 1;
 
     corridor.actuators = [];
 

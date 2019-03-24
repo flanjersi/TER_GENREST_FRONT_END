@@ -38,7 +38,7 @@ export class CreateRoomEntityDialogComponent implements OnInit {
                     Validators.minLength(2),
                     Validators.maxLength(50)
                   ]),
-                  city: new FormControl('', [
+                  type: new FormControl('', [
                     Validators.required,
                     Validators.maxLength(50)
                   ]),
@@ -53,7 +53,7 @@ export class CreateRoomEntityDialogComponent implements OnInit {
   save(){
 
     this.form.get('name').markAsTouched;
-    this.form.get('city').markAsTouched;
+    this.form.get('type').markAsTouched;
     
     
     if(!this.form.valid){
@@ -61,8 +61,8 @@ export class CreateRoomEntityDialogComponent implements OnInit {
     }
 
     let room = new Room();
-    room.type= this.form.get('name').value;
-    room.numberRoom = this.form.get('city').value;
+    room.type= this.form.get('type').value;
+    room.name = this.form.get('name').value;
   
     this.spinnerService.show();
 
@@ -73,7 +73,7 @@ export class CreateRoomEntityDialogComponent implements OnInit {
               this.dialogRef.close('added');
             },
             err => {
-              this.form.get('city').setErrors({'incorrect': true});
+              this.form.get('name').setErrors({'incorrect': true});
             }
           )
   }
