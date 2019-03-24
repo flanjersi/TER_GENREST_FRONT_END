@@ -390,7 +390,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     const corridorData = {} as any;
 
     corridorData.id = corridor.id;
-    corridorData.name = 'Corridor ' + corridor.name;
+    corridorData.name = corridor.name;
     corridorData.type = 'corridor';
 
     const sensorInterfaceData = {
