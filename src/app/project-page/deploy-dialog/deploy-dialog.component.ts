@@ -7,6 +7,7 @@ import {DeployService} from "./services/deploy.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {DomSanitizer} from "@angular/platform-browser";
 
+
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -162,6 +163,7 @@ export class DeployDialogComponent implements OnInit {
   }
 
   deploy() {
+
     this.form.get('typeLanguage').markAsTouched;
     this.form.get('typeConfiguration').markAsTouched;
     this.form.get('typeSystem').markAsTouched;
@@ -180,10 +182,10 @@ export class DeployDialogComponent implements OnInit {
 
 
     this.spinnerService.show();
-
     this.deployService.getGeneratedAPI(this.idProject, languageId, configurationId, operatingSystemId)
       .subscribe(
         data => {
+
           this.spinnerService.hide();
           this.dialogRef.close();
         },
