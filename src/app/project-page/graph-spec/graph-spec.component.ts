@@ -81,7 +81,7 @@ export class GraphSpecComponent implements OnInit, OnChanges {
     nodes.push({id: 'Building' + building.id , label: building.type, color: '#CD6155'});
     links.push({source: 'start', target: 'Building' + building.id  , label: ''});
 
-    if(!building.floors) return [nodes, links];
+    if (!building.floors) { return [nodes, links]; }
 
     for(const index in building.floors) {
       const floor = building.floors[index];
