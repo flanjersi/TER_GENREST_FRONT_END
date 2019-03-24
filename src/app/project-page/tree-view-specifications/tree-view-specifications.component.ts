@@ -1144,7 +1144,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
     this.treeControl.expandAll();
   }
 
-  collapseAll(){
+  collapseAll() {
     this.treeControl.collapseAll();
   }
 
