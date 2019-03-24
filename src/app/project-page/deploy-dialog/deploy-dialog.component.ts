@@ -7,6 +7,7 @@ import {DeployService} from "./services/deploy.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {DomSanitizer} from "@angular/platform-browser";
 
+
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -161,6 +162,7 @@ export class DeployDialogComponent implements OnInit {
   }
 
   deploy() {
+
     this.form.get('typeLanguage').markAsTouched;
     this.form.get('typeConfiguration').markAsTouched;
     this.form.get('typeSystem').markAsTouched;
@@ -173,11 +175,16 @@ export class DeployDialogComponent implements OnInit {
     let configurationId = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].id;
     let operatingSystemId = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].operatingsSystem[this.indexConfigurationSelected].id;
 
-    this.spinnerService.show();
+    var languageName = this.languages[this.indexLanguageSelected].name;
+    var configurationName = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].name;
+    var operatingSystemName = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].operatingsSystem[this.indexConfigurationSelected].name;
 
+
+    this.spinnerService.show();
     this.deployService.getGeneratedAPI(this.idProject, languageId, configurationId, operatingSystemId)
       .subscribe(
         data => {
+
           this.spinnerService.hide();
           this.dialogRef.close();
         },
@@ -194,7 +201,11 @@ export class DeployDialogComponent implements OnInit {
             var link = document.createElement('a');
 
             link.href = fileUrl;
-            link.download = "GENREST APP N°" + this.idProject + " - " + this.projectName + '.zip';
+            link.download = "GENREST APP N°" + this.idProject
+              + " - " + languageName
+              + " - " + configurationName
+              + " - " + operatingSystemName
+              + " - " + this.projectName + '.zip';
             link.click();
           }
 

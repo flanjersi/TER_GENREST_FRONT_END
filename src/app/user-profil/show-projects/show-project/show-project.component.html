@@ -1,5 +1,10 @@
 <mat-list-item >
-  <h4 mat-line><a (click)="goToProject()"><u>{{project.projectName}}</u></a></h4>
+
+  <h4 mat-line> <a (click)="goToProject()">  <h2> {{project.projectName}}  </h2>  </a>
+      </h4>
+  <h4 mat-line>Creation date : {{project.creationDate  | date :'dd-MMM-yy h:mm:ss a '}}</h4>
+  <h4 mat-line> Domaine : {{project.domaine}}</h4>
+  <h4 mat-line> Change Date :  {{project.changeDate  | date :'dd-MMM-yy h:mm:ss a '}}</h4>
 
   <button mat-icon-button (click)="edit()">
     <mat-icon>edit</mat-icon>

@@ -1,31 +1,31 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Room} from '../_models/Room';
+import {Zone} from '../_models/Zone';
 import {Observable} from 'rxjs';
 
 
 @Injectable()
-export class RoomService {
+export class ZoneService {
 
   constructor(private http: HttpClient) {}
 
-  getById(id: number): Observable<Room> {
-    return new Observable<Room>((observer) => {
-      this.http.get<any>('api/rooms/' + id)
+  getById(id: number): Observable<Zone> {
+    return new Observable<Zone>((observer) => {
+      this.http.get<any>('api/zones/' + id)
         .subscribe(
-          (room) => observer.next(new Room(room)),
+          (motherRoom) => observer.next(new Zone(motherRoom)),
           (error) => observer.error(error),
           () => observer.complete()
         );
     });
   }
 
-  createRoom(id: number, room: Room) {
+  createZone(idFloor: number, zone: Zone) {
     return new Promise((resolve, reject) => {
-      this.http.put('api/zones/' + id + '/rooms', JSON.stringify(room.toJson()), {headers: {'Content-Type': 'application/json'}})
+      this.http.put('api/floors/' + idFloor + '/zones', JSON.stringify(zone.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
-            resolve(new Room(data));
+            resolve(new Zone(data));
           },
           msg => {
             reject(msg);
@@ -33,12 +33,12 @@ export class RoomService {
     });
   }
 
-  updateRoom(room: Room) {
+  updateZone(zone: Zone) {
     return new Promise((resolve, reject) => {
-      this.http.post('api/rooms/' + room.id, JSON.stringify(room), {headers: {'Content-Type': 'application/json'}})
+      this.http.post('api/zones/' + zone.id, JSON.stringify(zone.toJson()), {headers: {'Content-Type': 'application/json'}})
         .toPromise()
         .then(data => {
-            resolve(new Room(data));
+            resolve(new Zone(data));
           },
           msg => {
             reject(msg);
@@ -46,9 +46,9 @@ export class RoomService {
     });
   }
 
-  deleteRoom(id: number, idRoom: number) {
+  deleteZone(idFloor: number, idZone: number) {
     return new Promise((resolve, reject) => {
-      this.http.delete('api/zones/' + id + '/rooms/' + idRoom)
+      this.http.delete('api/floors/' + idFloor + '/zones/' + idZone)
         .toPromise()
         .then(data => {
             resolve(data);

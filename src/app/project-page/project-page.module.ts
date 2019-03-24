@@ -19,14 +19,14 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { TreeViewSpecificationsComponent } from './tree-view-specifications/tree-view-specifications.component';
 import { CreateBuildingEntityDialogComponent } from './tree-view-specifications/create-building-entity-dialog/create-building-entity-dialog.component';
 import { CreateFloorEntityDialogComponent } from './tree-view-specifications/create-floor-entity-dialog/create-floor-entity-dialog.component';
-import { CreateMotherRoomEntityDialogComponent } from './tree-view-specifications/create-mother-room-entity-dialog/create-mother-room-entity-dialog.component';
+import { CreateZoneEntityDialogComponent } from './tree-view-specifications/create-zone-entity-dialog/create-zone-entity-dialog.component';
 import { CreateRoomEntityDialogComponent } from './tree-view-specifications/create-room-entity-dialog/create-room-entity-dialog.component';
 import { CreateSensorEntityDialogComponent } from './tree-view-specifications/create-sensor-entity-dialog/create-sensor-entity-dialog.component';
 import { CreateActuatorEntityDialogComponent } from './tree-view-specifications/create-actuator-entity-dialog/create-actuator-entity-dialog.component';
 import {EditBuildingEntityDialogComponent} from './tree-view-specifications/edit-building-entity-dialog/edit-building-entity-dialog.component';
 import {EditFloorEntityDialogComponent} from './tree-view-specifications/edit-floor-entity-dialog/edit-floor-entity-dialog.component';
 import {EditCorridorEntityDialogComponent} from './tree-view-specifications/edit-corridor-entity-dialog/edit-corridor-entity-dialog.component';
-import {EditMotherRoomEntityDialogComponent} from './tree-view-specifications/edit-mother-room-entity-dialog/edit-mother-room-entity-dialog.component';
+import {EditZoneEntityDialogComponent} from './tree-view-specifications/edit-zone-entity-dialog/edit-zone-entity-dialog.component';
 import {EditRoomEntityDialogComponent} from './tree-view-specifications/edit-room-entity-dialog/edit-room-entity-dialog.component';
 import {CreateCorridorEntityDialogComponent} from './tree-view-specifications/create-corridor-entity-dialog/create-corridor-entity-dialog.component';
 import {EditSensorEntityDialogComponent} from './tree-view-specifications/edit-sensor-entity-dialog/edit-sensor-entity-dialog.component';
@@ -57,7 +57,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     TreeViewSpecificationsComponent,
     CreateFloorEntityDialogComponent,
     CreateCorridorEntityDialogComponent,
-    CreateMotherRoomEntityDialogComponent,
+    CreateZoneEntityDialogComponent,
     CreateRoomEntityDialogComponent,
     CreateSensorEntityDialogComponent,
     CreateActuatorEntityDialogComponent,
@@ -70,7 +70,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CreateFloorEntityDialogComponent,
     EditFloorEntityDialogComponent,
     EditCorridorEntityDialogComponent,
-    EditMotherRoomEntityDialogComponent,
+    EditZoneEntityDialogComponent,
     EditRoomEntityDialogComponent,
     CreateCorridorEntityDialogComponent,
     EditSensorEntityDialogComponent,
@@ -100,7 +100,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   entryComponents: [
     EditBuildingEntityDialogComponent,
     EditFloorEntityDialogComponent,
-    EditMotherRoomEntityDialogComponent,
+    EditZoneEntityDialogComponent,
     EditCorridorEntityDialogComponent,
     EditRoomEntityDialogComponent,
     EditActuatorEntityDialogComponent,
@@ -108,7 +108,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CreateBuildingEntityDialogComponent,
     CreateFloorEntityDialogComponent,
     CreateCorridorEntityDialogComponent,
-    CreateMotherRoomEntityDialogComponent,
+    CreateZoneEntityDialogComponent,
     CreateRoomEntityDialogComponent,
     CreateSensorEntityDialogComponent,
     CreateActuatorEntityDialogComponent,

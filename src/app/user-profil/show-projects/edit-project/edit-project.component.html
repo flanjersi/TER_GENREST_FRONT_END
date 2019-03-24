@@ -6,7 +6,7 @@
       <td>
         <mat-form-field class="input">
           <label>Project name:</label>
-          <input matInput [value]="projectName"
+          <input matInput
                  [errorStateMatcher]="matcher" formControlName="projectName" name="projectName" required>
           <mat-error *ngIf="form.get('projectName').hasError('required')">
             Project name is <strong>required</strong>.
@@ -17,6 +17,23 @@
         </mat-form-field>
       </td>
     </tr>
+
+    <tr>
+      <td>
+        <mat-form-field class="input">
+          <mat-select placeholder="Choice your domain" [errorStateMatcher]="matcher" formControlName="domain" list="domains"
+                      name="domain" required>
+            <mat-option *ngFor="let domain of domains" [value]="domain.value">
+              {{domain.viewValue}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('domain').hasError('required')">
+            The domain of the project is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+
   </table>
 </mat-dialog-content>
 

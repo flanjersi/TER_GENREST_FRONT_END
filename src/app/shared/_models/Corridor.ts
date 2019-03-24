@@ -6,7 +6,7 @@ import {Sensor} from "./Sensor";
  */
 export  class  Corridor {
   public  id: number;
-  public  numberCorridor: number;
+  public  name: number;
 
   public  sensors: Sensor[];
   public  actuators: Actuator[];
@@ -16,7 +16,7 @@ export  class  Corridor {
     if (data){
 
       this.id = data.id;
-      this.numberCorridor = data.numberCorridor;
+      this.name = data.name;
 
       this.sensors = [];
 
@@ -41,7 +41,7 @@ export  class  Corridor {
   toJson()  {
     return {
       id: new Number(this.id),
-      numberCorridor: new Number(this.numberCorridor),
+      name: new String(this.name),
       sensors: this.sensorsToJson(),
       actuators: this.actuatorstoJson()
     } 
@@ -77,7 +77,7 @@ export  class  Corridor {
       title: "Corridor"
     },
     {
-      number: this.numberCorridor
+      name: this.name
     }
     ]
   }
