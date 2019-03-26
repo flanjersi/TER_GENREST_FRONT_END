@@ -887,6 +887,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         if (data === 'updated') {
           this.updated.emit(1);
           this.updateProject();
+          this.showSpec(node);
         }
       });
   }
@@ -908,6 +909,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         if (data === 'updated') {
           this.updated.emit(1);
           this.updateProject();
+          this.showSpec(node);
         }
       });
   }
@@ -928,6 +930,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         if (data === 'updated') {
           this.updated.emit(1);
           this.updateProject();
+          this.showSpec(node);
         }
       });
   }
@@ -948,6 +951,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         if (data === 'updated') {
           this.updated.emit(1);
           this.updateProject();
+          this.showSpec(node);
         }
       });
   }
@@ -969,6 +973,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         if (data === 'updated') {
           this.updated.emit(1);
           this.updateProject();
+          this.showSpec(node);
         }
       });
   }
@@ -990,6 +995,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         if (data === 'updated') {
           this.updated.emit(1);
           this.updateProject();
+          this.showSpec(node);
         }
       });
   }
@@ -1011,6 +1017,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
         if (data === 'updated') {
           this.updated.emit(1);
           this.updateProject();
+          this.showSpec(node);
         }
       });
   }
@@ -1026,6 +1033,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
           .then(data => {
               this.updated.emit(1);
               this.updateProject();
+              this.showSpec(node1);
             },
             err => {
             });
@@ -1225,13 +1233,5 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
   }
 
 
-  /*
-    openDeleteConfirmDialog(): string {
-      const dialogConfig = new MatDialogConfig();
-<<<<<<< HEAD
-=======
 
->>>>>>> e9b3e4629a773464ac9ceb2085f891d9036ad500
-  }
-  */
 }
