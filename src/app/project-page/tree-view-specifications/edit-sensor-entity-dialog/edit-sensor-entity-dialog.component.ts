@@ -6,6 +6,7 @@ import {Ng4LoadingSpinnerService} from 'ng4-loading-spinner';
 import {CookieService} from 'ngx-cookie-service';
 import {SensorService} from '../../../shared/_services/sensor.service';
 import {Sensor} from '../../../shared/_models/Sensor';
+import {camelize} from "tslint/lib/utils";
 
 @Component({
   selector: 'app-edit-sensor-entity-dialog',
@@ -102,9 +103,8 @@ export class EditSensorEntityDialogComponent implements OnInit {
     sensor.longitude = this.form.get('longitude').value;
     sensor.model = this.form.get('model').value;
     sensor.quantityKind = this.form.get('quantityKind').value;
-    sensor.name = this.form.get('name').value;
+    sensor.name = this.camelize(this.form.get('name').value, ' ');
     sensor.unitData = this.form.get('unitData').value;
-
 
     this.spinnerService.show();
 
@@ -128,5 +128,34 @@ export class EditSensorEntityDialogComponent implements OnInit {
     this.dialogRef.close({
       action : 'cancel'
     });
+  }
+
+  /**
+   * Camelize a string, cutting the string by separator character.
+   * @param string Text to camelize
+   * @param string Word separator (underscore by default)
+   * @return string Camelized text
+   */
+  camelize(text, separator) {
+
+    // Assume separator is _ if no one has been provided.
+    if(typeof(separator) == "undefined") {
+      separator = "_";
+    }
+
+    // Cut the string into words
+    var words = text.split(separator);
+
+    // Concatenate all capitalized words to get camelized string
+    var result = "";
+    for (var i = 0 ; i < words.length ; i++) {
+      var word = words[i];
+      word = word.toLowerCase();
+      var capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+      result += capitalizedWord;
+    }
+
+    return result;
+
   }
 }

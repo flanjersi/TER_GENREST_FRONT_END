@@ -6,6 +6,7 @@ import {CookieService} from 'ngx-cookie-service';
 import {MyErrorStateMatcher} from '../edit-building-entity-dialog/edit-building-entity-dialog.component';
 import {ActuatorService} from '../../../shared/_services/actuator.service';
 import {Actuator} from '../../../shared/_models/Actuator';
+import {camelize} from "tslint/lib/utils";
 
 @Component({
   selector: 'app-edit-actuator-entity-dialog',
@@ -89,7 +90,7 @@ export class EditActuatorEntityDialogComponent implements OnInit {
     actuator.latitude = this.form.get('latitude').value;
     actuator.longitude = this.form.get('longitude').value;
     actuator.model = this.form.get('model').value;
-    actuator.name = this.form.get('name').value;
+    actuator.name = this.camelize(this.form.get('name').value, ' ');
 
 
     this.spinnerService.show();
@@ -114,6 +115,35 @@ export class EditActuatorEntityDialogComponent implements OnInit {
     this.dialogRef.close({
       action : 'cancel'
     });
+  }
+
+  /**
+   * Camelize a string, cutting the string by separator character.
+   * @param string Text to camelize
+   * @param string Word separator (underscore by default)
+   * @return string Camelized text
+   */
+  camelize(text, separator) {
+
+    // Assume separator is _ if no one has been provided.
+    if(typeof(separator) == "undefined") {
+      separator = "_";
+    }
+
+    // Cut the string into words
+    var words = text.split(separator);
+
+    // Concatenate all capitalized words to get camelized string
+    var result = "";
+    for (var i = 0 ; i < words.length ; i++) {
+      var word = words[i];
+      word = word.toLowerCase();
+      var capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+      result += capitalizedWord;
+    }
+
+    return result;
+
   }
 
 }

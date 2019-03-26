@@ -4,6 +4,7 @@ import { FormControl, FormGroupDirective, NgForm, FormGroup, FormBuilder, Valida
 import { SensorService } from 'src/app/shared/_services/sensor.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { Sensor } from 'src/app/shared/_models/Sensor';
+import {camelize} from "tslint/lib/utils";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -88,7 +89,7 @@ export class CreateSensorEntityDialogComponent implements OnInit {
     sensor.model = this.form.get('model').value;
     sensor.quantityKind = this.form.get('quantityKind').value;
     sensor.unitData = this.form.get('unitData').value;
-    sensor.name = this.form.get('name').value;
+    sensor.name = this.camelize(this.form.get('name').value, ' ');
 
     this.spinnerService.show();
     console.log(this.data);
@@ -122,5 +123,34 @@ export class CreateSensorEntityDialogComponent implements OnInit {
 
   close(){
     this.dialogRef.close('cancel');
+  }
+
+  /**
+   * Camelize a string, cutting the string by separator character.
+   * @param string Text to camelize
+   * @param string Word separator (underscore by default)
+   * @return string Camelized text
+   */
+  camelize(text, separator) {
+
+    // Assume separator is _ if no one has been provided.
+    if(typeof(separator) == "undefined") {
+      separator = "_";
+    }
+
+    // Cut the string into words
+    var words = text.split(separator);
+
+    // Concatenate all capitalized words to get camelized string
+    var result = "";
+    for (var i = 0 ; i < words.length ; i++) {
+      var word = words[i];
+      word = word.toLowerCase();
+      var capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+      result += capitalizedWord;
+    }
+
+    return result;
+
   }
 }
