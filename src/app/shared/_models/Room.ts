@@ -97,12 +97,11 @@ export  class  Room {
   toJsonLdShowed() : any {
     
     return {
-      "@type": "bot:Space",
-      "@typee": "dog:Room",
+      "@type": ["bot:Space", "dog:Room"],
       "@id": "Room" + this.id,
       "rdfs:label": this.type,
       "bot:hasElement": this.createJsonArraySensor().concat(this.createJsonArrayActuator()),
-        }
+    }
     
 
 
