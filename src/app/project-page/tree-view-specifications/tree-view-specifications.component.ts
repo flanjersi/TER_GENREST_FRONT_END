@@ -1054,7 +1054,7 @@ export class TreeViewSpecificationsComponent implements OnInit, OnChanges {
             );
         }
 
-        if (parent.type !== 'zone') {
+        if (parent.type === 'zone') {
           this.corridorService.deleteCorridorInZone(parent.id, node1.id)
             .then(data => {
                 this.updated.emit(1);
