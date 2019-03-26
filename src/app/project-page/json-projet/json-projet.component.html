@@ -1,2 +1,4 @@
-<ace-editor [(text)]="code" mode="json" style="height:400px;"></ace-editor>
-<ngx-json-viewer [json]="datas"></ngx-json-viewer>
+<div *ngIf="datass">
+    <ngx-json-viewer [json]="datass.toJsonLdShowed()"></ngx-json-viewer>
+</div>
+

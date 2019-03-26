@@ -12,8 +12,10 @@ export class ProjectSpecComponent implements OnInit {
   @Input()
   public datas: any;
 
-  constructor() {}
+  constructor() {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
 }

@@ -78,4 +78,30 @@ export  class  Floor {
     ]
   }
 
+  createJsonArrayZone(): any{
+    var tabSpace = [];
+    this.zones.forEach(element => {
+      tabSpace.push(element.toJsonLdShowed());
+    });
+    return tabSpace;
+  }
+
+  createJsonArrayCorridor(): any{
+    var tabSpace = [];
+    this.corridors.forEach(element => {
+      tabSpace.push(element.toJsonLdShowed());
+    });
+    return tabSpace;
+  }
+
+  toJsonLdShowed() : any {
+    return {
+        "@type": "bot:Storey",
+        "@id": "Storey" + this.id,
+        "rdfs:label": this.floorNumber,
+        "bot:hasSpace": this.createJsonArrayCorridor(),
+        "bot:hasZone": this.createJsonArrayZone(),
+        }
+  }
+
 }

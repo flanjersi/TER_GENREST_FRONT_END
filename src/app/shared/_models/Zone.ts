@@ -78,4 +78,31 @@ export  class Zone {
       name: this.name
     }]
   }
+
+  createJsonArrayRoom(): any{
+    var tabSpace = [];
+    this.rooms.forEach(element => {
+      tabSpace.push(element.toJsonLdShowed());
+    });
+    return tabSpace;
+  }
+
+  createJsonArrayCorridor(): any{
+    var tabSpace = [];
+    this.corridors.forEach(element => {
+      tabSpace.push(element.toJsonLdShowed());
+    });
+    return tabSpace;
+  }
+
+  toJsonLdShowed() : any {
+    return {
+      "@type": "bot:Zone",
+      "@id": "Zone" + this.id,
+      "rdfs:label": this.type + ' ' + this.name,
+      "bot:hasSpace": this.createJsonArrayCorridor().concat(this.createJsonArrayRoom()),
+        }
+  }
+
+
 }

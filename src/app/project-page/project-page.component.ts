@@ -62,7 +62,7 @@ export class ProjectPageComponent implements OnInit {
           });
       });
   }
-  
+
   ngOnInit(){}
 
 

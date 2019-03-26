@@ -53,4 +53,16 @@ export class  Sensor {
       }]
 
   }
+
+  toJsonLdShowed() : any {
+    return {
+        "@type": "ssn:Sensor",
+        "@id": "sensor" + this.id,
+        "geo:lat": this.latitude,
+        "geo:long": this.longitude,
+        "rdfs:label": this.model,
+        "qu:QuantityKind": this.quantityKind,
+        "qu:Unit": this.unitData,
+        }
+  }
 }

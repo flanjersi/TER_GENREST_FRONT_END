@@ -43,4 +43,14 @@ export  class  Actuator {
     }]
   }
 
+  toJsonLdShowed() : any {
+    return {
+        "@type": "ssn:Actuator",
+        "@id": "Actuator" + this.id,
+        "geo:lat": this.latitude,
+        "geo:long": this.longitude,
+        "rdfs:label": this.model,
+        }
+  }
+
 }

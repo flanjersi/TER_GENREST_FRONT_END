@@ -78,6 +78,36 @@ export  class  Room {
 
   }
 
+  createJsonArraySensor(): any{
+    var tabSpace = [];
+    this.sensors.forEach(element => {
+      tabSpace.push(element.toJsonLdShowed());
+    });
+    return tabSpace;
+  }
+
+  createJsonArrayActuator(): any{
+    var tabSpace = [];
+    this.actuators.forEach(element => {
+      tabSpace.push(element.toJsonLdShowed());
+    });
+    return tabSpace;
+  }
+
+  toJsonLdShowed() : any {
+    
+    return {
+      "@type": "bot:Space",
+      "@typee": "dog:Room",
+      "@id": "Room" + this.id,
+      "rdfs:label": this.type,
+      "bot:hasElement": this.createJsonArraySensor().concat(this.createJsonArrayActuator()),
+        }
+    
+
+
+  }
+
 }
 
 

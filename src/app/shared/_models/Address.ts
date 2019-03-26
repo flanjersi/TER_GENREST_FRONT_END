@@ -14,4 +14,14 @@ export  class  Address {
     }
   }
 
+
+  toJsonLdShowedForAdress(): any {
+    return {
+      "@type": "sch:PostalAddress",
+      "sch:addressCountry":  this.country,
+      "sch:addressLocality": this.city,
+      "sch:streetAddress": this.street,
+      }
+  }
+
 }

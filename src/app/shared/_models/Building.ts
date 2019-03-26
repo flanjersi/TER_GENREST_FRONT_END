@@ -39,4 +39,28 @@ export  class Building {
     }
     ]
   }
+
+  createJsonArrayFloors(): any{
+    var tabFloors = [];
+    this.floors.forEach(element => {
+      
+      tabFloors.push(element.toJsonLdShowed());
+    });
+    return tabFloors;
+  }
+
+
+  toJsonLdShowed() : any {
+    
+    return {
+        "@type": "bot:Building",
+        "@id": "Building" + this.id,
+        "rdfs:label": this.type,
+        "sch:address": this.address.toJsonLdShowedForAdress(),
+        "bot:hasStorey": this.createJsonArrayFloors()
+        }
+  }
+
+
+
 }
