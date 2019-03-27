@@ -11,6 +11,7 @@ import { TutoDomoticComponent } from './tuto-domotic/tuto-domotic.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'tuto', component: TutoDomoticComponent}
+
 ];
 
 @NgModule({
