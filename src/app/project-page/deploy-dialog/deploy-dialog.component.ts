@@ -86,7 +86,7 @@ export class DeployDialogComponent implements OnInit {
         data => {
           this.languages = data;
           var instance = this;
-          console.log(this.languages);
+
           for(var index = 0; index < this.languages.length ; index++){
             this.languagesEnum.push(new class implements LanguageEnum {
               value: string;
@@ -173,12 +173,15 @@ export class DeployDialogComponent implements OnInit {
 
     let languageId = this.languages[this.indexLanguageSelected].id;
     let configurationId = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].id;
-    let operatingSystemId = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].operatingsSystem[this.indexConfigurationSelected].id;
+    let operatingSystemId = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].operatingsSystem[this.indexOperatingSystemSelected].id;
 
     var languageName = this.languages[this.indexLanguageSelected].name;
     var configurationName = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].name;
-    var operatingSystemName = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].operatingsSystem[this.indexConfigurationSelected].name;
+    var operatingSystemName = this.languages[this.indexLanguageSelected].configurationsAvailable[this.indexConfigurationSelected].operatingsSystem[this.indexOperatingSystemSelected].name;
 
+    console.log(languageName);
+    console.log(configurationName);
+    console.log(operatingSystemName);
 
     this.spinnerService.show();
     this.deployService.getGeneratedAPI(this.idProject, languageId, configurationId, operatingSystemId)
